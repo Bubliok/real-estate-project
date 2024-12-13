@@ -1,0 +1,258 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E238020D-959D-963C-4365-6AFDB55F60E9" name="real_estate">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:39:05 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<ordsAlias>table_2</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="A4AB4449-9D00-3D65-9AAA-651CC84C4C28">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estate_type" id="6B213FEA-857D-C1E2-F1BD-413998B048DA">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estate_name" id="FF8072B4-F23E-F1A4-2637-34B9FD3BF058">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estate_area" id="5AC2C7F9-8024-59FE-DA56-91496A6311F4">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:47:50 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estate_type_id" id="C5C6B12D-7CDA-04C3-B988-35CC09E04538">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:47:50 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F4247D8B-7BE7-91F3-39FD-A57B020EB90D" referredColumn="3FF27232-4BAB-0483-C0AA-3C931C9A2E6A"/>
+</associations>
+</Column>
+<Column name="floor" id="BE98B253-7DA3-E8BB-8273-5693AE6EFEBE">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:49:37 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="is_furnished" id="013B92AC-D5A1-5AB4-54A0-ECA70F7A011A">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:47:50 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estate_price" id="1D0FBA79-BFB2-29AF-3DED-98B49AAB5FFC">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="estate_address" id="56624C41-1BAA-6469-4680-93BB05400E79">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="city_id" id="0FEB6620-C0CD-42DB-D8CB-8796B3217E73">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:54:47 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="AD4F9EBF-C1E2-D58F-8189-06A717AB3F9F" referredColumn="B3CFFCD1-DE53-E927-7EBB-B4A179FF34ED"/>
+</associations>
+</Column>
+<Column name="neighborhood_id" id="DD72A5F1-3F7B-3888-9441-01EDD5F29CE1">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:48:31 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="7702426F-4CB6-EC78-4FA7-7C62148442D4" referredColumn="F5673814-5FB2-EDF2-4162-5DB87ADBBF7B"/>
+</associations>
+</Column>
+<Column name="agent_id" id="FC6A87EC-665C-A379-9466-846584D08450">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="9291C9C8-ADF8-D62E-675C-661DD5DD9FCB" referredColumn="633783EE-C620-A5D8-B3E7-709BF2BA96AC"/>
+</associations>
+</Column>
+<Column name="owner_id" id="A3CB1BB7-99E1-761F-56D2-A5BBF71B6F35">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="15D1D96D-BA8A-3B9E-6642-994A697BAE70" referredColumn="CD72A89D-38D1-4EF3-ADCA-A5669834F47F"/>
+</associations>
+</Column>
+<Column name="date_built" id="2573A761-8D0B-B42B-B059-E005970E611C">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date_added" id="38011A80-7E99-9D91-BDB4-3C451DD8DC09">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="is_active" id="2D3BF429-19CD-CE50-C6CC-946F7C8E7BE1">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 12:06:32 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="396EC661-60CB-B888-ED12-D99C576BBBE1" name="real_estate_PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:45:43 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A4AB4449-9D00-3D65-9AAA-651CC84C4C28"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="78B7F094-65F3-9D15-4EF1-86C885CA7C05" name="real_estate_city_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 12:02:38 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="0FEB6620-C0CD-42DB-D8CB-8796B3217E73"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9A08C270-F76D-232D-642E-9153C62011F3" name="real_estate_real_estate_agent_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 12:03:13 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FC6A87EC-665C-A379-9466-846584D08450"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="E0CE62F2-E57F-531C-3C10-47A75222DDD4" name="real_estate_real_estate_owner_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:32:44 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A3CB1BB7-99E1-761F-56D2-A5BBF71B6F35"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="884D49AA-4F90-B29D-92EC-5E6F3B884C16" name="real_estate_neighborhood_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:56:04 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DD72A5F1-3F7B-3888-9441-01EDD5F29CE1"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="6716F9FD-8C1F-862F-B6CB-BBD9C8929A88" name="real_estate_real_estate_type_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:57:34 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C5C6B12D-7CDA-04C3-B988-35CC09E04538"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

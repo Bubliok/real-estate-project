@@ -1,0 +1,68 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CFFFE4AB-12AA-264C-D35D-61B263093748" name="site_user">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:32:52 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<ordsAlias>table_1</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="80DAEC50-1248-D7C6-A608-48283BB82F6D">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:37:00 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="username" id="6B38C28F-C484-C8F6-99AE-FFD726AD4985">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:37:00 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="password" id="C260CA3A-9DD5-B214-2169-FB9F780F4489">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:38:32 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="admin" id="585DE360-F0F7-BE0E-408F-9C7FA1E742FE">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:38:32 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1 BYTE</dataTypeSize>
+<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="A537795F-4A88-FBD3-E3BE-1324F42E7E1A" name="site_user_PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:37:00 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="80DAEC50-1248-D7C6-A608-48283BB82F6D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BusinessInfoDesign class="oracle.dbtools.crest.model.businessinfo.BusinessInfoDesign" name="Business Information" id="7FC7CB1F-149C-52BA-12A9-069976B8F789">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:32:07 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</BusinessInfoDesign>

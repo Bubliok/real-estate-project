@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Estate;
+use App\Model\Estate;
 use Psr\Log\LoggerInterface;
 
 class EstateRepository

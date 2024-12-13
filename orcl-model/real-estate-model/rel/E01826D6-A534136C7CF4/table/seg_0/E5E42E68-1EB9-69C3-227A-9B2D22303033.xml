@@ -1,0 +1,69 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E5E42E68-1EB9-69C3-227A-9B2D22303033" name="real_estate_images">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 11:56:00 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<ordsAlias>table_15</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="792EB3E5-A339-C480-86F5-C3D9F8B19C48">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 11:56:27 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="real_estate_id" id="D0C05FE2-7670-D4CE-5F73-3F9BF3653362">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:04:05 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="1C877A7A-370C-C166-C0A6-AEB7E150CEAF" referredColumn="A4AB4449-9D00-3D65-9AAA-651CC84C4C28"/>
+</associations>
+</Column>
+<Column name="image_path" id="426C865A-6AD1-DAA9-941B-DC07CF5F8B67">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 11:56:27 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="049F8ADD-DB6E-3AD0-7893-02DB38AA5867" name="real_estate_images_PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 11:56:54 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="792EB3E5-A339-C480-86F5-C3D9F8B19C48"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="196BB6D4-D7BA-AA7A-C127-EA663495B759" name="real_estate_images_real_estate_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:08:07 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="D0C05FE2-7670-D4CE-5F73-3F9BF3653362"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<ProcessModel class="oracle.dbtools.crest.model.design.process.ProcessModel" name="Process Model" id="0950CFB3-2E09-0C8C-71F1-F168D5BEAF7A">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:32:07 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</ProcessModel>

@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="100B7C57-ADF9-B92C-0068-F2121E79CE40" mainViewID="59C84D85-CED2-933D-BE75-9208A5599D0E">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-12 09:32:07 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="1C877A7A-370C-C166-C0A6-AEB7E150CEAF" containerWithKeyObject="E5E42E68-1EB9-69C3-227A-9B2D22303033" localFKIndex="196BB6D4-D7BA-AA7A-C127-EA663495B759" name="real_estate_images_real_estate_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 13:08:07 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<referredTableLongName>real_estate</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>E238020D-959D-963C-4365-6AFDB55F60E9</referredTableID>
+<keyObject>396EC661-60CB-B888-ED12-D99C576BBBE1</keyObject>
+<referredKeyID>396EC661-60CB-B888-ED12-D99C576BBBE1</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

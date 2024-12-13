@@ -1,0 +1,70 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="19EA9D1B-8CBD-A2BA-8BA2-72391DD3FA70" name="neighborhood">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:48:47 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<ordsAlias>table_19</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="F5673814-5FB2-EDF2-4162-5DB87ADBBF7B">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:49:48 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="neighborhood_name" id="46C7829A-FFA6-EFA3-0F93-5B527C9A6689">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:49:48 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="city_id" id="5A0A2EC8-3F88-2E64-8E4F-98D0B1A72858">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:49:48 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="841546F4-2D03-4F71-89DB-5F404A4684CC" referredColumn="B3CFFCD1-DE53-E927-7EBB-B4A179FF34ED"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="6A301507-5F22-28FB-6DAF-3BAA2B09CE5B" name="neighborhood_PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:55:50 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F5673814-5FB2-EDF2-4162-5DB87ADBBF7B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5B6A19B2-B81B-F0F9-F7E2-B9831C3B0D5D" name="neighborhood_city_FK">
+<createdBy>bubliok</createdBy>
+<createdTime>2024-12-13 14:55:41 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="5A0A2EC8-3F88-2E64-8E4F-98D0B1A72858"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
