@@ -4,8 +4,9 @@
 <h1 class="text-4xl">main</h1>
 
 <div>
-    Kazhi be {{ estates|length }} imoti! <br>
-    eto ti edno: {{ myEstate.description }}
-    <a href="{{ path('app_estate_show', {'id': myEstate.id}) }}">View</a>
+    Kazhi be {{ cities|length }} imoti! <br>
+     eto ti edno: {{ myCity.cityName}}
+{#    eto ti edno: {{ myEstate.city_name }}#}
+    <a href="{{ path('app_estate_show', {'id': myCity.id}) }}">View</a>
 </div>
 {% endblock %}

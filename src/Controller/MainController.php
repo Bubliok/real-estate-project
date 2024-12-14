@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-use App\Repository\EstateRepository;
+use App\Entity\City;
+use App\Repository\CityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -10,15 +12,15 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function homepage(EstateRepository $estateRepository): Response
-    {
-        $estates = $estateRepository->findAll();
-//        $estateCount = count($estates);
-        $myEstate = $estates[array_rand($estates)];
+    public function homepage(CityRepository $cityRepository,
+    ): Response {
+
+        $cities = $cityRepository->findSofia();
+        $myCity = $cityRepository->findMyCity();
 
         return $this->render('main/homepage.html.twig', [
-            'estates' => $estates,
-            'myEstate' => $myEstate
+            'cities' => $cities,
+            'myCity' => $myCity
         ]);
     }
 }

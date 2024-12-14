@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<City>
+ * @return City[]
  */
 class CityRepository extends ServiceEntityRepository
 {
@@ -15,7 +15,18 @@ class CityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, City::class);
     }
-
+    public function findSofia() :array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.cityName = :cityName')
+            ->setParameter('cityName', 'Sofia')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findMyCity() :City
+    {
+        return $this->findAll()[0];
+    }
     //    /**
     //     * @return City[] Returns an array of City objects
     //     */
