@@ -17,7 +17,7 @@ class RealEstateAgent
 
     #[ORM\OneToOne(inversedBy: 'realEstateAgent', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?WebUser $WebUser = null;
+    private ?User $user = null;
 
     #[ORM\Column(length: 40)]
     private ?string $agentName = null;
@@ -53,18 +53,15 @@ class RealEstateAgent
         return $this->id;
     }
 
-    public function getWebUser(): ?WebUser
+    public function getUser(): ?User
     {
-        return $this->WebUser;
+        return $this->user;
     }
 
-    public function setWebUser(WebUser $WebUser): static
+    public function setUser(?User $user): void
     {
-        $this->WebUser = $WebUser;
-
-        return $this;
+        $this->user = $user;
     }
-
     public function getAgentName(): ?string
     {
         return $this->agentName;

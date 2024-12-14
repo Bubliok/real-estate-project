@@ -30,7 +30,7 @@ class RealEstateOwner
 
     #[ORM\OneToOne(inversedBy: 'realEstateOwner', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?WebUser $webUser = null;
+    private ?User $user = null;
 
     /**
      * @var Collection<int, RealEstate>
@@ -48,14 +48,14 @@ class RealEstateOwner
         return $this->id;
     }
 
-    public function getWebId(): ?WebUser
+    public function getUserId(): ?User
     {
-        return $this->webId;
+        return $this->userId;
     }
 
-    public function setWebId(?WebUser $webId): static
+    public function setUserId(?User $userId): static
     {
-        $this->webId = $webId;
+        $this->userId = $userId;
 
         return $this;
     }
@@ -108,17 +108,17 @@ class RealEstateOwner
         return $this;
     }
 
-    public function getWebUser(): ?WebUser
+    public function getUser(): ?User
     {
-        return $this->webUser;
+        return $this->user;
     }
 
-    public function setWebUser(WebUser $webUser): static
+    public function setUser(?User $user): void
     {
-        $this->webUser = $webUser;
-
-        return $this;
+        $this->user = $user;
     }
+
+
 
     /**
      * @return Collection<int, RealEstate>

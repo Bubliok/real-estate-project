@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -32,6 +34,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?RealEstateOwner $realEstateOwner = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?RealEstateAgent $realEstateAgent = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -94,6 +101,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getRealEstateOwner(): ?RealEstateOwner
+    {
+        return $this->realEstateOwner;
+    }
+
+    public function setRealEstateOwner(RealEstateOwner $realEstateOwner): static
+    {
+        // set the owning side of the relation if necessary
+        if ($realEstateOwner->getUser() !== $this) {
+            $realEstateOwner->setUser($this);
+        }
+
+        $this->realEstateOwner = $realEstateOwner;
+
+        return $this;
+    }
+
+    public function getRealEstateAgent(): ?RealEstateAgent
+    {
+        return $this->realEstateAgent;
+    }
+
+    public function setRealEstateAgent(RealEstateAgent $realEstateAgent): static
+    {
+        // set the owning side of the relation if necessary
+        if ($realEstateAgent->getUser() !== $this) {
+            $realEstateAgent->setUser($this);
+        }
+
+        $this->realEstateAgent = $realEstateAgent;
 
         return $this;
     }
