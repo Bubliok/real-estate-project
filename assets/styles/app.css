@@ -29,3 +29,131 @@ body {
     background-color: #04AA6D;
     color: white;
 }
+.login-section {
+    background-color: #f9fafb;
+    color: #1a202c;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    margin: auto;
+    height: 100vh;
+}
+
+.login-box {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 24rem;
+    padding: 0;
+}
+
+.login-content {
+    padding: 1.5rem;
+    space-y: 1.5rem;
+}
+
+.login-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1a202c;
+}
+
+.login-form {
+    space-y: 1.5rem;
+}
+
+.login-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: medium;
+    color: #1a202c;
+}
+
+.login-input {
+    background-color: #f9fafb;
+    border: 1px solid #d1d5db;
+    color: #1a202c;
+    border-radius: 0.375rem;
+    padding: 0.625rem;
+    width: 100%;
+}
+
+.login-remember {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.login-remember-checkbox {
+    display: flex;
+    align-items: center;
+    height: 1.25rem;
+}
+
+.login-remember-label {
+    margin-left: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.login-remember-text {
+    color: #6b7280;
+    padding-left: 5px;
+}
+
+.login-forgot-password {
+    font-size: 0.875rem;
+    font-weight: medium;
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+.login-button {
+    width: 100%;
+    background-color: #7b82f6;
+    color: #fff;
+    border-radius: 0.375rem;
+    padding: 0.625rem;
+    font-size: 0.875rem;
+    font-weight: medium;
+    text-align: center;
+}
+
+.login-signup-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.login-signup-link {
+    font-weight: medium;
+    color: #3b82f6;
+    text-decoration: underline;
+}
+
+.login-remember-space {
+    display: inline-block;
+    width: 0.5rem; /* Adjust the width as needed */
+}
+/*.username-label:after {*/
+/*    color: red;*/
+/*    font-size: 12px;*/
+/*    content: attr(data-error);*/
+/*}*/
+.form-error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+}
+
+/*.error-message {*/
+/*    color: red;*/
+/*    font-size: 14px;*/
+/*    margin-top: 5px;*/
+/*}*/

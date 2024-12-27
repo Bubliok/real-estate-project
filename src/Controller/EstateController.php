@@ -7,7 +7,9 @@ use App\Repository\CityRepository;
 use App\Repository\EstateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Routing\Attribute\Route;
 
 class EstateController extends AbstractController
@@ -16,6 +18,8 @@ class EstateController extends AbstractController
     public function show(int $id, CityRepository $cityRepository,
     ): Response
     {
+//        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $city = $cityRepository->find($id);
 
         if (!$city) {
