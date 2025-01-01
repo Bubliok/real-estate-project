@@ -19,41 +19,17 @@ class City
     private ?string $cityName = null;
 
     /**
-     * @var Collection<int, RealEstateOwner>
-     */
-    #[ORM\OneToMany(targetEntity: RealEstateOwner::class, mappedBy: 'city')]
-    private Collection $realEstateOwners;
-
-    /**
      * @var Collection<int, Neighborhood>
      */
     #[ORM\OneToMany(targetEntity: Neighborhood::class, mappedBy: 'city')]
     private Collection $neighborhoods;
 
-    /**
-     * @var Collection<int, RealEstateAgent>
-     */
-    #[ORM\OneToMany(targetEntity: RealEstateAgent::class, mappedBy: 'city')]
-    private Collection $realEstateAgents;
-
-    /**
-     * @var Collection<int, BrokerCompany>
-     */
-    #[ORM\OneToMany(targetEntity: BrokerCompany::class, mappedBy: 'city')]
-    private Collection $brokerCompanies;
-
-    /**
-     * @var Collection<int, RealEstate>
-     */
     #[ORM\OneToMany(targetEntity: RealEstate::class, mappedBy: 'city')]
     private Collection $realEstates;
 
     public function __construct()
     {
-        $this->realEstateOwners = new ArrayCollection();
         $this->neighborhoods = new ArrayCollection();
-        $this->realEstateAgents = new ArrayCollection();
-        $this->brokerCompanies = new ArrayCollection();
         $this->realEstates = new ArrayCollection();
     }
 
@@ -77,32 +53,6 @@ class City
     /**
      * @return Collection<int, RealEstateOwner>
      */
-    public function getRealEstateOwners(): Collection
-    {
-        return $this->realEstateOwners;
-    }
-
-    public function addRealEstateOwner(RealEstateOwner $realEstateOwner): static
-    {
-        if (!$this->realEstateOwners->contains($realEstateOwner)) {
-            $this->realEstateOwners->add($realEstateOwner);
-            $realEstateOwner->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRealEstateOwner(RealEstateOwner $realEstateOwner): static
-    {
-        if ($this->realEstateOwners->removeElement($realEstateOwner)) {
-            // set the owning side to null (unless already changed)
-            if ($realEstateOwner->getCity() === $this) {
-                $realEstateOwner->setCity(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Neighborhood>
@@ -133,67 +83,6 @@ class City
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, RealEstateAgent>
-     */
-    public function getRealEstateAgents(): Collection
-    {
-        return $this->realEstateAgents;
-    }
-
-    public function addRealEstateAgent(RealEstateAgent $realEstateAgent): static
-    {
-        if (!$this->realEstateAgents->contains($realEstateAgent)) {
-            $this->realEstateAgents->add($realEstateAgent);
-            $realEstateAgent->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRealEstateAgent(RealEstateAgent $realEstateAgent): static
-    {
-        if ($this->realEstateAgents->removeElement($realEstateAgent)) {
-            // set the owning side to null (unless already changed)
-            if ($realEstateAgent->getCity() === $this) {
-                $realEstateAgent->setCity(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BrokerCompany>
-     */
-    public function getBrokerCompanies(): Collection
-    {
-        return $this->brokerCompanies;
-    }
-
-    public function addBrokerCompany(BrokerCompany $brokerCompany): static
-    {
-        if (!$this->brokerCompanies->contains($brokerCompany)) {
-            $this->brokerCompanies->add($brokerCompany);
-            $brokerCompany->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBrokerCompany(BrokerCompany $brokerCompany): static
-    {
-        if ($this->brokerCompanies->removeElement($brokerCompany)) {
-            // set the owning side to null (unless already changed)
-            if ($brokerCompany->getCity() === $this) {
-                $brokerCompany->setCity(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, RealEstate>
      */

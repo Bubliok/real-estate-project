@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -34,11 +36,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?RealEstateOwner $realEstateOwner = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?RealEstateAgent $realEstateAgent = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $profileImage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fullName = null;
+
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $phoneNumber = null;
+
+    #[ORM\Column(length: 60, nullable: true)]
+    private ?string $email = null;
+
+    /**
+     * @var Collection<int, Favourites>
+     */
+    #[ORM\OneToMany(targetEntity: Favourites::class, mappedBy: 'userId')]
+    private Collection $favourites;
+
+    /**
+     * @var Collection<int, RealEstate>
+     */
+    #[ORM\OneToMany(targetEntity: RealEstate::class, mappedBy: 'userId')]
+    private Collection $realEstates;
+
+    public function __construct()
+    {
+        $this->favourites = new ArrayCollection();
+        $this->realEstates = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -105,40 +135,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRealEstateOwner(): ?RealEstateOwner
-    {
-        return $this->realEstateOwner;
-    }
-
-    public function setRealEstateOwner(RealEstateOwner $realEstateOwner): static
-    {
-        // set the owning side of the relation if necessary
-        if ($realEstateOwner->getUser() !== $this) {
-            $realEstateOwner->setUser($this);
-        }
-
-        $this->realEstateOwner = $realEstateOwner;
-
-        return $this;
-    }
-
-    public function getRealEstateAgent(): ?RealEstateAgent
-    {
-        return $this->realEstateAgent;
-    }
-
-    public function setRealEstateAgent(RealEstateAgent $realEstateAgent): static
-    {
-        // set the owning side of the relation if necessary
-        if ($realEstateAgent->getUser() !== $this) {
-            $realEstateAgent->setUser($this);
-        }
-
-        $this->realEstateAgent = $realEstateAgent;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
@@ -146,5 +142,125 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
+    }
+
+    public function setProfileImage(string $profileImage): static
+    {
+        $this->profileImage = $profileImage;
+
+        return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(?string $fullName): static
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): static
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favourites>
+     */
+    public function getFavourites(): Collection
+    {
+        return $this->favourites;
+    }
+
+    public function addFavourite(Favourites $favourite): static
+    {
+        if (!$this->favourites->contains($favourite)) {
+            $this->favourites->add($favourite);
+            $favourite->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavourite(Favourites $favourite): static
+    {
+        if ($this->favourites->removeElement($favourite)) {
+            // set the owning side to null (unless already changed)
+            if ($favourite->getUserId() === $this) {
+                $favourite->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RealEstate>
+     */
+    public function getRealEstates(): Collection
+    {
+        return $this->realEstates;
+    }
+
+    public function addRealEstate(RealEstate $realEstate): static
+    {
+        if (!$this->realEstates->contains($realEstate)) {
+            $this->realEstates->add($realEstate);
+            $realEstate->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRealEstate(RealEstate $realEstate): static
+    {
+        if ($this->realEstates->removeElement($realEstate)) {
+            // set the owning side to null (unless already changed)
+            if ($realEstate->getUserId() === $this) {
+                $realEstate->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }

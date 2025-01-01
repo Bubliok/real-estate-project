@@ -1,17 +1,6 @@
-
-{#<div class="topnav">#}
-{#    <a class="active" href="{{ path('app_homepage') }}">Home</a>#}
-{#    <a href="#news">News</a>#}
-{#    <a href="#contact">Contact</a>#}
-{#    <a href="#about">About</a>#}
-
-{#    {% if app.user %}#}
-{#        <div class="mb-3">#}
-{#            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>#}
-{#        </div>#}
-{#    {% endif %}#}
-{#</div>#}
-
+{% block javascripts %}
+      {% block importmap %}{{ importmap('app') }}{% endblock %}
+{% endblock %}
 
 <div class="navbar bg-base-100">
     <div class="flex-1">
@@ -25,19 +14,21 @@
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full">
-                    <img
-                            alt="Tailwind CSS Navbar component"
-                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <img src="{{ asset(app.user.profileImage) }}" alt="Profile Image" />
                 </div>
             </div>
             <ul
                     tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                 <li>
-                    <a class="justify-between">
+                    <a href="{{ path('app_profile') }}">
                         Profile
-                        <span class="badge">New</span>
                     </a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li>
+                    <a href="{{ path('admin') }}">Admin</a>
+                {% endif %}
                 </li>
                 <li><a>Settings</a></li>
                 <li><a href="{{ path('app_logout') }}">Logout</a></li>
@@ -49,3 +40,4 @@
         {% endif %}
     </div>
 </div>
+

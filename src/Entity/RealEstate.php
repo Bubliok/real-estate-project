@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RealEstateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RealEstateRepository::class)]
@@ -50,26 +51,35 @@ class RealEstate
     #[ORM\JoinColumn(nullable: false)]
     private ?Neighborhood $neighborhood = null;
 
-    #[ORM\ManyToOne(inversedBy: 'realEstates')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?RealEstateAgent $agent = null;
-
-    #[ORM\ManyToOne(inversedBy: 'realEstates')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?RealEstateOwner $owner = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $dateBuiltAt = null;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $dateAddedAt = null;
 
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    /**
+     * @var Collection<int, Favourites>
+     */
+    #[ORM\OneToMany(targetEntity: Favourites::class, mappedBy: 'estateId')]
+    private Collection $favourites;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $estateDescription = null;
+
+    #[ORM\ManyToOne(inversedBy: 'realEstates')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userId = null;
+
+    #[ORM\Column(length: 4)]
+    private ?string $yearBuilt = null;
+
+    #[ORM\Column]
+    private ?bool $isForRent = null;
+
     public function __construct()
     {
         $this->realEstateImages = new ArrayCollection();
+        $this->favourites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,42 +237,6 @@ class RealEstate
         return $this;
     }
 
-    public function getAgent(): ?RealEstateAgent
-    {
-        return $this->agent;
-    }
-
-    public function setAgent(?RealEstateAgent $agent): static
-    {
-        $this->agent = $agent;
-
-        return $this;
-    }
-
-    public function getOwner(): ?RealEstateOwner
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?RealEstateOwner $owner): static
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    public function getDateBuiltAt(): ?\DateTimeImmutable
-    {
-        return $this->dateBuiltAt;
-    }
-
-    public function setDateBuiltAt(\DateTimeImmutable $dateBuiltAt): static
-    {
-        $this->dateBuiltAt = $dateBuiltAt;
-
-        return $this;
-    }
-
     public function getDateAddedAt(): ?\DateTimeImmutable
     {
         return $this->dateAddedAt;
@@ -283,6 +257,84 @@ class RealEstate
     public function setActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favourites>
+     */
+    public function getFavourites(): Collection
+    {
+        return $this->favourites;
+    }
+
+    public function addFavourite(Favourites $favourite): static
+    {
+        if (!$this->favourites->contains($favourite)) {
+            $this->favourites->add($favourite);
+            $favourite->setEstateId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavourite(Favourites $favourite): static
+    {
+        if ($this->favourites->removeElement($favourite)) {
+            // set the owning side to null (unless already changed)
+            if ($favourite->getEstateId() === $this) {
+                $favourite->setEstateId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEstateDescription(): ?string
+    {
+        return $this->estateDescription;
+    }
+
+    public function setEstateDescription(?string $estateDescription): static
+    {
+        $this->estateDescription = $estateDescription;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): static
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    public function getYearBuilt(): ?string
+    {
+        return $this->yearBuilt;
+    }
+
+    public function setYearBuilt(string $yearBuilt): static
+    {
+        $this->yearBuilt = $yearBuilt;
+
+        return $this;
+    }
+
+    public function isForRent(): ?bool
+    {
+        return $this->isForRent;
+    }
+
+    public function setForRent(bool $isForRent): static
+    {
+        $this->isForRent = $isForRent;
 
         return $this;
     }

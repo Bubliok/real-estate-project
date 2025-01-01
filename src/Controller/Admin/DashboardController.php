@@ -11,6 +11,9 @@ use App\Entity\RealEstateImages;
 use App\Entity\RealEstateOwner;
 use App\Entity\RealEstateType;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -41,7 +44,7 @@ class DashboardController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-         return $this->render('admin/my-dashboard.html.twig');
+        return $this->render('admin/my-dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -53,8 +56,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        yield MenuItem::linkToUrl('Homepage', 'fa fa-home', $this->generateUrl('app_homepage'));
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
-         yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
+        yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
         yield MenuItem::linkToCrud('Broker company', 'fas fa-company', BrokerCompany::class);
         yield MenuItem::linkToCrud('Neighborhood', 'fas fa-neighborhood', Neighborhood::class);
         yield MenuItem::linkToCrud('Agents', 'fas fa-agent', RealEstateAgent::class);
@@ -66,4 +70,13 @@ class DashboardController extends AbstractDashboardController
 
 
     }
+
+    public function configureActions(): Actions
+    {
+        return parent::configureActions()
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+
+    }
+
+
 }
