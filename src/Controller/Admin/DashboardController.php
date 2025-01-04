@@ -59,16 +59,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('Homepage', 'fa fa-home', $this->generateUrl('app_homepage'));
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
         yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
-        yield MenuItem::linkToCrud('Broker company', 'fas fa-company', BrokerCompany::class);
         yield MenuItem::linkToCrud('Neighborhood', 'fas fa-neighborhood', Neighborhood::class);
-        yield MenuItem::linkToCrud('Agents', 'fas fa-agent', RealEstateAgent::class);
         yield MenuItem::linkToCrud('Real estates', 'fas fa-real-estates', RealEstate::class);
         yield MenuItem::linkToCrud('Real estate images', 'fas fa-images', RealEstateImages::class);
-        yield MenuItem::linkToCrud('Owners', 'fas fa-owner', RealEstateOwner::class);
         yield MenuItem::linkToCrud('Types', 'fas fa-types', RealEstateType::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
-
-
     }
 
     public function configureActions(): Actions

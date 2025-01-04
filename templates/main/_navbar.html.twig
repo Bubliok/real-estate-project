@@ -7,6 +7,9 @@
         <a class="btn btn-ghost text-xl" href="{{ path('app_homepage') }}">IMT Estate</a>
     </div>
     <div class="flex-none gap-2">
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            <a href="{{ path('app_listing') }}" class="btn btn-primary">Add listing</a>
+        {% endif %}
         <div class="form-control">
             <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
         </div>

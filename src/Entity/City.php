@@ -18,18 +18,12 @@ class City
     #[ORM\Column(length: 30)]
     private ?string $cityName = null;
 
-    /**
-     * @var Collection<int, Neighborhood>
-     */
-    #[ORM\OneToMany(targetEntity: Neighborhood::class, mappedBy: 'city')]
-    private Collection $neighborhoods;
 
     #[ORM\OneToMany(targetEntity: RealEstate::class, mappedBy: 'city')]
     private Collection $realEstates;
 
     public function __construct()
     {
-        $this->neighborhoods = new ArrayCollection();
         $this->realEstates = new ArrayCollection();
     }
 
@@ -37,6 +31,12 @@ class City
     {
         return $this->id;
     }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
 
     public function getCityName(): ?string
     {
@@ -50,39 +50,6 @@ class City
         return $this;
     }
 
-    /**
-     * @return Collection<int, RealEstateOwner>
-     */
-
-    /**
-     * @return Collection<int, Neighborhood>
-     */
-    public function getNeighborhoods(): Collection
-    {
-        return $this->neighborhoods;
-    }
-
-    public function addNeighborhood(Neighborhood $neighborhood): static
-    {
-        if (!$this->neighborhoods->contains($neighborhood)) {
-            $this->neighborhoods->add($neighborhood);
-            $neighborhood->setCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNeighborhood(Neighborhood $neighborhood): static
-    {
-        if ($this->neighborhoods->removeElement($neighborhood)) {
-            // set the owning side to null (unless already changed)
-            if ($neighborhood->getCity() === $this) {
-                $neighborhood->setCity(null);
-            }
-        }
-
-        return $this;
-    }
     /**
      * @return Collection<int, RealEstate>
      */

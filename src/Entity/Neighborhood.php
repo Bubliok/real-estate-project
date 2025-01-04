@@ -18,10 +18,6 @@ class Neighborhood
     #[ORM\Column(length: 30)]
     private ?string $neighborhoodName = null;
 
-    #[ORM\ManyToOne(inversedBy: 'neighborhoods')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?City $city = null;
-
     /**
      * @var Collection<int, RealEstate>
      */
@@ -38,29 +34,22 @@ class Neighborhood
         return $this->id;
     }
 
+//    public function setNeighborhood()
+//    {
+//
+//    }
     public function getNeighborhoodName(): ?string
     {
         return $this->neighborhoodName;
     }
 
-    public function setNeighborhoodName(string $neighborhoodName): static
+    public function setNeighborhoodName(?string $neighborhoodName): static
     {
         $this->neighborhoodName = $neighborhoodName;
 
         return $this;
     }
 
-    public function getCity(): ?City
-    {
-        return $this->city;
-    }
-
-    public function setCity(?City $city): static
-    {
-        $this->city = $city;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, RealEstate>
@@ -91,4 +80,6 @@ class Neighborhood
 
         return $this;
     }
+
+
 }

@@ -4,40 +4,52 @@
     <h1>Add Real Estate</h1>
 
     {{ form_start(realEstateForm) }}
-    <div class="bg-white w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-[#161931]">
+    <div class="bg-white w-full max-w-4xl mx-auto flex flex-col gap-5 px-3 md:px-16 lg:px-28 md:flex-row text-[#161931]">
         <aside class="hidden py-4 md:w-1/3 lg:w-1/4 md:block">
-
         </aside>
         <main class="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4">
             <div class="p-2 md:p-4">
                 <div class="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
-                            <label for="estateName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estate Name</label>
+                            <label for="estateName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Property Name</label>
                             {{ form_widget(realEstateForm.estateName, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
                         <div>
-                            <label for="estateArea" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estate Area</label>
+                            <label for="estateArea" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Property Area</label>
                             {{ form_widget(realEstateForm.estateArea, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
                         <div>
-                            <label for="estateFloor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estate Floor</label>
+                            <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
+                            {{ form_widget(realEstateForm.city, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
+                        </div>
+                        <div>
+                            <label for="estateFloor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Property Floor</label>
                             {{ form_widget(realEstateForm.estateFloor, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
                         <div>
-                            <label for="isFurnished" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Is Furnished</label>
-                            {{ form_widget(realEstateForm.isFurnished, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
+                            <label for="neighborhood" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Neighborhood</label>
+                            {{ form_widget(realEstateForm.neighborhood, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
-                        <div>
-                            <label for="estatePrice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                            {{ form_widget(realEstateForm.estatePrice, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="w-full">
+                                <label for="isForRent" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">For Rent</label>
+                                {{ form_widget(realEstateForm.isForRent, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5'}}) }}
+                            </div>
+                            <div class="w-full">
+                                <label for="isFurnished" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Furnished</label>
+                                {{ form_widget(realEstateForm.isFurnished, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5'}}) }}
+                            </div>
                         </div>
+
                         <div>
                             <label for="estateAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
                             {{ form_widget(realEstateForm.estateAddress, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
+
                         <div>
-                            <label for="yearBuilt" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Built</label>
+                            <label for="yearBuilt" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year Built/rebuilt</label>
                             {{ form_widget(realEstateForm.yearBuilt, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
                         <div>
@@ -45,24 +57,31 @@
                             {{ form_widget(realEstateForm.type, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
                         <div>
-                            <label for="city" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">City</label>
-                            {{ form_widget(realEstateForm.city, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
+                            <label for="estatePrice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price (euro)</label>
+                            {{ form_widget(realEstateForm.estatePrice, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
-                        <div>
-                            <label for="neighborhood" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Neighborhood</label>
-                            {{ form_widget(realEstateForm.neighborhood, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
+                        <div class="col-span-2">
+                            <label for="estateDescription" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                            {{ form_widget(realEstateForm.estateDescription, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
                         </div>
-                    </div>
-                    <div class="flex justify-end">
-                        <button type="submit"
-                                class="text-white bg-indigo-700  hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
-                            Save
-                        </button>
+                        <div class="col-span-2">
+                            <label for="imageUpload" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Property Images (drag and drop)</label>
+                            {{ form_widget(realEstateForm.imageUpload, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5'}}) }}
+                        </div>
+
                     </div>
                 </div>
+                <div class="flex justify-end">
+                    <button type="submit"
+                            class="text-white bg-indigo-700  hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">
+                        Save
+                    </button>
+                </div>
             </div>
-        </main>
+    </div>
+    </main>
     </div>
     {{ form_end(realEstateForm) }}
+
 
 {% endblock %}

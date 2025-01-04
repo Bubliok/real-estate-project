@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\RealEstateOwner;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -12,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 
 class ProfileType extends AbstractType
 {
@@ -38,6 +38,12 @@ class ProfileType extends AbstractType
             ])
             ->add('phoneNumber', TelType::class, [
                 'label' => 'Phone Number',
+                'constraints' => [
+                    new Length([
+                        'max' => 10,
+                        'maxMessage' => 'Your email cannot be longer than {{ limit }} characters',
+                    ])
+                ]
             ])
             ->add('fullName', TextType::class, [
                 'label' => 'Full Name',

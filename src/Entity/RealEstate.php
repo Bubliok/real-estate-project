@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 #[ORM\Entity(repositoryClass: RealEstateRepository::class)]
 class RealEstate
@@ -54,8 +55,6 @@ class RealEstate
     #[ORM\Column]
     private ?\DateTimeImmutable $dateAddedAt = null;
 
-    #[ORM\Column]
-    private ?bool $isActive = null;
 
     /**
      * @var Collection<int, Favourites>
@@ -140,6 +139,11 @@ class RealEstate
         return $this->isFurnished;
     }
 
+    public function setIsFurnished(?bool $isFurnished): void
+    {
+        $this->isFurnished = $isFurnished;
+    }
+
     public function setFurnished(bool $isFurnished): static
     {
         $this->isFurnished = $isFurnished;
@@ -171,25 +175,33 @@ class RealEstate
         return $this;
     }
 
-    public function getCity(): ?string
+    public function getCity(): ?City
     {
         return $this->city;
     }
 
-    public function setCity(string $city): static
+    public function setCity(?City $city): static
     {
+        if (null === $city) {
+            throw new InvalidArgumentException('City cannot be null.');
+        }
+
         $this->city = $city;
 
         return $this;
     }
 
-    public function getNeighborhood(): ?string
+    public function getNeighborhood(): ?Neighborhood
     {
         return $this->neighborhood;
     }
 
-    public function setNeighborhood(string $neighborhood): static
+    public function setNeighborhood(?Neighborhood $neighborhood): static
     {
+        if (null === $neighborhood) {
+            throw new InvalidArgumentException('Neighborhood cannot be null.');
+        }
+
         $this->neighborhood = $neighborhood;
 
         return $this;
@@ -203,10 +215,10 @@ class RealEstate
         return $this->realEstateImages;
     }
 
-    public function addRealEstateImage(RealEstateImages $realEstateImage): static
+    public function addRealEstateImage(RealEstateImages $realEstateImage): self
     {
         if (!$this->realEstateImages->contains($realEstateImage)) {
-            $this->realEstateImages->add($realEstateImage);
+            $this->realEstateImages[] = $realEstateImage;
             $realEstateImage->setRealEstate($this);
         }
 
@@ -249,17 +261,6 @@ class RealEstate
         return $this;
     }
 
-    public function isActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    public function setActive(bool $isActive): static
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Favourites>
@@ -330,6 +331,21 @@ class RealEstate
     public function isForRent(): ?bool
     {
         return $this->isForRent;
+    }
+
+    public function setRealEstateImages(Collection $realEstateImages): void
+    {
+        $this->realEstateImages = $realEstateImages;
+    }
+
+    public function setFavourites(Collection $favourites): void
+    {
+        $this->favourites = $favourites;
+    }
+
+    public function setIsForRent(?bool $isForRent): void
+    {
+        $this->isForRent = $isForRent;
     }
 
     public function setForRent(bool $isForRent): static
