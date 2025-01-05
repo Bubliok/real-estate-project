@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Real Estates in City {% endblock %}
+
+{% block body %}
+    <h1>Real Estates in City</h1>
+    <ul>
+        {% for estate in estates %}
+            <li>{{ estate.estateName }} - {{ estate.estateAddress }} - ${{ estate.estatePrice }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

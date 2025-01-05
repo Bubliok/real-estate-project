@@ -27,6 +27,15 @@ class CityRepository extends ServiceEntityRepository
     {
         return $this->findAll()[0];
     }
+
+    public function  findByName(string $name): ?City
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.cityName = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     //    /**
     //     * @return City[] Returns an array of City objects
     //     */

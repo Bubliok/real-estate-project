@@ -3,24 +3,37 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Form\MainFormType;
 use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function homepage(CityRepository $cityRepository,
+    public function homepage(CityRepository $cityRepository, Request $request
     ): Response {
 
-        $cities = $cityRepository->findSofia();
-        $myCity = $cityRepository->findMyCity();
+        $form = $this->createForm(MainFormType::class);
+        $form->handleRequest($request);
+        $cityId = null;
+        $cityName = $form->get('search')->getData();
+
+        if ($cityName){
+             $city = $cityRepository->findByName($cityName);
+             $cityId = $city ? $city->getId() : null;
+
+        if ($cityId) {
+            return $this->redirectToRoute('app_estate_show', ['cityId' => $cityId]);
+        }
+        }
 
         return $this->render('main/homepage.html.twig', [
-            'cities' => $cities,
-            'myCity' => $myCity
+            'mainForm' => $form->createView(),
+            'cityID' => $cityId,
         ]);
     }
 }

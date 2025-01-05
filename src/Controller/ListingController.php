@@ -49,7 +49,7 @@ class ListingController extends AbstractController
                     }
 
                     $realEstateImage = new RealEstateImages();
-                    $realEstateImage->setImagePath('/assets/images/estates/' . $newFilename);
+                    $realEstateImage->setImagePath($imageDirectory. $newFilename);
                     $realEstateImage->setRealEstate($estate);
 
                     $entityManager->persist($realEstateImage);

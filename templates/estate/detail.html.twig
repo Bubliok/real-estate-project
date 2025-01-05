@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ estate.estateName }} {% endblock %}
+
+{% block body %}
+    <style>
+        .real-estate-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .real-estate-detail img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .real-estate-detail-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .real-estate-detail h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: #333;
+        }
+        .real-estate-detail p {
+            margin: 0;
+            font-size: 1rem;
+            color: #666;
+        }
+        .real-estate-detail .price {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #374151;
+        }
+        .carousel {
+            position: relative;
+            width: 100%;
+        }
+        .carousel img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .carousel-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 0;
+        }
+    </style>
+
+        <div class="carousel relative w-full overflow-hidden">
+            <div class="carousel-inner flex transition-transform duration-700 ease-in-out" style="transform: translateX(0);">
+                {% for image in estate.realEstateImages %}
+                    <div class="carousel-item w-full flex-shrink-0" style="display: {{ loop.first ? 'block' : 'none' }};">
+                        <img src="{{ asset(image.imagePath) }}" alt="Real Estate Image {{ loop.index }}" class="w-full h-auto">
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="carousel-buttons flex justify-center gap-2 py-2">
+                {% for image in estate.realEstateImages %}
+                    <button class="btn btn-xs" data-carousel-index="{{ loop.index - 1 }}">{{ loop.index }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
+    <div class="real-estate-detail">
+        <!-- Property Details Section -->
+        <div class="real-estate-detail-content">
+            <h1>{{ estate.estateName }}</h1>
+            <p class="price">€{{ estate.estatePrice }}</p>
+            <p>{{ estate.city.cityName }}, {{ estate.neighborhood.neighborhoodName }}</p>
+            <p>Area: {{ estate.estateArea }} m&sup2;</p>
+            <p>Floor: {{ estate.estateFloor }}</p>
+            <p>Furnished: {{ estate.isFurnished ? '✅' : '❌' }}</p>
+            <p>Year Built: {{ estate.yearBuilt }}</p>
+            <p>{{ estate.estateDescription }}</p>
+        </div>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const items = document.querySelectorAll(".carousel-item");
+                const buttons = document.querySelectorAll("[data-carousel-index]");
+                let currentIndex = 0;
+
+                const showItem = (index) => {
+                    items.forEach((item, idx) => {
+                        item.style.display = idx === index ? "block" : "none";
+                    });
+                };
+
+                buttons.forEach((button, idx) => {
+                    button.addEventListener("click", () => {
+                        currentIndex = idx;
+                        showItem(currentIndex);
+                    });
+                });
+
+                showItem(currentIndex);
+            });
+        </script>
+
+        {% endblock %}

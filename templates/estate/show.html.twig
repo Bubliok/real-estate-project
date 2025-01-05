@@ -1,5 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ city.cityName }} {% endblock %}
+{% block title %} Real Estates in {{ realEstates[0].city.cityName }} {% endblock %}
 
-{% block body %} {{ city.cityName }} {% endblock %}
+{% block body %}
+    <style>
+        .real-estates {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        .real-estate {
+            display: flex;
+            align-items: center;
+            position: relative;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        .real-estate:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        .real-estate img {
+            width: 250px;
+            height: 200px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .real-estate-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* Reduced gap for tighter spacing */
+            flex-grow: 1;
+        }
+        .real-estate h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #333;
+        }
+        .real-estate h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #374151;
+        }
+        .real-estate p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .real-estate .price {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #374151;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .real-estate .price-per-sqm {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: normal;
+        }
+    </style>
+
+    <h1>Real Estates in  {{ realEstates[0].city.cityName }}</h1>
+    <div class="real-estates">
+        {% for estate in realEstates %}
+            <a href="{{ path('app_estate_detail', { id: estate.id }) }}" class="real-estate">
+                {% if estate.realEstateImages|length > 0 %}
+                    <img src="{{ estate.realEstateImages[0].imagePath }}" alt="Estate Image">
+                {% else %}
+                    <img src="https://via.placeholder.com/300" alt="Estate Image">
+                {% endif %}
+                <span class="price">
+                    €{{ estate.estatePrice }}
+                    <span class="price-per-sqm">({{ (estate.estatePrice / estate.estateArea)|round(2) }} EUR/m&sup2;)</span>
+                </span>
+                <div class="real-estate-content">
+                    <h2>{{ estate.estateName }}</h2>
+                    <h3>{{ estate.city.cityName }}, {{ estate.neighborhood.neighborhoodName }}<h3>
+                    <p>Area: {{ estate.estateArea }} m&sup2;</p>
+                    <p>Floor: {{ estate.estateFloor }}</p>
+                    <p>Furnished: {{ estate.isFurnished ? '✅' : '❌' }}</p>
+                    <p>Year Built: {{ estate.yearBuilt }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

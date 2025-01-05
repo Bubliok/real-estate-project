@@ -16,6 +16,24 @@ class RealEstateRepository extends ServiceEntityRepository
         parent::__construct($registry, RealEstate::class);
     }
 
+    public function findByCityId(int $cityId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.city = :cityId')
+            ->setParameter('cityId', $cityId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return RealEstate[]
+     */
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return RealEstate[] Returns an array of RealEstate objects
 //     */
