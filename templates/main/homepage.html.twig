@@ -33,6 +33,9 @@
 {#    </form>#}
 {{ form_start(mainForm) }}
                 {{ form_row(mainForm.search) }}
+    {{ form_row(mainForm.isFurnished) }}
+
+    <button type="submit">Submit</button>
 {{ form_end(mainForm) }}
 
     {% block javascripts %}

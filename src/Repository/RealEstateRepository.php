@@ -16,11 +16,13 @@ class RealEstateRepository extends ServiceEntityRepository
         parent::__construct($registry, RealEstate::class);
     }
 
-public function findByCityIdSorted(int $cityId, string $sort): array
+public function findByCityIdSortedFurnished(int $cityId, bool $isFurnished, string $sort): array
 {
     $qb = $this->createQueryBuilder('r')
         ->where('r.city = :cityId')
-        ->setParameter('cityId', $cityId);
+        ->andWhere('r.isFurnished = :isFurnished')
+        ->setParameter('cityId', $cityId)
+        ->setParameter('isFurnished', $isFurnished);
 
     switch ($sort) {
         case 'price_desc':

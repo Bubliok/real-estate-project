@@ -21,13 +21,17 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         $cityId = null;
         $cityName = $form->get('search')->getData();
+        $isFurnished = $form->get('isFurnished')->getData();
 
         if ($cityName){
              $city = $cityRepository->findByName($cityName);
              $cityId = $city ? $city->getId() : null;
 
         if ($cityId) {
-            return $this->redirectToRoute('app_estate_show', ['cityId' => $cityId]);
+            return $this->redirectToRoute('app_estate_show', [
+                'cityId' => $cityId,
+                'isFurnished' => $isFurnished,
+            ]);
         }
         }
 

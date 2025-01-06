@@ -21,15 +21,19 @@ class RealEstateController extends AbstractController
     {
 
         $sort = $request->query->get('sort', 'price_asc');
-        $realEstates = $realEstateRepository->findByCityIdSorted($cityId, $sort);
-        if (!$realEstates) {
-            throw $this->createNotFoundException('Real estate not found');
-        }
+        $isFurnished = $request->query->getBoolean('isFurnished');
+        $realEstates = $realEstateRepository->findByCityIdSortedFurnished($cityId, $isFurnished, $sort);
+//        if (!$realEstates) {
+//            throw $this->createNotFoundException('Real estate not found');
+//        }
+        $noEstatesFound = empty($realEstates);
 
 
         return $this->render('estate/show.html.twig', [
             'realEstates' => $realEstates,
-            'sort'=>$sort
+            'sort'=>$sort,
+            'isFurnished'=>$isFurnished,
+            'noEstatesFound'=>$noEstatesFound,
         ]);
     }
 
