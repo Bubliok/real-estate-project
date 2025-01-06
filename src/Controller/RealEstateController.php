@@ -9,6 +9,7 @@ use App\Entity\RealEstate;
 use App\Repository\RealEstateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,23 +17,19 @@ class RealEstateController extends AbstractController
 {
 //    #[Route('/real-estate/{id<\d+>}', name: 'app_estate_show')]
     #[Route('/real-estate/{cityId<\d+>}', name: 'app_estate_show')]
-    public function show( int $cityId, RealEstateRepository $realEstateRepository): Response
+    public function show( int $cityId, RealEstateRepository $realEstateRepository, Request $request): Response
     {
-        $realEstates = $realEstateRepository->findByCityId($cityId);
 
+        $sort = $request->query->get('sort', 'price_asc');
+        $realEstates = $realEstateRepository->findByCityIdSorted($cityId, $sort);
         if (!$realEstates) {
             throw $this->createNotFoundException('Real estate not found');
         }
 
-//        $responseContent = '';
-//        foreach ($realEstates as $estate) {
-//            $responseContent .= 'Real estate with name: ' . $estate->getEstateName() . '<br>';
-//        }
-
-//        return new Response($responseContent);
 
         return $this->render('estate/show.html.twig', [
             'realEstates' => $realEstates,
+            'sort'=>$sort
         ]);
     }
 

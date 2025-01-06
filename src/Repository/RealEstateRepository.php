@@ -16,6 +16,30 @@ class RealEstateRepository extends ServiceEntityRepository
         parent::__construct($registry, RealEstate::class);
     }
 
+public function findByCityIdSorted(int $cityId, string $sort): array
+{
+    $qb = $this->createQueryBuilder('r')
+        ->where('r.city = :cityId')
+        ->setParameter('cityId', $cityId);
+
+    switch ($sort) {
+        case 'price_desc':
+            $qb->orderBy('r.estatePrice', 'DESC');
+            break;
+        case 'area_asc':
+            $qb->orderBy('r.estateArea', 'ASC');
+            break;
+        case 'area_desc':
+            $qb->orderBy('r.estateArea', 'DESC');
+            break;
+        case 'price_asc':
+        default:
+            $qb->orderBy('r.estatePrice', 'ASC');
+            break;
+    }
+
+    return $qb->getQuery()->getResult();
+}
     public function findByCityId(int $cityId): array
     {
         return $this->createQueryBuilder('r')

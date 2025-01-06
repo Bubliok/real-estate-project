@@ -70,9 +70,40 @@
             color: #666;
             font-weight: normal;
         }
+        form {
+            margin-bottom: 20px;
+            margin-left: auto;
+        }
+        select {
+            padding: 5px 10px;
+            font-size: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus {
+            border-color: #374151;
+            box-shadow: 0 0 5px rgba(55, 65, 81, 0.5);
+            outline: none;
+        }
     </style>
 
-    <h1>Real Estates in  {{ realEstates[0].city.cityName }}</h1>
+{#    <h1>Real Estates in {{ realEstates[0].city.cityName }}</h1>#}
+
+  <div class="container">
+    <form method="get" action="{{ path('app_estate_show', { cityId: realEstates[0].city.id }) }}">
+        <select name="sort" id="sort" onchange="this.form.submit()">
+            <option value="price_asc" {{ sort == 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
+            <option value="price_desc" {{ sort == 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
+            <option value="area_asc" {{ sort == 'area_asc' ? 'selected' : '' }}>Area (Small to Large)</option>
+            <option value="area_desc" {{ sort == 'area_desc' ? 'selected' : '' }}>Area (Large to Small)</option>
+        </select>
+    </form>
+</div>
+
     <div class="real-estates">
         {% for estate in realEstates %}
             <a href="{{ path('app_estate_detail', { id: estate.id }) }}" class="real-estate">
@@ -87,11 +118,11 @@
                 </span>
                 <div class="real-estate-content">
                     <h2>{{ estate.estateName }}</h2>
-                    <h3>{{ estate.city.cityName }}, {{ estate.neighborhood.neighborhoodName }}<h3>
-                    <p>Area: {{ estate.estateArea }} m&sup2;</p>
-                    <p>Floor: {{ estate.estateFloor }}</p>
-                    <p>Furnished: {{ estate.isFurnished ? '✅' : '❌' }}</p>
-                    <p>Year Built: {{ estate.yearBuilt }}</p>
+                    <h3>{{ estate.city.cityName }}, {{ estate.neighborhood.neighborhoodName }}</h3>
+                            <p>Area: {{ estate.estateArea }} m&sup2;</p>
+                            <p>Floor: {{ estate.estateFloor }}</p>
+                            <p>Furnished: {{ estate.isFurnished ? '✅' : '❌' }}</p>
+                            <p>Year Built: {{ estate.yearBuilt }}</p>
                 </div>
             </a>
         {% endfor %}
