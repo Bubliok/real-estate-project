@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="52CA6595-F5F6-0586-9EBD-ED64D120E452" name="favourites">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>A85E0A7D-AA5B-2543-ABB0-9623DF25E2DA</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="3863B9BF-B617-6A9D-E091-894C351A9248">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>29C54D03-E412-AA94-8311-95A26BCF1346</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="user id" id="BED98C85-0430-83D3-BC72-32DAC813117E">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>195AF10D-1C24-B3FF-0407-1B1156BFF9A5</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>66449D19-D848-A5F5-9B1D-0E534816BA04</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="realestate id" id="80F30D7E-23B1-DDCB-B2CB-CA5B9D272EB5">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>ECF80828-4C78-A1D3-C51F-C505D39EE2B4</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>6B5BD88E-4BC7-531C-1C41-2FE797D068AF</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+</Entity>

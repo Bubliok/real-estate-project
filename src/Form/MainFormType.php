@@ -24,6 +24,10 @@ class MainFormType extends AbstractType
             ->add('isFurnished', CheckboxType::class, [
                 'label' => 'Furnished',
                 'required' => false,
+            ])
+            ->add('isForRent', CheckboxType::class, [
+                'label' => 'For Rent',
+                'required' => false,
             ]);
     }
 

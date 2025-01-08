@@ -1,0 +1,63 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="1A4F644A-17F5-3862-F490-A79F50613215" name="real estate type">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>A9AE81E3-3919-32CB-C6D7-B81A054917F8</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="3F52531E-0A72-0F53-8049-56BAADB27DE6">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>3FF27232-4BAB-0483-C0AA-3C931C9A2E6A</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type name" id="77F7DEBD-6DE6-FF2A-8B4E-C780D253E199">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>DD3C797B-96C4-ABB7-49D8-B804E9FB3B06</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>30</dataTypeSize>
+<ownDataTypeParameters>30,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="47342D96-F72E-E033-5D1F-898918407009" name="real estate type PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>51FA334A-B457-00E0-CC43-3EEBFDB39C45</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>3F52531E-0A72-0F53-8049-56BAADB27DE6</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

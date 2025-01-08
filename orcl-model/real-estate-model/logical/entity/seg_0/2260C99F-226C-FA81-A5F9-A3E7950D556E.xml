@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="2260C99F-226C-FA81-A5F9-A3E7950D556E" name="real estate images">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>E5E42E68-1EB9-69C3-227A-9B2D22303033</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="B2EF1DAA-F993-E8CF-59DC-02F88497F592">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>792EB3E5-A339-C480-86F5-C3D9F8B19C48</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="real estate id" id="D4678EAB-105E-145E-83D9-1BDB92F74033">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>BCE8228B-8773-D61B-9B39-717998C2B741</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>6B5BD88E-4BC7-531C-1C41-2FE797D068AF</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="image path" id="4BA4FC34-37FF-D5C1-CED5-AC4E64BF2593">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>426C865A-6AD1-DAA9-941B-DC07CF5F8B67</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="D531DD08-7E44-F298-FE3B-5C495B0FD697" name="real estate images PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>049F8ADD-DB6E-3AD0-7893-02DB38AA5867</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>B2EF1DAA-F993-E8CF-59DC-02F88497F592</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

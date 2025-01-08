@@ -22,6 +22,7 @@ class MainController extends AbstractController
         $cityId = null;
         $cityName = $form->get('search')->getData();
         $isFurnished = $form->get('isFurnished')->getData();
+        $isForRent = $form->get('isForRent')->getData();
 
         if ($cityName){
              $city = $cityRepository->findByName($cityName);
@@ -31,6 +32,7 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_estate_show', [
                 'cityId' => $cityId,
                 'isFurnished' => $isFurnished,
+                'isForRent' => $isForRent,
             ]);
         }
         }

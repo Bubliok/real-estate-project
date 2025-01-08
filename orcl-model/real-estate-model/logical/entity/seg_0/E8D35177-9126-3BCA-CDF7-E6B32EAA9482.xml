@@ -1,0 +1,229 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="E8D35177-9126-3BCA-CDF7-E6B32EAA9482" name="real estate">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>E238020D-959D-963C-4365-6AFDB55F60E9</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id" id="6B5BD88E-4BC7-531C-1C41-2FE797D068AF">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>A4AB4449-9D00-3D65-9AAA-651CC84C4C28</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="estate name" id="BE1AEE4A-8052-08F7-54F5-3B585E6CDD8A">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>FF8072B4-F23E-F1A4-2637-34B9FD3BF058</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="estate area" id="5A7F3DD6-2736-FDFE-251F-0B1045C73B07">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>5AC2C7F9-8024-59FE-DA56-91496A6311F4</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="estate type id" id="E59BBB51-E092-53E3-A723-2CC5AD9D2E41">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>2F8200E6-0C3D-4ACA-579B-0BCD721E28CC</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>3F52531E-0A72-0F53-8049-56BAADB27DE6</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="user id" id="8E81D903-FD14-C1F2-6D3C-AB5048150979">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>71A4DA04-4959-72C5-39C5-C0A89223CA83</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>66449D19-D848-A5F5-9B1D-0E534816BA04</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="floor" id="E83C4DCF-AC6E-1C0A-C75B-1B62D0C3E3E9">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>BE98B253-7DA3-E8BB-8273-5693AE6EFEBE</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="is furnished" id="CDED03FA-A306-4A42-D5C7-EE5225AFD430">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>013B92AC-D5A1-5AB4-54A0-ECA70F7A011A</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="isForRent" id="794F426B-C1A1-56B1-D12E-776DAA06380F">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>007FE98B-8F81-BFD6-BFF1-70F8D05BF048</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="estate price" id="58A9A8F5-AD2B-1D63-0DA0-89BFC357B78B">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>1D0FBA79-BFB2-29AF-3DED-98B49AAB5FFC</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="estate address" id="80402CA3-6600-297F-6567-1E6A5D7EB95C">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>56624C41-1BAA-6469-4680-93BB05400E79</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>40</dataTypeSize>
+<ownDataTypeParameters>40,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="city id" id="60424DA2-B7B6-3A67-E601-664D68B09FFC">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>91AEC5C2-B6A4-FCE3-8553-5C6DEA201207</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>3B85660F-B10C-4663-FEDB-CA5055EE5ADD</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="neighborhood id" id="7AC2F0AA-6E9B-C35B-3202-9A85C2B1478F">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>579B1011-7753-97C0-6513-68809E7C5577</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<referedAttribute>0774D9AC-AA40-0331-3CD9-4E41138F0A69</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="date built" id="F2FCE568-9A8C-9084-62DC-20B473B7601C">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>2573A761-8D0B-B42B-B059-E005970E611C</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="date added" id="E04FB8E7-C28C-5BA3-B1DE-6F702C9D59C8">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>38011A80-7E99-9D91-BDB4-3C451DD8DC09</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="489CD338-FDE9-FF71-9741-F54A57129A60" name="real estate PK">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>396EC661-60CB-B888-ED12-D99C576BBBE1</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>6B5BD88E-4BC7-531C-1C41-2FE797D068AF</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

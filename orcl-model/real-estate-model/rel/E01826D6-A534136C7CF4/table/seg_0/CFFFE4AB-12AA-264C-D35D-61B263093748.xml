@@ -40,15 +40,69 @@
 <ownDataTypeParameters>50,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="admin" id="585DE360-F0F7-BE0E-408F-9C7FA1E742FE">
+<Column name="roles" id="585DE360-F0F7-BE0E-408F-9C7FA1E742FE">
 <createdBy>bubliok</createdBy>
 <createdTime>2024-12-12 09:38:32 UTC</createdTime>
 <ownerDesignName>real-estate-model</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT006</logicalDatatype>
-<dataTypeSize>1 BYTE</dataTypeSize>
-<ownDataTypeParameters>1 BYTE,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="createdAt" id="F44014FC-23F4-A9B2-4C4A-0DDB36B0284C">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:19:35 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="fullName" id="86726850-8698-8532-70EC-86064AB8503E">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:19:35 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="email" id="9AF2215D-6621-0511-65DE-CFBA36930BD5">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:19:35 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="phoneNumber" id="28F8EAC6-B880-A7E1-529E-57A26C476ACA">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:19:35 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="profileImage" id="17F42432-78B5-0197-5FA4-56A1BB09CBFB">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:19:35 UTC</createdTime>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>

@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="favourites_real_estate_FK" directorySegmentName="seg_0" id="ECF80828-4C78-A1D3-C51F-C505D39EE2B4">
+<createdBy>bubliok</createdBy>
+<createdTime>2025-01-06 18:27:50 UTC</createdTime>
+<generatorID>8ED3F163-ECFA-7623-3BD9-2BFA43359771</generatorID>
+<ownerDesignName>real-estate-model</ownerDesignName>
+<engineerTo>
+<item key="E01826D6-DD89-A647-A095-A534136C7CF4" value="true"/>
+</engineerTo>
+<sourcePk>489CD338-FDE9-FF71-9741-F54A57129A60</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>E8D35177-9126-3BCA-CDF7-E6B32EAA9482</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>52CA6595-F5F6-0586-9EBD-ED64D120E452</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

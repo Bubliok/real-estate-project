@@ -10,6 +10,7 @@ use App\Entity\RealEstateImages;
 use App\Form\AddListingType;
 use App\Form\ImageUploadFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -22,6 +23,12 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ListingController extends AbstractController
 {
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+}
     #[isGranted('ROLE_ADMIN')]
     #[Route('/add-listing', name: 'app_listing')]
     public function listing(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger,
@@ -45,7 +52,7 @@ class ListingController extends AbstractController
                         $image->move($imageDirectory, $newFilename);
                     } catch (FileException $e) {
                         $this->addFlash('error', 'An error occurred while uploading the image. Please try again.');
-                        $this->get('logger')->error('File upload error: ' . $e->getMessage());
+                        $this->logger->error('File upload error: ' . $e->getMessage());
                     }
 
                     $realEstateImage = new RealEstateImages();
@@ -69,5 +76,34 @@ class ListingController extends AbstractController
         return $this->render('listing/add-listing.html.twig', [
             'realEstateForm' => $form->createView(),
         ]);
+    }
+
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/listing/delete/{id}', name: 'listing_delete', methods: ['POST'])]
+    public function delete(int $id, EntityManagerInterface $entityManager, Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
+    {
+        $estate = $entityManager->getRepository(RealEstate::class)->find($id);
+
+        if (!$estate) {
+            $this->addFlash('error', 'Listing not found.');
+            return $this->redirectToRoute('app_listing');
+        }
+
+        if ($this->isCsrfTokenValid('delete' . $estate->getId(), $request->request->get('_token'))) {
+            // Delete related images
+            $images = $estate->getRealEstateImages();
+            foreach ($images as $image) {
+                $entityManager->remove($image);
+            }
+
+            $entityManager->remove($estate);
+            $entityManager->flush();
+            $this->addFlash('success', 'Listing and related images deleted successfully.');
+        } else {
+            $this->addFlash('error', 'Invalid CSRF token.');
+        }
+
+        return $this->redirectToRoute('app_listing');
     }
 }

@@ -33,3 +33,7 @@ migrations/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+~$cumentation.docx
+
+documentation.docx

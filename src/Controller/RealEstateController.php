@@ -22,7 +22,9 @@ class RealEstateController extends AbstractController
 
         $sort = $request->query->get('sort', 'price_asc');
         $isFurnished = $request->query->getBoolean('isFurnished');
-        $realEstates = $realEstateRepository->findByCityIdSortedFurnished($cityId, $isFurnished, $sort);
+        $isForRent = $request->query->getBoolean('isForRent');
+
+        $realEstates = $realEstateRepository->findByCityIdSortedFurnishedForRent($cityId, $isFurnished, $isForRent, $sort);
 //        if (!$realEstates) {
 //            throw $this->createNotFoundException('Real estate not found');
 //        }
@@ -33,6 +35,7 @@ class RealEstateController extends AbstractController
             'realEstates' => $realEstates,
             'sort'=>$sort,
             'isFurnished'=>$isFurnished,
+            'isForRent'=> $isForRent,
             'noEstatesFound'=>$noEstatesFound,
         ]);
     }
