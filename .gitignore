@@ -37,3 +37,13 @@ yarn-error.log
 ~$cumentation.docx
 
 documentation.docx
+
+.DS_Store
+
+.env
+
+.env.test
+
+compose.override.yaml
+
+compose.yaml
