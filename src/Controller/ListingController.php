@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\City;
-use App\Entity\Favourites;
-use App\Entity\Neighborhood;
-use App\Entity\RealEstate;
-use App\Entity\RealEstateImages;
+use App\Enum\City;
+use App\Enum\Favourites;
+use App\Enum\Neighborhood;
+use App\Enum\RealEstate;
+use App\Enum\RealEstateImages;
 use App\Form\AddListingType;
 use App\Form\ImageUploadFormType;
 use Doctrine\ORM\EntityManagerInterface;

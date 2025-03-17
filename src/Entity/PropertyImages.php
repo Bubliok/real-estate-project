@@ -2,19 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\RealEstateImagesRepository;
+use App\Repository\PropertyImagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RealEstateImagesRepository::class)]
-class RealEstateImages
+#[ORM\Entity(repositoryClass: PropertyImagesRepository::class)]
+class PropertyImages
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'realEstateImages')]
-    private ?RealEstate $RealEstate = null;
+    #[ORM\ManyToOne(inversedBy: 'propertyImages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Property $propertyId = null;
 
     #[ORM\Column(length: 255)]
     private ?string $imagePath = null;
@@ -24,14 +25,21 @@ class RealEstateImages
         return $this->id;
     }
 
-    public function getRealEstate(): ?RealEstate
+    public function setId(int $id): static
     {
-        return $this->RealEstate;
+        $this->id = $id;
+
+        return $this;
     }
 
-    public function setRealEstate(?RealEstate $RealEstate): static
+    public function getPropertyId(): ?Property
     {
-        $this->RealEstate = $RealEstate;
+        return $this->propertyId;
+    }
+
+    public function setPropertyId(?Property $propertyId): static
+    {
+        $this->propertyId = $propertyId;
 
         return $this;
     }

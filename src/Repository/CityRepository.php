@@ -2,12 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\City;
+use App\Enum\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @return City[]
+ * @extends ServiceEntityRepository<City>
  */
 class CityRepository extends ServiceEntityRepository
 {
@@ -15,27 +15,7 @@ class CityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, City::class);
     }
-    public function findSofia() :array
-    {
-        return $this->createQueryBuilder('c')
-            ->where('c.cityName = :cityName')
-            ->setParameter('cityName', 'Sofia')
-            ->getQuery()
-            ->getResult();
-    }
-    public function findMyCity() :City
-    {
-        return $this->findAll()[0];
-    }
 
-    public function  findByName(string $name): ?City
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.cityName = :name')
-            ->setParameter('name', $name)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
     //    /**
     //     * @return City[] Returns an array of City objects
     //     */

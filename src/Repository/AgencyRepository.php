@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\RealEstateType;
+use App\Enum\Agency;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<RealEstateType>
+ * @extends ServiceEntityRepository<Agency>
  */
-class RealEstateTypeRepository extends ServiceEntityRepository
+class AgencyRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, RealEstateType::class);
+        parent::__construct($registry, Agency::class);
     }
 
     //    /**
-    //     * @return RealEstateType[] Returns an array of RealEstateType objects
+    //     * @return Agency[] Returns an array of Agency objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
+    //            ->orderBy('a.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?RealEstateType
+    //    public function findOneBySomeField($value): ?Agency
     //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

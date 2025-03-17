@@ -2,15 +2,15 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\BrokerCompany;
-use App\Entity\City;
-use App\Entity\Neighborhood;
-use App\Entity\RealEstate;
-use App\Entity\RealEstateAgent;
-use App\Entity\RealEstateImages;
-use App\Entity\RealEstateOwner;
-use App\Entity\RealEstateType;
-use App\Entity\User;
+use App\Enum\BrokerCompany;
+use App\Enum\City;
+use App\Enum\Neighborhood;
+use App\Enum\RealEstate;
+use App\Enum\RealEstateAgent;
+use App\Enum\RealEstateImages;
+use App\Enum\RealEstateOwner;
+use App\Enum\RealEstateType;
+use App\Enum\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;

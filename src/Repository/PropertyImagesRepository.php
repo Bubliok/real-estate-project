@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\RealEstateImages;
+use App\Enum\PropertyImages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<RealEstateImages>
+ * @extends ServiceEntityRepository<PropertyImages>
  */
-class RealEstateImagesRepository extends ServiceEntityRepository
+class PropertyImagesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, RealEstateImages::class);
+        parent::__construct($registry, PropertyImages::class);
     }
 
 //    /**
-//     * @return RealEstateImages[] Returns an array of RealEstateImages objects
+//     * @return PropertyImages[] Returns an array of PropertyImages objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
+//            ->orderBy('p.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?RealEstateImages
+//    public function findOneBySomeField($value): ?PropertyImages
 //    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
+//        return $this->createQueryBuilder('p')
+//            ->andWhere('p.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()

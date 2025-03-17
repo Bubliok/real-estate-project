@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\City;
+use App\Enum\City;
 use App\Form\MainFormType;
 use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;

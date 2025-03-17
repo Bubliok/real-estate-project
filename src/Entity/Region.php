@@ -2,37 +2,34 @@
 
 namespace App\Entity;
 
-use App\Repository\CityRepository;
+use App\Repository\RegionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CityRepository::class)]
-class City
+#[ORM\Entity(repositoryClass: RegionRepository::class)]
+class Region
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 35)]
+    #[ORM\Column(length: 40)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Region>
-     */
-    #[ORM\OneToMany(targetEntity: Region::class, mappedBy: 'cityId')]
-    private Collection $regions;
+    #[ORM\ManyToOne(inversedBy: 'regions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $cityId = null;
 
     /**
      * @var Collection<int, Property>
      */
-    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'cityId')]
+    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'regionId')]
     private Collection $properties;
 
     public function __construct()
     {
-        $this->regions = new ArrayCollection();
         $this->properties = new ArrayCollection();
     }
 
@@ -60,32 +57,14 @@ class City
         return $this;
     }
 
-    /**
-     * @return Collection<int, Region>
-     */
-    public function getRegions(): Collection
+    public function getCityId(): ?City
     {
-        return $this->regions;
+        return $this->cityId;
     }
 
-    public function addRegion(Region $region): static
+    public function setCityId(?City $cityId): static
     {
-        if (!$this->regions->contains($region)) {
-            $this->regions->add($region);
-            $region->setCityId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRegion(Region $region): static
-    {
-        if ($this->regions->removeElement($region)) {
-            // set the owning side to null (unless already changed)
-            if ($region->getCityId() === $this) {
-                $region->setCityId(null);
-            }
-        }
+        $this->cityId = $cityId;
 
         return $this;
     }
@@ -102,7 +81,7 @@ class City
     {
         if (!$this->properties->contains($property)) {
             $this->properties->add($property);
-            $property->setCityId($this);
+            $property->setRegionId($this);
         }
 
         return $this;
@@ -112,8 +91,8 @@ class City
     {
         if ($this->properties->removeElement($property)) {
             // set the owning side to null (unless already changed)
-            if ($property->getCityId() === $this) {
-                $property->setCityId(null);
+            if ($property->getRegionId() === $this) {
+                $property->setRegionId(null);
             }
         }
 
