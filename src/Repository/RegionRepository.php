@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Enum\Region;
+use App\Entity\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +14,14 @@ class RegionRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Region::class);
+    }
+
+    public function findByName(string $name): ?Region {
+        return $this->createQueryBuilder('r')
+            ->andWhere('LOWER(r.name) = LOWER(:name)')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 //    /**

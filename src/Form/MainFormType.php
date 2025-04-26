@@ -1,11 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,18 +22,18 @@ class MainFormType extends AbstractType
                     'placeholder' => 'Search for a city'
                 ]
             ])
-            ->add('isFurnished', CheckboxType::class, [
-                'label' => 'Furnished',
-                'required' => false,
-            ])
-            ->add('isForRent', CheckboxType::class, [
-                'label' => 'For Rent',
-                'required' => false,
+            ->add('listingType', ChoiceType::class, [
+                'choices' => [
+                    'rent' => 'rent',
+                    'sale' => 'sale',
+                ]
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
+        $resolver->setDefaults([
+            'invalid_message' => 'Hmm, user not found!',
+        ]);
     }
 }

@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrationController extends AbstractController
 {
+
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
@@ -24,13 +25,15 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
+
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            $user->setProfileImage('assets/images/avatars/profile-default.jpg');
-            $user->setCreatedAt(new \DateTimeImmutable());
+            $user->setProfileImage('assets/images/avatars/profile-default.png');
+            $user->setCreatedAt(new \DateTimeImmutable('now'));
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // generate a signed url and email it to the user
             // do anything else you need here, like send an email
 
             return $security->login($user, 'form_login', 'main');
@@ -40,4 +43,5 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form,
         ]);
     }
+
 }

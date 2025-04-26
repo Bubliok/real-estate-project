@@ -1,33 +1,25 @@
 {% extends 'base.html.twig' %}
 {% block title %} {{ "IMT Estate" }} {% endblock %}
-{% block body %}
 
-    <div
-            class="flex justify-center items-center bg-cover bg-center"
-            style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
+{% block body %}
+    <div class="flex justify-center items-center bg-cover bg-center"
+         style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
         <div class="bg-white p-8 rounded-lg shadow-lg">
             {{ form_start(mainForm, {'attr': {'class': 'space-y-4'}}) }}
             <div class="flex items-center space-x-4">
+
                 <!-- Search Bar -->
-                {{ form_widget(mainForm.search, {'attr': {'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300'}}) }}
+                {{ form_widget(mainForm.search, {
+                    'attr': {
+                        'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300'
+                    }
+                }) }}
 
-                <!-- Checkbox 1 -->
-                <div class="flex items-center space-x-2">
-                    {{ form_widget(mainForm.isFurnished, {'attr': {'class': 'h-5 w-5 text-blue-600 border-gray-300 focus:ring focus:ring-blue-300'}}) }}
-                    <label for="{{ mainForm.isFurnished.vars.id }}" class="text-gray-700 text-sm">
-                        Furnished
-                    </label>
-                </div>
+                <!-- Toggle Buttons -->
+                {{ form_widget(mainForm.listingType, {'attr': {'id': 'listingTypeInput'}}) }}
 
-                <!-- Checkbox 2 -->
-                <div class="flex items-center space-x-2">
-                    {{ form_widget(mainForm.isForRent, {'attr': {'class': 'h-5 w-5 text-blue-600 border-gray-300 focus:ring focus:ring-blue-300'}}) }}
-                    <label for="{{ mainForm.isForRent.vars.id }}" class="text-gray-700 text-sm">
-                        For Rent
-                    </label>
-                </div>
 
-                <!-- Lookup Button -->
+                <!-- Submit Button -->
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
                     Lookup
                 </button>

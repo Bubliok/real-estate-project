@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Enum\Property;
+use App\Entity\Property;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +14,22 @@ class PropertyRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Property::class);
+    }
+
+    public function getByCityAndListingType(int $cityId, string $listingType): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.listingType = :listingType')
+            ->andWhere('p.cityId = :cityId')
+            ->setParameter('listingType', $listingType)
+            ->setParameter('cityId', $cityId);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getAll() {
+        $qb = $this->createQueryBuilder('p');
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

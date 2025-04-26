@@ -100,7 +100,7 @@
         </style>
 
         <div class="container">
-            <form method="get" action="{{ path('app_estate_show', { cityId: realEstates[0].city.id }) }}">
+            <form method="get" action="{{ path('app_show_listings' }}">
                 <select name="sort" id="sort" onchange="this.form.submit()">
                     <option value="price_asc" {{ sort == 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
                     <option value="price_desc" {{ sort == 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
