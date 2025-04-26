@@ -12,7 +12,7 @@ class Land
     #[ORM\Id]
     #[ORM\OneToOne(inversedBy: 'land', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Property $propertyId = null;
+    private ?Property $property = null;
 
     #[ORM\Column(type: 'string', enumType: LandZoningTypeEnum::class)]
     private LandZoningTypeEnum $zoningType;
@@ -22,14 +22,14 @@ class Land
     #[ORM\Column]
     private ?bool $hasWater = null;
 
-    public function getPropertyId(): ?Property
+    public function getProperty(): ?Property
     {
-        return $this->propertyId;
+        return $this->property;
     }
 
-    public function setPropertyId(Property $propertyId): static
+    public function setProperty(Property $property): static
     {
-        $this->propertyId = $propertyId;
+        $this->property = $property;
 
         return $this;
     }

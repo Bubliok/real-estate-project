@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enum\ListingTypeEnum;
 use App\Enum\ResidentialBuildTypesEnum;
+use App\Enum\ResidentialHeatingTypesEnum;
 use App\Enum\ResidentialTypesEnum;
 use App\Repository\ResidentialRepository;
 use Doctrine\DBAL\Types\Types;
@@ -13,11 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Residential
 {
     #[ORM\Id]
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'residential', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Property $propertyId = null;
+    private ?Property $property = null;
 
-    #[ORM\Column(type: 'string', enumType: ListingTypeEnum::class)]
+    #[ORM\Column(type: 'string', enumType: ResidentialTypesEnum::class)]
     private ResidentialTypesEnum $residentialType;
 
     #[ORM\Column]
@@ -50,6 +51,8 @@ class Residential
     #[ORM\Column(type: 'string', enumType: ResidentialBuildTypesEnum::class)]
     private ResidentialBuildTypesEnum $buildType;
 
+    #[ORM\Column(type: 'string', enumType: ResidentialHeatingTypesEnum::class)]
+    private ResidentialHeatingTypesEnum $heatingTypes;
     public function getIsFurnished(): ?bool
     {
         return $this->isFurnished;
@@ -81,16 +84,26 @@ class Residential
         $this->residentialType = $residentialType;
     }
 
-    public function getPropertyId(): ?Property
+    public function getProperty(): ?Property
     {
-        return $this->propertyId;
+        return $this->property;
     }
 
-    public function setPropertyId(Property $propertyId): static
+    public function setProperty(Property $property): static
     {
-        $this->propertyId = $propertyId;
+        $this->property = $property;
 
         return $this;
+    }
+
+    public function getHeatingTypes(): ResidentialHeatingTypesEnum
+    {
+        return $this->heatingTypes;
+    }
+
+    public function setHeatingTypes(ResidentialHeatingTypesEnum $heatingTypes): void
+    {
+        $this->heatingTypes = $heatingTypes;
     }
 
     public function getRooms(): ?int

@@ -98,4 +98,26 @@ class Region
 
         return $this;
     }
+
+    public function addCityId(Property $cityId): static
+    {
+        if (!$this->city_id->contains($cityId)) {
+            $this->city_id->add($cityId);
+            $cityId->setRegionId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCityId(Property $cityId): static
+    {
+        if ($this->city_id->removeElement($cityId)) {
+            // set the owning side to null (unless already changed)
+            if ($cityId->getRegionId() === $this) {
+                $cityId->setRegionId(null);
+            }
+        }
+
+        return $this;
+    }
 }

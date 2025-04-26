@@ -3,15 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -37,8 +39,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 40, nullable: true)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 40, nullable: true)]
+    #[ORM\Column(length: 30, nullable: true)]
     private ?string $lastName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $phoneNumber = null;
@@ -53,6 +58,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Agency $agencyId = null;
 
     /**
+     * @var Collection<int, Property>
+     */
+    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'user')]
+    private Collection $properties;
+
+    /**
      * @var Collection<int, UserFavorites>
      */
     #[ORM\OneToMany(targetEntity: UserFavorites::class, mappedBy: 'userId')]
@@ -60,7 +71,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
+        $this->properties = new ArrayCollection();
         $this->userFavorites = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, UserFavorites>
+     */
+    public function getUserFavorites(): Collection
+    {
+        return $this->userFavorites;
+    }
+    
+    public function addUserFavorite(UserFavorites $userFavorite): static
+    {
+        if (!$this->userFavorites->contains($userFavorite)) {
+            $this->userFavorites->add($userFavorite);
+            $userFavorite->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFavorite(UserFavorites $userFavorite): static
+    {
+        if ($this->userFavorites->removeElement($userFavorite)) {
+            // Set the owning side to null (unless already changed)
+            if ($userFavorite->getUserId() === $this) {
+                $userFavorite->setUserId(null);
+            }
+        }
+        return $this;
     }
 
     public function getId(): ?int
@@ -87,13 +128,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -132,11 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
+
 
     public function getFirstName(): ?string
     {
@@ -158,6 +195,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(?string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }
@@ -210,33 +259,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, UserFavorites>
-     */
-    public function getUserFavorites(): Collection
+    public function eraseCredentials(): void
     {
-        return $this->userFavorites;
+        // TODO: Implement eraseCredentials() method.
     }
 
-    public function addUserFavorite(UserFavorites $userFavorite): static
+    /**
+     * @return Collection<int, Property>
+     */
+    public function getProperties(): Collection
     {
-        if (!$this->userFavorites->contains($userFavorite)) {
-            $this->userFavorites->add($userFavorite);
-            $userFavorite->setUserId($this);
+        return $this->properties;
+    }
+
+    public function addProperty(Property $property): static
+    {
+        if (!$this->properties->contains($property)) {
+            $this->properties->add($property);
+            $property->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeUserFavorite(UserFavorites $userFavorite): static
+    public function removeProperty(Property $property): static
     {
-        if ($this->userFavorites->removeElement($userFavorite)) {
+        if ($this->properties->removeElement($property)) {
             // set the owning side to null (unless already changed)
-            if ($userFavorite->getUserId() === $this) {
-                $userFavorite->setUserId(null);
+            if ($property->getUser() === $this) {
+                $property->setUser(null);
             }
         }
 
         return $this;
     }
+
 }

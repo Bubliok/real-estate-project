@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Enum\CommercialTypeEnum;
+use App\Enum\ResidentialHeatingTypesEnum;
 use App\Repository\CommercialRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +14,7 @@ class Commercial
     #[ORM\Id]
     #[ORM\OneToOne(inversedBy: 'commercial', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Property $propertyId = null;
+    private ?Property $property = null;
 
     #[ORM\Column]
     private ?int $rooms = null;
@@ -35,19 +37,38 @@ class Commercial
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $yearBuilt = null;
 
-    public function getId(): ?int
+    #[ORM\Column(type: 'string', enumType: CommercialTypeEnum::class)]
+    private CommercialTypeEnum $commercialType;
+
+    public function getIsFurnished(): ?bool
     {
-        return $this->id;
+        return $this->isFurnished;
     }
 
-    public function getPropertyId(): ?Property
+    public function setIsFurnished(?bool $isFurnished): void
     {
-        return $this->propertyId;
+        $this->isFurnished = $isFurnished;
     }
 
-    public function setPropertyId(Property $propertyId): static
+    public function getCommercialType(): CommercialTypeEnum
     {
-        $this->propertyId = $propertyId;
+        return $this->commercialType;
+    }
+
+    public function setCommercialType(CommercialTypeEnum $commercialType): void
+    {
+        $this->commercialType = $commercialType;
+    }
+
+
+    public function getProperty(): ?Property
+    {
+        return $this->property;
+    }
+
+    public function setProperty(Property $property): static
+    {
+        $this->property = $property;
 
         return $this;
     }

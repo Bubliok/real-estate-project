@@ -18,13 +18,17 @@ class Feature
     /**
      * @var Collection<int, Property>
      */
-    #[ORM\ManyToMany(targetEntity: Property::class, inversedBy: 'features')]
-    private Collection $name;
+    #[ORM\ManyToMany(targetEntity: Property::class, mappedBy: 'features')]
+    private Collection $properties;
+
+    #[ORM\Column(length: 30)]
+    private ?string $name = null;
 
     public function __construct()
     {
-        $this->name = new ArrayCollection();
+        $this->properties = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -41,23 +45,38 @@ class Feature
     /**
      * @return Collection<int, Property>
      */
-    public function getName(): Collection
+    public function getProperties(): Collection
     {
-        return $this->name;
+        return $this->properties;
     }
 
-    public function addName(Property $name): static
+    public function addProperty(Property $property): static
     {
-        if (!$this->name->contains($name)) {
-            $this->name->add($name);
+        if (!$this->properties->contains($property)) {
+            $this->properties->add($property);
+            $property->addFeature($this);
         }
 
         return $this;
     }
 
-    public function removeName(Property $name): static
+    public function removeProperty(Property $property): static
     {
-        $this->name->removeElement($name);
+        if ($this->properties->removeElement($property)) {
+            $property->removeFeature($this);
+        }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }

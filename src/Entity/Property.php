@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Enum\ListingTypeEnum;
 use App\Repository\PropertyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
@@ -36,12 +38,6 @@ class Property
     #[ORM\OneToMany(targetEntity: PropertyImages::class, mappedBy: 'propertyId')]
     private Collection $propertyImages;
 
-    /**
-     * @var Collection<int, Feature>
-     */
-    #[ORM\ManyToMany(targetEntity: Feature::class, mappedBy: 'name')]
-    private Collection $features;
-
     #[ORM\ManyToOne(inversedBy: 'properties')]
     private ?Region $regionId = null;
 
@@ -49,14 +45,41 @@ class Property
     #[ORM\JoinColumn(nullable: false)]
     private ?City $cityId = null;
 
-    #[ORM\OneToOne(mappedBy: 'propertyId', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'property', cascade: ['persist', 'remove'])]
     private ?Residential $residential = null;
-    #[ORM\OneToOne(mappedBy: 'propertyId', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'property', cascade: ['persist', 'remove'])]
     private ?Commercial $commercial = null;
 
-    #[ORM\OneToOne(mappedBy: 'propertyId', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'property', cascade: ['persist', 'remove'])]
     private ?Land $land = null;
 
+    #[ORM\Column]
+    private ?float $price = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: 'string', enumType: ListingTypeEnum::class)]
+    private ListingTypeEnum $listingType;
+
+    #[ORM\Column]
+    private ?int $views = 0;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $modifiedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'properties')]
+    #[ORM\JoinColumn(name: 'user_id' ,nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @var Collection<int, Feature>
+     */
+    #[ORM\ManyToMany(targetEntity: Feature::class, inversedBy: 'properties')]
+    private Collection $features;
 
     public function __construct()
     {
@@ -88,6 +111,28 @@ class Property
 
         return $this;
     }
+
+    public function getListingType(): ListingTypeEnum
+    {
+        return $this->listingType;
+    }
+
+    public function setListingType(ListingTypeEnum $listingType): void
+    {
+        $this->listingType = $listingType;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(?int $views): void
+    {
+        $this->views = $views;
+    }
+
+
 
     public function getArea(): ?int
     {
@@ -126,9 +171,16 @@ class Property
         return $this->residential;
     }
 
-    public function setResidential(?Residential $residential): void
+    public function setResidential(?Residential $residential): static
     {
+        // set the owning side of the relation if necessary
+        if ($residential->getProperty() !== $this) {
+            $residential->setProperty($this);
+        }
+
         $this->residential = $residential;
+
+        return $this;
     }
 
     public function addUserFavorite(UserFavorites $userFavorite): static
@@ -183,33 +235,6 @@ class Property
         return $this;
     }
 
-    /**
-     * @return Collection<int, Feature>
-     */
-    public function getFeatures(): Collection
-    {
-        return $this->features;
-    }
-
-    public function addFeature(Feature $feature): static
-    {
-        if (!$this->features->contains($feature)) {
-            $this->features->add($feature);
-            $feature->addName($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFeature(Feature $feature): static
-    {
-        if ($this->features->removeElement($feature)) {
-            $feature->removeName($this);
-        }
-
-        return $this;
-    }
-
     public function getRegionId(): ?Region
     {
         return $this->regionId;
@@ -239,11 +264,11 @@ class Property
         return $this->commercial;
     }
 
-    public function setCommercial(Commercial $commercial): static
+    public function setCommercial(?Commercial $commercial): static
     {
         // set the owning side of the relation if necessary
-        if ($commercial->getPropertyId() !== $this) {
-            $commercial->setPropertyId($this);
+        if ($commercial->getProperty() !== $this) {
+            $commercial->setProperty($this);
         }
 
         $this->commercial = $commercial;
@@ -256,14 +281,98 @@ class Property
         return $this->land;
     }
 
-    public function setLand(Land $land): static
+    public function setLand(?Land $land): static
     {
         // set the owning side of the relation if necessary
-        if ($land->getPropertyId() !== $this) {
-            $land->setPropertyId($this);
+        if ($land->getProperty() !== $this) {
+            $land->setProperty($this);
         }
 
         $this->land = $land;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeImmutable
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(\DateTimeImmutable $modifiedAt): static
+    {
+        $this->modifiedAt = $modifiedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Feature>
+     */
+    public function getFeatures(): Collection
+    {
+        return $this->features;
+    }
+
+    public function addFeature(Feature $feature): static
+    {
+        if (!$this->features->contains($feature)) {
+            $this->features->add($feature);
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(Feature $feature): static
+    {
+        $this->features->removeElement($feature);
 
         return $this;
     }
