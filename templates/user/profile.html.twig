@@ -31,13 +31,21 @@
 
                         <div class="items-center mt-8 sm:mt-14 text-[#202142]">
 
-                            <div
-                                    class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
+                            <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
                                 <div class="w-full">
-                                    <label for="fullName"
-                                           class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Full
+                                    <label for="firstName"
+                                           class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">First
                                         Name</label>
-                                    {{ form_widget(profileForm.fullName, {'attr': {'class': 'bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5'}}) }}
+                                    {{ form_widget(profileForm.firstName, {'attr': {'class': 'bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
+                                <div class="w-full">
+                                    <label for="lastName"
+                                           class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Last
+                                        Name</label>
+                                    {{ form_widget(profileForm.lastName, {'attr': {'class': 'bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5'}}) }}
                                 </div>
                             </div>
 
@@ -61,13 +69,12 @@
                                     Save
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-{{ form_end(profileForm) }}
+    {{ form_end(profileForm) }}
 
 {% endblock %}

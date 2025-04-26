@@ -45,8 +45,11 @@ class ProfileType extends AbstractType
                     ])
                 ]
             ])
-            ->add('fullName', TextType::class, [
-                'label' => 'Full Name',
+            ->add('firstName', TextType::class, [
+                'label' => 'First Name',
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Last Name',
             ]);
     }
 

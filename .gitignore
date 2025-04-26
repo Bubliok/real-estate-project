@@ -49,3 +49,5 @@ compose.override.yaml
 compose.yaml
 
 orcl-model/v2/
+
+composer.json
