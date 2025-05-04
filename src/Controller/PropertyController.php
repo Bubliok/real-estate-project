@@ -117,4 +117,12 @@ class PropertyController extends AbstractController
 
         return $this->render('listing/add-listing.html.twig', ['form' => $form->createView(),]);
     }
+
+    #[Route('/property/{id}', name: 'app_property_detail')]
+    public function detail(Property $property): Response
+    {
+        return $this->render('property/detail.html.twig', [
+            'property' => $property
+        ]);
+    }
 }

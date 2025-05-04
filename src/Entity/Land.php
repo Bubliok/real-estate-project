@@ -34,6 +34,18 @@ class Land
         return $this;
     }
 
+    public function getZoningType(): LandZoningTypeEnum
+    {
+        return $this->zoningType;
+    }
+
+    public function setZoningType(LandZoningTypeEnum $zoningType): static
+    {
+        $this->zoningType = $zoningType;
+
+        return $this;
+    }
+
     public function hasElectricity(): ?bool
     {
         return $this->hasElectricity;

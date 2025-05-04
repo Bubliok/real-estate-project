@@ -1,21 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Property Listings{% endblock %}
+{% block title %}
+    {% if not noPropertiesFound %}
+        Properties in {{ cityName }}
+    {% else %}
+        No Properties Found
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1>Property Listings</h1>
-
     {% if noPropertiesFound %}
-        <p>No listings found</p>
+        <h1>No property found for search criteria.</h1>
     {% else %}
-        {% for property in properties %}
-            <div class="listing">
-                <h2>{{ property.name }}</h2>
-                <p>Price: {{ property.price }}</p>
-                <p>Type: {{ property.listingType.value }}</p>
-                <p>City: {{ property.cityId.name }}</p>
-                <p>Region: {{ property.regionId.name }}</p>
-            </div>
-        {% endfor %}
+        <div class="container">
+            <form method="get" action="{{ path('app_show_listings', { listingType: listingType, cityName: cityName }) }}">
+                <select name="sort" id="sort" onchange="this.form.submit()">
+                    <option value="price_asc">Price (Low to High)</option>
+                    <option value="price_desc">Price (High to Low)</option>
+                    <option value="area_asc">Area (Small to Large)</option>
+                    <option value="area_desc">Area (Large to Small)</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="real-estates">
+            {% for property in properties %}
+                <a href="{{ path('app_property_detail', { id: property.id }) }}" class="real-estate">
+                    {% if property.propertyImages|length > 0 %}
+                        <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="Property Image">
+                    {% else %}
+                        <img src="{{ asset('images/default-property.jpg') }}" alt="No Image Available">
+                    {% endif %}
+                    <span class="price">
+                        €{{ property.price }}
+                        <span class="price-per-sqm">({{ (property.price / property.area)|round(2) }} EUR/m&sup2;)</span>
+                    </span>
+                    <div class="real-estate-content">
+                        <h2>{{ property.name }}</h2>
+                        <h3>{{ property.cityId.name }}, {{ property.regionId.name }}</h3>
+                        <p>Area: {{ property.area }} m&sup2;</p>
+                        <p>Address: {{ property.address }}</p>
+                        <p>Type: {{ property.listingType.value }}</p>
+                        <p>Created: {{ property.createdAt|date('d.m.Y') }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
     {% endif %}
 {% endblock %}
