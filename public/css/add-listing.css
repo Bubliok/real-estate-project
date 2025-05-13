@@ -1,0 +1,755 @@
+.add-listing-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.add-listing-title {
+    color: #1a1a1a;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.add-listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.add-listing-row,
+.form-group {
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Label Styling */
+.add-listing-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+/* Text Input Styling */
+.add-listing-field[type="text"],
+.add-listing-field[type="email"],
+.add-listing-field[type="number"],
+.add-listing-field[type="tel"],
+.add-listing-field[type="url"],
+.add-listing-field[type="password"],
+input[type="text"].add-listing-field,
+input[type="email"].add-listing-field,
+input[type="number"].add-listing-field,
+input[type="tel"].add-listing-field,
+input[type="url"].add-listing-field,
+input[type="password"].add-listing-field {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Textarea Styling */
+.add-listing-field[type="textarea"],
+textarea.add-listing-field {
+    width: 100%;
+    min-height: 120px;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    resize: vertical;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+    line-height: 1.6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Select Styling */
+.add-listing-field[type="select"],
+select.add-listing-field,
+select.form-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Checkbox Styling */
+.add-listing-field[type="checkbox"],
+input[type="checkbox"].add-listing-field {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.8rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    appearance: none;
+    background-color: #f8fafc;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Radio Button Styling */
+.add-listing-field[type="radio"],
+input[type="radio"].add-listing-field {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.8rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    appearance: none;
+    background-color: #f8fafc;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Hover States */
+.add-listing-field:hover,
+textarea.add-listing-field:hover,
+select.add-listing-field:hover {
+    border-color: #cbd5e1;
+    background-color: #ffffff;
+}
+
+/* Focus States */
+.add-listing-field:focus,
+textarea.add-listing-field:focus,
+select.add-listing-field:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+/* Error States */
+.add-listing-field.error,
+textarea.add-listing-field.error,
+select.add-listing-field.error,
+input[type="text"].add-listing-field.error,
+input[type="email"].add-listing-field.error,
+input[type="number"].add-listing-field.error,
+input[type="tel"].add-listing-field.error,
+input[type="url"].add-listing-field.error,
+input[type="password"].add-listing-field.error {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* Button Styling */
+.add-listing-button {
+    background-color: #3b82f6;
+    color: #ffffff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin: 1rem auto 0 auto;
+    display: block;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.add-listing-button:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.15);
+}
+
+.add-listing-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+/* Help Text */
+.help-text {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-top: 0.6rem;
+    font-weight: 500;
+}
+
+/* Required Field Indicator */
+.required-field::after {
+    content: '*';
+    color: #ef4444;
+    margin-left: 0.3rem;
+}
+
+/* Appended Form Section Styling */
+.appended-form-section {
+    margin-top: 2rem;
+    padding: 2rem;
+    border-top: 2px solid #e2e8f0;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.appended-form-section .form-group {
+    margin-bottom: 1.5rem;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.appended-form-section .add-listing-label {
+    color: #1a1a1a;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.appended-form-section .add-listing-field,
+.appended-form-section textarea.add-listing-field,
+.appended-form-section select.add-listing-field,
+.appended-form-section input[type="text"].add-listing-field,
+.appended-form-section input[type="email"].add-listing-field,
+.appended-form-section input[type="number"].add-listing-field,
+.appended-form-section input[type="tel"].add-listing-field,
+.appended-form-section input[type="url"].add-listing-field,
+.appended-form-section input[type="password"].add-listing-field {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.appended-form-section .add-listing-field:hover,
+.appended-form-section textarea.add-listing-field:hover,
+.appended-form-section select.add-listing-field:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+}
+
+.appended-form-section .add-listing-field:focus,
+.appended-form-section textarea.add-listing-field:focus,
+.appended-form-section select.add-listing-field:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+/* Remove button styling for appended sections */
+.appended-form-section .remove-button {
+    background-color: #ef4444;
+    color: #ffffff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.appended-form-section .remove-button:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.1);
+}
+
+.appended-form-section .remove-button:active {
+    transform: translateY(0);
+}
+
+/* Add button styling for appended sections */
+.add-more-button {
+    background-color: #3b82f6;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 1rem 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-more-button:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+.add-more-button:active {
+    transform: translateY(0);
+}
+
+/* Section title for appended sections */
+.appended-section-title {
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Responsive styles for appended sections */
+@media (max-width: 768px) {
+    .appended-form-section {
+        padding: 1.5rem;
+    }
+    
+    .appended-form-section .form-group {
+        padding: 1.2rem;
+    }
+    
+    .appended-section-title {
+        font-size: 1.2rem;
+    }
+    
+    .add-more-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .add-listing-container {
+        margin: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    .add-listing-title {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .add-listing-field,
+    textarea.add-listing-field,
+    select.add-listing-field,
+    input[type="text"].add-listing-field,
+    input[type="email"].add-listing-field,
+    input[type="number"].add-listing-field,
+    input[type="tel"].add-listing-field,
+    input[type="url"].add-listing-field,
+    input[type="password"].add-listing-field {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
+    }
+    
+    .add-listing-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .add-listing-container {
+        margin: 1rem;
+        padding: 1.2rem;
+    }
+    
+    .add-listing-title {
+        font-size: 1.4rem;
+    }
+    
+    .add-listing-label {
+        font-size: 0.85rem;
+    }
+}
+
+/* Commercial Type Form Groups */
+.form-group:has(#add_listing_commercial_commercialType),
+.form-group:has(#add_listing_commercial_rooms),
+.form-group:has(#add_listing_commercial_bathrooms),
+.form-group:has(#add_listing_commercial_floor),
+.form-group:has(#add_listing_commercial_levels),
+.form-group:has(#add_listing_commercial_isFurnished),
+.form-group:has(#add_listing_commercial_hasParking),
+.form-group:has(#add_listing_commercial_yearBuilt) {
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Commercial Type Container */
+.commercial-type-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Commercial Type Specific Fields */
+#add_listing_commercial_commercialType,
+#add_listing_commercial_rooms,
+#add_listing_commercial_bathrooms,
+#add_listing_commercial_floor,
+#add_listing_commercial_levels,
+#add_listing_commercial_isFurnished,
+#add_listing_commercial_hasParking,
+#add_listing_commercial_yearBuilt {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Commercial Type Labels */
+label[for="add_listing_commercial_commercialType"],
+label[for="add_listing_commercial_rooms"],
+label[for="add_listing_commercial_bathrooms"],
+label[for="add_listing_commercial_floor"],
+label[for="add_listing_commercial_levels"],
+label[for="add_listing_commercial_isFurnished"],
+label[for="add_listing_commercial_hasParking"],
+label[for="add_listing_commercial_yearBuilt"] {
+    display: block;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+/* Commercial Type Select Specific Styling */
+#add_listing_commercial_commercialType,
+#add_listing_commercial_isFurnished,
+#add_listing_commercial_hasParking {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+/* Responsive styles for commercial type fields */
+@media (max-width: 768px) {
+    .commercial-type-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .commercial-type-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #add_listing_commercial_commercialType,
+    #add_listing_commercial_rooms,
+    #add_listing_commercial_bathrooms,
+    #add_listing_commercial_floor,
+    #add_listing_commercial_levels,
+    #add_listing_commercial_isFurnished,
+    #add_listing_commercial_hasParking,
+    #add_listing_commercial_yearBuilt {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
+    }
+
+    label[for="add_listing_commercial_commercialType"],
+    label[for="add_listing_commercial_rooms"],
+    label[for="add_listing_commercial_bathrooms"],
+    label[for="add_listing_commercial_floor"],
+    label[for="add_listing_commercial_levels"],
+    label[for="add_listing_commercial_isFurnished"],
+    label[for="add_listing_commercial_hasParking"],
+    label[for="add_listing_commercial_yearBuilt"] {
+        font-size: 0.85rem;
+    }
+}
+
+/* Residential Type Container */
+.residential-type-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Residential Type Form Groups */
+.form-group:has(#add_listing_residential_residentialType),
+.form-group:has(#add_listing_residential_rooms),
+.form-group:has(#add_listing_residential_bedrooms),
+.form-group:has(#add_listing_residential_bathrooms),
+.form-group:has(#add_listing_residential_yardArea),
+.form-group:has(#add_listing_residential_floor),
+.form-group:has(#add_listing_residential_totalFloors),
+.form-group:has(#add_listing_residential_heatingTypes),
+.form-group:has(#add_listing_residential_furnished),
+.form-group:has(#add_listing_residential_hasParking),
+.form-group:has(#add_listing_residential_yearBuilt),
+.form-group:has(#add_listing_residential_buildType) {
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Residential Type Specific Fields */
+#add_listing_residential_residentialType,
+#add_listing_residential_rooms,
+#add_listing_residential_bedrooms,
+#add_listing_residential_bathrooms,
+#add_listing_residential_yardArea,
+#add_listing_residential_floor,
+#add_listing_residential_totalFloors,
+#add_listing_residential_heatingTypes,
+#add_listing_residential_furnished,
+#add_listing_residential_hasParking,
+#add_listing_residential_yearBuilt,
+#add_listing_residential_buildType {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Residential Type Labels */
+label[for="add_listing_residential_residentialType"],
+label[for="add_listing_residential_rooms"],
+label[for="add_listing_residential_bedrooms"],
+label[for="add_listing_residential_bathrooms"],
+label[for="add_listing_residential_yardArea"],
+label[for="add_listing_residential_floor"],
+label[for="add_listing_residential_totalFloors"],
+label[for="add_listing_residential_heatingTypes"],
+label[for="add_listing_residential_furnished"],
+label[for="add_listing_residential_hasParking"],
+label[for="add_listing_residential_yearBuilt"],
+label[for="add_listing_residential_buildType"] {
+    display: block;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+/* Residential Type Select Specific Styling */
+#add_listing_residential_residentialType,
+#add_listing_residential_heatingTypes,
+#add_listing_residential_furnished,
+#add_listing_residential_hasParking,
+#add_listing_residential_buildType {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+/* Residential Type Number Input Specific Styling */
+#add_listing_residential_rooms,
+#add_listing_residential_bedrooms,
+#add_listing_residential_bathrooms,
+#add_listing_residential_yardArea,
+#add_listing_residential_floor,
+#add_listing_residential_totalFloors {
+    -moz-appearance: textfield;
+}
+
+#add_listing_residential_rooms::-webkit-outer-spin-button,
+#add_listing_residential_rooms::-webkit-inner-spin-button,
+#add_listing_residential_bedrooms::-webkit-outer-spin-button,
+#add_listing_residential_bedrooms::-webkit-inner-spin-button,
+#add_listing_residential_bathrooms::-webkit-outer-spin-button,
+#add_listing_residential_bathrooms::-webkit-inner-spin-button,
+#add_listing_residential_yardArea::-webkit-outer-spin-button,
+#add_listing_residential_yardArea::-webkit-inner-spin-button,
+#add_listing_residential_floor::-webkit-outer-spin-button,
+#add_listing_residential_floor::-webkit-inner-spin-button,
+#add_listing_residential_totalFloors::-webkit-outer-spin-button,
+#add_listing_residential_totalFloors::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Residential Type Date Input Specific Styling */
+#add_listing_residential_yearBuilt {
+    cursor: pointer;
+}
+
+/* Responsive styles for residential type fields */
+@media (max-width: 768px) {
+    .residential-type-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .residential-type-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #add_listing_residential_residentialType,
+    #add_listing_residential_rooms,
+    #add_listing_residential_bedrooms,
+    #add_listing_residential_bathrooms,
+    #add_listing_residential_yardArea,
+    #add_listing_residential_floor,
+    #add_listing_residential_totalFloors,
+    #add_listing_residential_heatingTypes,
+    #add_listing_residential_furnished,
+    #add_listing_residential_hasParking,
+    #add_listing_residential_yearBuilt,
+    #add_listing_residential_buildType {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
+    }
+
+    label[for="add_listing_residential_residentialType"],
+    label[for="add_listing_residential_rooms"],
+    label[for="add_listing_residential_bedrooms"],
+    label[for="add_listing_residential_bathrooms"],
+    label[for="add_listing_residential_yardArea"],
+    label[for="add_listing_residential_floor"],
+    label[for="add_listing_residential_totalFloors"],
+    label[for="add_listing_residential_heatingTypes"],
+    label[for="add_listing_residential_furnished"],
+    label[for="add_listing_residential_hasParking"],
+    label[for="add_listing_residential_yearBuilt"],
+    label[for="add_listing_residential_buildType"] {
+        font-size: 0.85rem;
+    }
+}
+
+/* Land Type Container */
+.land-type-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Land Type Form Groups */
+.form-group:has(#add_listing_land_zoningType),
+.form-group:has(#add_listing_land_hasElectricity),
+.form-group:has(#add_listing_land_hasWater) {
+    margin-bottom: 1rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Land Type Specific Fields */
+#add_listing_land_zoningType,
+#add_listing_land_hasElectricity,
+#add_listing_land_hasWater {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Land Type Labels */
+label[for="add_listing_land_zoningType"],
+label[for="add_listing_land_hasElectricity"],
+label[for="add_listing_land_hasWater"] {
+    display: block;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+/* Land Type Select Specific Styling */
+#add_listing_land_zoningType,
+#add_listing_land_hasElectricity,
+#add_listing_land_hasWater {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+/* Responsive styles for land type fields */
+@media (max-width: 768px) {
+    .land-type-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .land-type-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #add_listing_land_zoningType,
+    #add_listing_land_hasElectricity,
+    #add_listing_land_hasWater {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
+    }
+
+    label[for="add_listing_land_zoningType"],
+    label[for="add_listing_land_hasElectricity"],
+    label[for="add_listing_land_hasWater"] {
+        font-size: 0.85rem;
+    }
+} 

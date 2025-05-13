@@ -1,9 +1,23 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/select-type.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>Select Property Type</h1>
-    {{ form_start(form) }}
-        {{ form_row(form.propertyType) }}
-        <button class="btn btn-primary">Next</button>
-    {{ form_end(form) }}
+    <div class="property-type-container">
+        <h1 class="property-type-title">Select Property Type</h1>
+        {{ form_start(form, {'attr': {'class': 'property-type-form'}}) }}
+            {{ form_row(form.propertyType, {
+                'attr': {
+                    'class': 'property-type-select'
+                },
+                'label_attr': {
+                    'class': 'property-type-label'
+                }
+            }) }}
+            <button class="property-type-button">Next</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
