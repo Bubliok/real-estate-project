@@ -18,6 +18,9 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Enum\ListingTypeEnum;
+use App\Entity\Residential;
+use App\Entity\Commercial;
+use App\Entity\Land;
 
 class PropertyController extends AbstractController
 {
@@ -52,7 +55,20 @@ class PropertyController extends AbstractController
         }
 
         $cityId = $city->getId();
-        $properties = $propertyRepository->getByCityAndListingType($cityId, $listingTypeString);
+        
+        // Get filter parameters from query string
+        $residentialTypes = $request->query->get('residentialTypes');
+        $commercialTypes = $request->query->get('commercialTypes');
+        $landTypes = $request->query->get('landTypes');
+
+        $properties = $propertyRepository->getByCityAndListingType(
+            $cityId, 
+            $listingTypeString,
+            $residentialTypes ? explode(',', $residentialTypes) : null,
+            $commercialTypes ? explode(',', $commercialTypes) : null,
+            $landTypes ? explode(',', $landTypes) : null
+        );
+        
         $noPropertiesFound = empty($properties);
 
         return $this->render('listing/index.html.twig', [
@@ -60,6 +76,9 @@ class PropertyController extends AbstractController
             'cityName' => $cityName,
             'listingType' => $listingType->value,
             'noPropertiesFound' => $noPropertiesFound,
+            'selectedResidentialTypes' => $residentialTypes ? explode(',', $residentialTypes) : [],
+            'selectedCommercialTypes' => $commercialTypes ? explode(',', $commercialTypes) : [],
+            'selectedLandTypes' => $landTypes ? explode(',', $landTypes) : [],
         ]);
     }
 
@@ -79,43 +98,72 @@ class PropertyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $property ->setUser($this->getUser());
-            $property->setListingType(ListingTypeEnum::from($form->get('listingType')->getData()));
-            $property->setPrice((float)$form->get('price')->getData());
-            $property->setDescription($form->get('description')->getData());
-            $property->setCreatedAt(new \DateTimeImmutable());
-            $property->setModifiedAt(new \DateTimeImmutable());
-            $property->setViews(0);
+            try {
+                $property->setUser($this->getUser());
+                $property->setListingType(ListingTypeEnum::from($form->get('listingType')->getData()));
+                $property->setPrice((float)$form->get('price')->getData());
+                $property->setDescription($form->get('description')->getData());
+                $property->setCreatedAt(new \DateTimeImmutable());
+                $property->setModifiedAt(new \DateTimeImmutable());
+                $property->setViews(0);
+                
+                $entityManager->persist($property);
 
-            $images = $form->get('images')->getData();
-            if ($images) {
-                foreach ($images as $image) {
-                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
-
-                    try {
-                        $image->move($imageDirectory, $newFilename);
-                    } catch (FileException $e) {
-                        $this->addFlash('error', 'An error occurred while uploading the image. Please try again.');
-                        return $this->redirectToRoute('app_listing');
+                if ($type === 'residential') {
+                    $residential = $form->get('residential')->getData();
+                    if (!$residential) {
+                        throw new \Exception('Residential data is missing');
                     }
-
-                    $propertyImage = new PropertyImages();
-                    $propertyImage->setImagePath($imageDirectory . $newFilename);
-                    $propertyImage->setPropertyId($property);
-                    $entityManager->persist($propertyImage);
+                    $residential->setProperty($property);
+                    $entityManager->persist($residential);
+                } elseif ($type === 'commercial') {
+                    $commercial = $form->get('commercial')->getData();
+                    if (!$commercial) {
+                        throw new \Exception('Commercial data is missing');
+                    }
+                    $commercial->setProperty($property);
+                    $entityManager->persist($commercial);
+                } elseif ($type === 'land') {
+                    $land = $form->get('land')->getData();
+                    if (!$land) {
+                        throw new \Exception('Land data is missing');
+                    }
+                    $land->setProperty($property);
+                    $entityManager->persist($land);
                 }
+
+                $images = $form->get('images')->getData();
+                if ($images) {
+                    foreach ($images as $image) {
+                        $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                        $safeFilename = $slugger->slug($originalFilename);
+                        $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
+
+                        try {
+                            $image->move($imageDirectory, $newFilename);
+                        } catch (FileException $e) {
+                            throw new \Exception('An error occurred while uploading the image. Please try again.');
+                        }
+
+                        $propertyImage = new PropertyImages();
+                        $propertyImage->setImagePath($imageDirectory . $newFilename);
+                        $propertyImage->setPropertyId($property);
+                        $entityManager->persist($propertyImage);
+                    }
+                }
+
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Property listing created successfully!');
+                return $this->redirectToRoute('app_homepage');
+            } catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+                
+                $entityManager->clear();
             }
-
-            $entityManager->persist($property);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Property listing created successfully!');
-            return $this->redirectToRoute('app_homepage');
         }
 
-        return $this->render('listing/add-listing.html.twig', ['form' => $form->createView(),]);
+        return $this->render('listing/add-listing.html.twig', ['form' => $form->createView()]);
     }
 
     #[Route('/property/{id}', name: 'app_property_detail')]
