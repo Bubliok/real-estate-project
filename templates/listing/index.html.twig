@@ -8,43 +8,611 @@
     {% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+    <style>
+        .page-content {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            align-content: center;
+            padding: 0;
+        }
+
+        @media (max-width: 1220px) {
+            .page-content {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    {% if noPropertiesFound %}
-        <h1>No property found for search criteria.</h1>
-    {% else %}
-        <div class="container">
-            <form method="get" action="{{ path('app_show_listings', { listingType: listingType, cityName: cityName }) }}">
-                <select name="sort" id="sort" onchange="this.form.submit()">
-                    <option value="price_asc">Price (Low to High)</option>
-                    <option value="price_desc">Price (High to Low)</option>
-                    <option value="area_asc">Area (Small to Large)</option>
-                    <option value="area_desc">Area (Large to Small)</option>
-                </select>
+    <div class="page-content">
+        <div class="city-search-container" style="margin: 20px 0; display: flex; justify-content: center;">
+            <form method="get" action="{{ path('app_homepage') }}" class="city-search-form" style="width: 100%; max-width: 600px;">
+                <div style="display: flex; position: relative;">
+                    <input type="text" name="search" placeholder="Currently viewing {{ cityName }}. Search for a different city..." 
+                           style="flex: 1; padding: 10px 15px; border: 1px solid #ccc; border-radius: 4px 0 0 4px; font-size: 1rem;">
+                    <input type="hidden" name="listingType" value="{{ listingType }}">
+                    
+                    {% if propertyType != 'all' %}
+                        <input type="hidden" name="propertyType" value="{{ propertyType }}">
+                    {% endif %}
+                    
+                    {% if app.request.query.get('sort') %}
+                        <input type="hidden" name="sort" value="{{ app.request.query.get('sort') }}">
+                    {% endif %}
+                    
+                    {% if propertyType == 'residential' %}
+                        {% if selectedResidentialTypes is defined and selectedResidentialTypes|length > 0 %}
+                            <input type="hidden" name="residentialTypes" value="{{ selectedResidentialTypes|join(',') }}">
+                        {% endif %}
+                        {% if selectedBedrooms is defined and selectedBedrooms %}
+                            <input type="hidden" name="bedrooms" value="{{ selectedBedrooms }}">
+                        {% endif %}
+                        {% if selectedBathrooms is defined and selectedBathrooms %}
+                            <input type="hidden" name="bathrooms" value="{{ selectedBathrooms }}">
+                        {% endif %}
+                        {% if selectedFeatures is defined and selectedFeatures|length > 0 %}
+                            <input type="hidden" name="features" value="{{ selectedFeatures|join(',') }}">
+                        {% endif %}
+                    {% elseif propertyType == 'commercial' %}
+                        {% if selectedCommercialTypes is defined and selectedCommercialTypes|length > 0 %}
+                            <input type="hidden" name="commercialTypes" value="{{ selectedCommercialTypes|join(',') }}">
+                        {% endif %}
+                        {% if selectedCommercialFeatures is defined and selectedCommercialFeatures|length > 0 %}
+                            <input type="hidden" name="commercialFeatures" value="{{ selectedCommercialFeatures|join(',') }}">
+                        {% endif %}
+                    {% elseif propertyType == 'land' %}
+                        {% if selectedLandTypes is defined and selectedLandTypes|length > 0 %}
+                            <input type="hidden" name="landTypes" value="{{ selectedLandTypes|join(',') }}">
+                        {% endif %}
+                        {% if selectedLandFeatures is defined and selectedLandFeatures|length > 0 %}
+                            <input type="hidden" name="landFeatures" value="{{ selectedLandFeatures|join(',') }}">
+                        {% endif %}
+                    {% endif %}
+                    
+                    <button type="submit" style="background-color: #4a90e2; color: white; border: none; padding: 10px 20px; border-radius: 0 4px 4px 0; cursor: pointer;">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
             </form>
         </div>
+        
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash-message flash-{{ label }}" style="margin: 0 auto 20px; padding: 10px 15px; border-radius: 4px; text-align: center; max-width: 600px; 
+                    {% if label == 'error' %}background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2;{% endif %}
+                    {% if label == 'success' %}background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
-        <div class="real-estates">
-            {% for property in properties %}
-                <a href="{{ path('app_property_detail', { id: property.id }) }}" class="real-estate">
-                    {% if property.propertyImages|length > 0 %}
-                        <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="Property Image">
-                    {% else %}
-                        <img src="{{ asset('images/default-property.jpg') }}" alt="No Image Available">
-                    {% endif %}
-                    <span class="price">
+        {{ form_start(mainForm, {'attr': {'id': 'search-form', 'style': 'display: none;'}}) }}
+        <div style="display: none;">
+            {{ form_widget(mainForm.listingType, {'value': listingType}) }}
+
+            <div id="hiddenFields">
+                {{ form_row(mainForm.residentialTypes) }}
+                {{ form_row(mainForm.commercialTypes) }}
+                {{ form_row(mainForm.landTypes) }}
+            </div>
+        </div>
+        {{ form_end(mainForm) }}
+
+        <div class="page-header">
+            {% if noPropertiesFound %}
+                <div class="error-not-found">
+                    <h1>No property found for search criteria.</h1>
+                </div>
+            {% else %}
+                {% if propertyType is defined and propertyType == 'all' %}
+                {% endif %}
+
+                <div class="sort-container">
+                    <div class="property-type-shortcuts">
+                        <a href="{{ path('app_show_listings', {
+                            listingType: listingType,
+                            cityName: cityName,
+                            propertyType: 'residential',
+                            residentialTypes: 'house'
+                        }) }}" class="property-shortcut">
+                            <div class="property-shortcut-icon">
+                                <i class="fa-solid fa-house fa-xl"></i>
+                            </div>
+                            <span class="property-shortcut-label">Houses</span>
+                        </a>
+
+                        <a href="{{ path('app_show_listings', {
+                            listingType: listingType,
+                            cityName: cityName,
+                            propertyType: 'residential',
+                            residentialTypes: 'apartment'
+                        }) }}" class="property-shortcut">
+                            <div class="property-shortcut-icon">
+                                <i class="fa-solid fa-building fa-xl"></i>
+                            </div>
+                            <span class="property-shortcut-label">Apartments</span>
+                        </a>
+
+                        <a href="{{ path('app_show_listings', {
+                            listingType: listingType,
+                            cityName: cityName,
+                            propertyType: 'commercial',
+                            commercialTypes: 'office'
+                        }) }}" class="property-shortcut">
+                            <div class="property-shortcut-icon">
+                                <i class="fa-solid fa-briefcase fa-xl"></i>
+                            </div>
+                            <span class="property-shortcut-label">Offices</span>
+                        </a>
+
+                        <a href="{{ path('app_show_listings', {
+                            listingType: listingType,
+                            cityName: cityName,
+                            propertyType: 'commercial',
+                            commercialTypes: 'retail'
+                        }) }}" class="property-shortcut">
+                            <div class="property-shortcut-icon">
+                                <i class="fa-solid fa-shop fa-xl"></i>
+                            </div>
+                            <span class="property-shortcut-label">Retail</span>
+                        </a>
+
+                        <a href="{{ path('app_show_listings', {
+                            listingType: listingType,
+                            cityName: cityName,
+                            propertyType: 'land',
+                            landTypes: 'agricultural'
+                        }) }}" class="property-shortcut">
+                            <div class="property-shortcut-icon">
+                                <i class="fa-solid fa-wheat-awn fa-xl"></i>
+                            </div>
+                            <span class="property-shortcut-label">Agricultural</span>
+                        </a>
+
+                        <a href="{{ path('app_show_listings', {
+                            listingType: listingType,
+                            cityName: cityName,
+                            propertyType: 'land',
+                            landTypes: 'industrial'
+                        }) }}" class="property-shortcut">
+                            <div class="property-shortcut-icon">
+                                <i class="fa-solid fa-industry fa-xl"></i>
+                            </div>
+                            <span class="property-shortcut-label">Industrial</span>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="filter-sort-container">
+                    <h1>{{ properties | length }} matching properties found in {{ cityName }}</h1>
+{#                    <a href="{{ path('app_show_listings', { cityName: cityName }) }}">#}
+
+                        <form method="get"
+                              action="{{ path('app_show_listings', { listingType: listingType, cityName: cityName }) }}"
+                              class="sort-form">
+                            {% if propertyType != 'all' %}
+                                <input type="hidden" name="propertyType" value="{{ propertyType }}">
+                            {% endif %}
+
+                            {% if propertyType == 'residential' %}
+                                {% if selectedResidentialTypes is defined and selectedResidentialTypes|length > 0 %}
+                                    <input type="hidden" name="residentialTypes"
+                                           value="{{ selectedResidentialTypes|join(',') }}">
+                                {% endif %}
+                                {% if selectedBedrooms is defined and selectedBedrooms %}
+                                    <input type="hidden" name="bedrooms" value="{{ selectedBedrooms }}">
+                                {% endif %}
+                                {% if selectedBathrooms is defined and selectedBathrooms %}
+                                    <input type="hidden" name="bathrooms" value="{{ selectedBathrooms }}">
+                                {% endif %}
+                                {% if selectedFeatures is defined and selectedFeatures|length > 0 %}
+                                    <input type="hidden" name="features" value="{{ selectedFeatures|join(',') }}">
+                                {% endif %}
+                            {% elseif propertyType == 'commercial' %}
+                                {% if selectedCommercialTypes is defined and selectedCommercialTypes|length > 0 %}
+                                    <input type="hidden" name="commercialTypes"
+                                           value="{{ selectedCommercialTypes|join(',') }}">
+                                {% endif %}
+                                {% if selectedCommercialFeatures is defined and selectedCommercialFeatures|length > 0 %}
+                                    <input type="hidden" name="commercialFeatures"
+                                           value="{{ selectedCommercialFeatures|join(',') }}">
+                                {% endif %}
+                            {% elseif propertyType == 'land' %}
+                                {% if selectedLandTypes is defined and selectedLandTypes|length > 0 %}
+                                    <input type="hidden" name="landTypes" value="{{ selectedLandTypes|join(',') }}">
+                                {% endif %}
+                                {% if selectedLandFeatures is defined and selectedLandFeatures|length > 0 %}
+                                    <input type="hidden" name="landFeatures"
+                                           value="{{ selectedLandFeatures|join(',') }}">
+                                {% endif %}
+                            {% endif %}
+
+                            <select name="sort" id="sort" onchange="this.form.submit()">
+                                <option value="price_asc"
+                                        {% if app.request.query.get('sort') == 'price_asc' %}selected{% endif %}>Price
+                                    (Low to High)
+                                </option>
+                                <option value="price_desc"
+                                        {% if app.request.query.get('sort') == 'price_desc' %}selected{% endif %}>Price
+                                    (High to Low)
+                                </option>
+                                <option value="area_asc"
+                                        {% if app.request.query.get('sort') == 'area_asc' %}selected{% endif %}>Area
+                                    (Small to Large)
+                                </option>
+                                <option value="area_desc"
+                                        {% if app.request.query.get('sort') == 'area_desc' %}selected{% endif %}>Area
+                                    (Large to Small)
+                                </option>
+                            </select>
+                        </form>
+
+                        <button type="button"
+                                class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
+                                onclick="openFilterModal()">
+                            <i class="fa-solid fa-filter mr-2"></i>Filters
+                        </button>
+                </div>
+
+                {% include 'fragments/filters.html.twig' %}
+
+                <div class="real-estates">
+                    {% for property in properties %}
+                        <a href="{{ path('app_property_detail', { id: property.id }) }}" class="real-estate">
+                            {% if property.propertyImages|length > 0 %}
+                                <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="Property Image">
+                            {% else %}
+                                <img src="{{ asset('images/default-property.jpg') }}" alt="No Image Available">
+                            {% endif %}
+                            <span class="price">
                         €{{ property.price }}
                         <span class="price-per-sqm">({{ (property.price / property.area)|round(2) }} EUR/m&sup2;)</span>
                     </span>
-                    <div class="real-estate-content">
-                        <h2>{{ property.name }}</h2>
-                        <h3>{{ property.cityId.name }}, {{ property.regionId.name }}</h3>
-                        <p>Area: {{ property.area }} m&sup2;</p>
-                        <p>Address: {{ property.address }}</p>
-                        <p>Type: {{ property.listingType.value }}</p>
-                        <p>Created: {{ property.createdAt|date('d.m.Y') }}</p>
-                    </div>
-                </a>
-            {% endfor %}
+                            <div class="real-estate-content">
+                                <h2>{{ property.name }}</h2>
+                                <h3>{{ property.cityId.name }}, {{ property.regionId.name }}</h3>
+                                <p>Area: {{ property.area }} m&sup2;</p>
+                                <p>Address: {{ property.address }}</p>
+                                <p>Type: {{ property.listingType.value }}</p>
+                                <p>Created: {{ property.createdAt|date('d.m.Y') }}</p>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fixModalClickability();
+
+            if (document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]')) {
+                document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = '{{ listingType }}';
+            }
+
+            const listingTypeRadios = document.querySelectorAll('.listing-type-radio');
+            if (listingTypeRadios.length > 0) {
+                listingTypeRadios.forEach(function (radio) {
+                    if (radio.value === '{{ listingType }}') {
+                        radio.checked = true;
+                        radio.parentElement.classList.add('active');
+                    } else {
+                        radio.checked = false;
+                        radio.parentElement.classList.remove('active');
+                    }
+                });
+            }
+
+            if (document.getElementById('activePropertyType')) {
+                document.getElementById('activePropertyType').value = '{{ propertyType|default('all') }}';
+
+                const propertyType = '{{ propertyType|default('all') }}';
+
+                if (propertyType === 'all') {
+                    document.getElementById('tab_all').checked = true;
+                    document.getElementById('allPanel').classList.add('active');
+                    document.querySelectorAll('.filter-panel:not(#allPanel)').forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                } else {
+                    const propertyTabRadios = document.querySelectorAll('.filter-tab-radio');
+                    propertyTabRadios.forEach(function (radio) {
+                        if (radio.value === propertyType) {
+                            radio.checked = true;
+                            showTab(radio.value);
+                        }
+                    });
+                }
+            }
+
+            document.querySelectorAll('.filter-tab-radio').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    const tabName = this.value;
+                    showTab(tabName);
+                    document.getElementById('activePropertyType').value = tabName;
+                    clearOtherTabSelections(tabName);
+                });
+            });
+
+            document.querySelectorAll('.listing-type-radio').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    document.querySelectorAll('.listing-type-option').forEach(option => {
+                        option.classList.remove('active');
+                    });
+
+                    this.parentElement.classList.add('active');
+
+                    document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = this.value;
+                });
+            });
+
+            setupSelectAllCheckboxes('residential');
+            setupSelectAllCheckboxes('commercial');
+            setupSelectAllCheckboxes('land');
+
+            document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+                const form = document.createElement('form');
+                form.method = 'get';
+                form.action = '{{ path('app_show_listings', { listingType: listingType, cityName: cityName }) }}';
+
+                const activePropertyType = document.getElementById('activePropertyType').value;
+                const propertyTypeInput = document.createElement('input');
+                propertyTypeInput.type = 'hidden';
+                propertyTypeInput.name = 'propertyType';
+                propertyTypeInput.value = activePropertyType;
+                form.appendChild(propertyTypeInput);
+
+                const selectedListingType = document.querySelector('input[name="listing_type_selection"]:checked');
+                if (selectedListingType) {
+                    const listingTypeInput = document.createElement('input');
+                    listingTypeInput.type = 'hidden';
+                    listingTypeInput.name = 'listingType';
+                    listingTypeInput.value = selectedListingType.value;
+                    form.appendChild(listingTypeInput);
+                }
+
+                if (activePropertyType === 'residential') {
+                    addCheckboxValues(form, 'residential_type_selection[]', 'residentialTypes');
+                    addRadioValue(form, 'bedrooms');
+                    addRadioValue(form, 'bathrooms');
+                    addCheckboxValues(form, 'features[]', 'features');
+                } else if (activePropertyType === 'commercial') {
+                    addCheckboxValues(form, 'commercial_type_selection[]', 'commercialTypes');
+                    addCheckboxValues(form, 'commercial_features[]', 'commercialFeatures');
+                } else if (activePropertyType === 'land') {
+                    addCheckboxValues(form, 'land_type_selection[]', 'landTypes');
+                    addCheckboxValues(form, 'land_features[]', 'landFeatures');
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+                closeFilterModal();
+            });
+        });
+
+        function fixModalClickability() {
+            const filterModal = document.getElementById('filterModal');
+            if (filterModal) {
+                const formElements = filterModal.querySelectorAll('input, button, label, select');
+                formElements.forEach(function (element) {
+                    element.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                    });
+                });
+
+                filterModal.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                });
+            }
+
+            const modalBackdrop = document.getElementById('modalBackdrop');
+            if (modalBackdrop) {
+                modalBackdrop.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    closeFilterModal();
+                    return false;
+                });
+            }
+        }
+
+        function addCheckboxValues(form, checkboxName, paramName) {
+            const checkboxes = document.querySelectorAll(`input[name="${checkboxName}"]:checked`);
+            if (checkboxes.length > 0) {
+                const values = Array.from(checkboxes).map(cb => cb.value).join(',');
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = paramName;
+                input.value = values;
+                form.appendChild(input);
+            }
+        }
+
+        function addRadioValue(form, radioName) {
+            const radio = document.querySelector(`input[name="${radioName}"]:checked`);
+            if (radio && radio.value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = radioName;
+                input.value = radio.value;
+                form.appendChild(input);
+            }
+        }
+
+        function setupSelectAllCheckboxes(type) {
+            const selectAllCheckbox = document.getElementById(`${type}_all`);
+            const typeCheckboxes = document.querySelectorAll(`.${type}-type-checkbox.type-option`);
+
+            if (!selectAllCheckbox || typeCheckboxes.length === 0) return;
+
+            selectAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+
+                typeCheckboxes.forEach(function (checkbox) {
+                    checkbox.checked = isChecked;
+                });
+            });
+
+            typeCheckboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+
+                    const allChecked = Array.from(typeCheckboxes).every(cb => cb.checked);
+                    if (allChecked) {
+                        selectAllCheckbox.checked = true;
+                    }
+                });
+            });
+        }
+
+        function clearOtherTabSelections(activeTab) {
+            if (activeTab === 'all') {
+                clearResidentialSelections();
+                clearCommercialSelections();
+                clearLandSelections();
+                selectAllTab();
+                return;
+            }
+
+            if (activeTab !== 'residential') {
+                clearResidentialSelections();
+            }
+
+            if (activeTab !== 'commercial') {
+                clearCommercialSelections();
+            }
+
+            if (activeTab !== 'land') {
+                clearLandSelections();
+            }
+        }
+
+        function clearResidentialSelections() {
+            document.querySelectorAll('input[name="residential_type_selection[]"]').forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+
+            if (document.getElementById('residential_all')) {
+                document.getElementById('residential_all').checked = false;
+            }
+
+            if (document.getElementById('bedrooms_any')) {
+                document.getElementById('bedrooms_any').checked = true;
+            }
+
+            if (document.getElementById('bathrooms_any')) {
+                document.getElementById('bathrooms_any').checked = true;
+            }
+
+            document.querySelectorAll('[name="features[]"]').forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+        }
+
+        function clearCommercialSelections() {
+            document.querySelectorAll('input[name="commercial_type_selection[]"]').forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+
+            if (document.getElementById('commercial_all')) {
+                document.getElementById('commercial_all').checked = false;
+            }
+
+            document.querySelectorAll('[name="commercial_features[]"]').forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+        }
+
+        function clearLandSelections() {
+            document.querySelectorAll('input[name="land_type_selection[]"]').forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+
+            if (document.getElementById('land_all')) {
+                document.getElementById('land_all').checked = false;
+            }
+
+            document.querySelectorAll('[name="land_features[]"]').forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+        }
+
+        function openFilterModal() {
+            document.getElementById('modalBackdrop').style.display = 'block';
+            document.getElementById('filterModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            const errorMsg = document.getElementById('filterErrorMessage');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
+
+            const filterModal = document.getElementById('filterModal');
+            filterModal.style.display = 'none';
+            void filterModal.offsetWidth;
+            filterModal.style.removeProperty('display');
+            filterModal.classList.add('open');
+        }
+
+        function closeFilterModal() {
+            document.getElementById('modalBackdrop').style.display = 'none';
+            document.getElementById('filterModal').classList.remove('open');
+            document.body.style.overflow = 'auto';
+            return false;
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.filter-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(tabName + 'Panel').classList.add('active');
+
+            if (tabName !== 'all') {
+                document.querySelector(`[for="tab_${tabName}"]`).classList.add('active');
+            }
+        }
+
+        function selectAllTab() {
+            document.getElementById('tab_all').checked = true;
+
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.querySelectorAll('.filter-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById('allPanel').classList.add('active');
+        }
+
+        function resetToAllProperties() {
+            document.getElementById('activePropertyType').value = 'all';
+            selectAllTab();
+            clearResidentialSelections();
+            clearCommercialSelections();
+            clearLandSelections();
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeFilterModal();
+            }
+        });
+    </script>
 {% endblock %}

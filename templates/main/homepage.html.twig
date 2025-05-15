@@ -3,156 +3,303 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <style>
-        .filter-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .filter-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 300px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            z-index: 1000;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-        }
-        
-        .filter-content.show {
-            display: block;
-        }
-        
-        .filter-tabs {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-        
-        .filter-tab {
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-        }
-        
-        .filter-tab.active {
-            border-bottom-color: #3b82f6;
-            color: #3b82f6;
-        }
-        
-        .filter-panel {
-            display: none;
-        }
-        
-        .filter-panel.active {
-            display: block;
-        }
-        
-        .property-type-select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.375rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .search-container {
-            position: relative;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="flex justify-center items-center bg-cover bg-center"
+    <div class="flex justify-center items-center bg-cover bg-center vh-100"
          style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
         <div class="bg-white p-8 rounded-lg shadow-lg">
-            {{ form_start(mainForm, {'attr': {'class': 'space-y-4'}}) }}
+            {{ form_start(mainForm, {'attr': {'class': 'space-y-4', 'id': 'search-form'}}) }}
             <div class="search-container">
-                <div class="flex items-center space-x-4">
-                    <!-- Search Bar -->
-                    {{ form_widget(mainForm.search, {
-                        'attr': {
-                            'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300'
-                        }
-                    }) }}
+            <div class="flex items-center space-x-4">
 
-                    <!-- Filter Button -->
-                    <button type="button" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200" onclick="toggleFilter(event)">
+                {{ form_widget(mainForm.search, {
+                    'attr': {
+                            'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300',
+                            'placeholder': 'Search for a city...'
+                    }
+                }) }}
+
+                    <button type="button" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
+                            onclick="openFilterModal()">
                         Filters
                     </button>
-
-                    <!-- Toggle Buttons -->
-                    {{ form_widget(mainForm.listingType, {'attr': {'id': 'listingTypeInput'}}) }}
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                        Lookup
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                        Search
                     </button>
                 </div>
 
-                <!-- Filter Dropdown -->
-                <div class="filter-dropdown">
-                    <div id="filterContent" class="filter-content">
-                        <div class="filter-tabs">
-                            <div class="filter-tab active" onclick="showTab('residential', event)">Residential</div>
-                            <div class="filter-tab" onclick="showTab('commercial', event)">Commercial</div>
-                            <div class="filter-tab" onclick="showTab('land', event)">Land</div>
-                        </div>
-                        
-                        <div id="residentialPanel" class="filter-panel active">
-                            {{ form_widget(mainForm.residentialTypes) }}
-                        </div>
-                        
-                        <div id="commercialPanel" class="filter-panel">
-                            {{ form_widget(mainForm.commercialTypes) }}
-                        </div>
-                        
-                        <div id="landPanel" class="filter-panel">
-                            {{ form_widget(mainForm.landTypes) }}
-                        </div>
+                <div style="display: none;">
+                    {{ form_widget(mainForm.listingType, {'value': 'sale'}) }}
+
+                    <div id="hiddenFields">
+                        {{ form_row(mainForm.residentialTypes) }}
+                        {{ form_row(mainForm.commercialTypes) }}
+                        {{ form_row(mainForm.landTypes) }}
                     </div>
                 </div>
+
+
+                {{ include('fragments/filters.html.twig') }}
+
             </div>
+
             {{ form_end(mainForm) }}
         </div>
     </div>
 
     <script>
-        function toggleFilter(event) {
-            event.stopPropagation();
-            const filterContent = document.getElementById('filterContent');
-            filterContent.classList.toggle('show');
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = 'sale';
+
+            document.querySelectorAll('.filter-tab-radio').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    const tabName = this.value;
+                    showTab(tabName);
+                    document.getElementById('activePropertyType').value = tabName;
+                    clearOtherTabSelections(tabName);
+                });
+            });
+            
+            document.getElementById('activePropertyType').value = 'all';
+            document.getElementById('tab_all').checked = true;
+            selectAllTab();
+            
+            document.querySelectorAll('.listing-type-radio').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    document.querySelectorAll('.listing-type-option').forEach(option => {
+                        option.classList.remove('active');
+                    });
+                    
+                    this.parentElement.classList.add('active');
+                    document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = this.value;
+                });
+            });
+
+            setupSelectAllCheckboxes('residential');
+            setupSelectAllCheckboxes('commercial');
+            setupSelectAllCheckboxes('land');
+
+            document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+                const citySearchField = document.querySelector('input[name="{{ mainForm.search.vars.full_name }}"]');
+                if (!citySearchField || !citySearchField.value.trim()) {
+                    const errorMsg = document.getElementById('filterErrorMessage');
+                    if (errorMsg) {
+                        errorMsg.style.display = 'block';
+                        document.querySelector('.filter-modal-body').scrollTop = 0;
+                    }
+                    return false;
+                }
+                
+                const errorMsg = document.getElementById('filterErrorMessage');
+                if (errorMsg) {
+                    errorMsg.style.display = 'none';
+                }
+                
+                const activePropertyType = document.getElementById('activePropertyType').value;
+                const selectedListingType = document.querySelector('input[name="listing_type_selection"]:checked');
+                if (selectedListingType) {
+                    document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = selectedListingType.value;
+                }
+
+                if (activePropertyType === 'residential') {
+                    const selectedTypes = [];
+                    document.querySelectorAll('input[name="residential_type_selection[]"]:checked').forEach(function (checkbox) {
+                        selectedTypes.push(checkbox.value);
+                    });
+
+                    if (selectedTypes.length > 0) {
+                        const selectElement = document.querySelector('select[name="{{ mainForm.residentialTypes.vars.full_name }}"]');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = selectedTypes.includes(selectElement.options[i].value);
+                        }
+                    }
+                } else if (activePropertyType === 'commercial') {
+                    const selectedTypes = [];
+                    document.querySelectorAll('input[name="commercial_type_selection[]"]:checked').forEach(function (checkbox) {
+                        selectedTypes.push(checkbox.value);
+                    });
+
+                    if (selectedTypes.length > 0) {
+                        const selectElement = document.querySelector('select[name="{{ mainForm.commercialTypes.vars.full_name }}"]');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = selectedTypes.includes(selectElement.options[i].value);
+                        }
+                    }
+                } else if (activePropertyType === 'land') {
+                    const selectedTypes = [];
+                    document.querySelectorAll('input[name="land_type_selection[]"]:checked').forEach(function (checkbox) {
+                        selectedTypes.push(checkbox.value);
+                    });
+
+                    if (selectedTypes.length > 0) {
+                        const selectElement = document.querySelector('select[name="{{ mainForm.landTypes.vars.full_name }}"]');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = selectedTypes.includes(selectElement.options[i].value);
+                        }
+                    }
+                }
+
+                document.getElementById('search-form').submit();
+                closeFilterModal();
+            });
+        });
+
+        function setupSelectAllCheckboxes(type) {
+            const selectAllCheckbox = document.getElementById(`${type}_all`);
+            const typeCheckboxes = document.querySelectorAll(`.${type}-type-checkbox.type-option`);
+            selectAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+
+                typeCheckboxes.forEach(function (checkbox) {
+                    checkbox.checked = isChecked;
+                });
+            });
+
+            typeCheckboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+
+                    const allChecked = Array.from(typeCheckboxes).every(cb => cb.checked);
+                    if (allChecked) {
+                        selectAllCheckbox.checked = true;
+                    }
+                });
+            });
+        }
+        
+        function clearOtherTabSelections(activeTab) {
+            if (activeTab === 'all') {
+                clearResidentialSelections();
+                clearCommercialSelections();
+                clearLandSelections();
+                selectAllTab();
+                return;
+            }
+
+            if (activeTab !== 'residential') {
+                clearResidentialSelections();
+            }
+
+            if (activeTab !== 'commercial') {
+                clearCommercialSelections();
+            }
+
+            if (activeTab !== 'land') {
+                clearLandSelections();
+            }
         }
 
-        function showTab(tabName, event) {
-            event.stopPropagation();
-            // Hide all panels
+        function selectAllTab() {
+            document.getElementById('tab_all').checked = true;
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.querySelectorAll('.filter-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById('allPanel').classList.add('active');
+        }
+
+        function clearResidentialSelections() {
+            document.querySelectorAll('input[name="residential_type_selection[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+            document.getElementById('residential_all').checked = false;
+
+                document.getElementById('bedrooms_any').checked = true;
+                document.getElementById('bathrooms_any').checked = true;
+                
+            document.querySelectorAll('[name="features[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+            }
+            
+        function clearCommercialSelections() {
+            document.querySelectorAll('input[name="commercial_type_selection[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+            document.getElementById('commercial_all').checked = false;
+
+            document.querySelectorAll('[name="commercial_features[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+            }
+            
+        function clearLandSelections() {
+            document.querySelectorAll('input[name="land_type_selection[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+            document.getElementById('land_all').checked = false;
+            document.querySelectorAll('[name="land_features[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+        }
+        
+        function openFilterModal() {
+            document.getElementById('modalBackdrop').style.display = 'block';
+            document.getElementById('filterModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            
+            const errorMsg = document.getElementById('filterErrorMessage');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
+        }
+        
+        function closeFilterModal() {
+            document.getElementById('modalBackdrop').style.display = 'none';
+            document.getElementById('filterModal').classList.remove('open');
+            document.body.style.overflow = 'auto';
+            return false;
+        }
+
+        function showTab(tabName) {
             document.querySelectorAll('.filter-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
             
-            // Remove active class from all tabs
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             
-            // Show selected panel and activate tab
             document.getElementById(tabName + 'Panel').classList.add('active');
-            event.target.classList.add('active');
+            
+            if (tabName !== 'all') {
+            document.querySelector(`[for="tab_${tabName}"]`).classList.add('active');
+            }
         }
 
-        // Close the dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const filterContent = document.getElementById('filterContent');
-            const filterDropdown = document.querySelector('.filter-dropdown');
-            
-            if (!filterDropdown.contains(event.target)) {
-                filterContent.classList.remove('show');
+        document.getElementById('modalBackdrop').addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            closeFilterModal();
+            return false;
+        });
+        
+        document.getElementById('filterModal').addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+        
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeFilterModal();
             }
         });
+
+        function resetToAllProperties() {
+            document.getElementById('activePropertyType').value = 'all';
+            selectAllTab();
+            clearResidentialSelections();
+            clearCommercialSelections();
+            clearLandSelections();
+        }
     </script>
 {% endblock %}
