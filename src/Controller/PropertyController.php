@@ -18,9 +18,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Enum\ListingTypeEnum;
-use App\Entity\Residential;
-use App\Entity\Commercial;
-use App\Entity\Land;
+
+use App\Form\MainFormType;
 
 class PropertyController extends AbstractController
 {
@@ -56,30 +55,87 @@ class PropertyController extends AbstractController
 
         $cityId = $city->getId();
         
-        // Get filter parameters from query string
-        $residentialTypes = $request->query->get('residentialTypes');
-        $commercialTypes = $request->query->get('commercialTypes');
-        $landTypes = $request->query->get('landTypes');
+        $propertyType = $request->query->get('propertyType', 'all');
+        if (!in_array($propertyType, ['residential', 'commercial', 'land', 'all'])) {
+            $propertyType = 'all';
+        }
+        
+        $filters = [
+            'propertyType' => $propertyType
+        ];
+        
+        if ($request->query->has('sort')) {
+            $filters['sort'] = $request->query->get('sort');
+        }
 
+        if ($propertyType === 'residential') {
+            $residentialTypes = $request->query->get('residentialTypes');
+            $filters['residentialTypes'] = $residentialTypes ? explode(',', $residentialTypes) : null;
+
+            $bedrooms = $request->query->get('bedrooms');
+            $bathrooms = $request->query->get('bathrooms');
+            $features = $request->query->get('features');
+            
+            if (!empty($bedrooms)) {
+                $filters['bedrooms'] = $bedrooms;
+            }
+            if (!empty($bathrooms)) {
+                $filters['bathrooms'] = $bathrooms;
+            }
+            if (!empty($features)) {
+                $filters['features'] = explode(',', $features);
+            }
+        } elseif ($propertyType === 'commercial') {
+            $commercialTypes = $request->query->get('commercialTypes');
+            $filters['commercialTypes'] = $commercialTypes ? explode(',', $commercialTypes) : null;
+
+            $commercialFeatures = $request->query->get('commercialFeatures');
+            if (!empty($commercialFeatures)) {
+                $filters['commercialFeatures'] = explode(',', $commercialFeatures);
+            }
+        } elseif ($propertyType === 'land') {
+            $landTypes = $request->query->get('landTypes');
+            $filters['landTypes'] = $landTypes ? explode(',', $landTypes) : null;
+
+            $landFeatures = $request->query->get('landFeatures');
+            if (!empty($landFeatures)) {
+                $filters['landFeatures'] = explode(',', $landFeatures);
+            }
+        }
+        
         $properties = $propertyRepository->getByCityAndListingType(
             $cityId, 
             $listingTypeString,
-            $residentialTypes ? explode(',', $residentialTypes) : null,
-            $commercialTypes ? explode(',', $commercialTypes) : null,
-            $landTypes ? explode(',', $landTypes) : null
+            $filters
         );
         
         $noPropertiesFound = empty($properties);
+        
+        $mainForm = $this->createForm(MainFormType::class);
 
-        return $this->render('listing/index.html.twig', [
+        $viewData = [
             'properties' => $properties,
             'cityName' => $cityName,
             'listingType' => $listingType->value,
+            'propertyType' => $propertyType,
             'noPropertiesFound' => $noPropertiesFound,
-            'selectedResidentialTypes' => $residentialTypes ? explode(',', $residentialTypes) : [],
-            'selectedCommercialTypes' => $commercialTypes ? explode(',', $commercialTypes) : [],
-            'selectedLandTypes' => $landTypes ? explode(',', $landTypes) : [],
-        ]);
+            'mainForm' => $mainForm->createView(),
+        ];
+        
+        if ($propertyType === 'residential') {
+            $viewData['selectedResidentialTypes'] = $filters['residentialTypes'] ?? [];
+            $viewData['selectedBedrooms'] = $filters['bedrooms'] ?? null;
+            $viewData['selectedBathrooms'] = $filters['bathrooms'] ?? null;
+            $viewData['selectedFeatures'] = $filters['features'] ?? [];
+        } elseif ($propertyType === 'commercial') {
+            $viewData['selectedCommercialTypes'] = $filters['commercialTypes'] ?? [];
+            $viewData['selectedCommercialFeatures'] = $filters['commercialFeatures'] ?? [];
+        } elseif ($propertyType === 'land') {
+            $viewData['selectedLandTypes'] = $filters['landTypes'] ?? [];
+            $viewData['selectedLandFeatures'] = $filters['landFeatures'] ?? [];
+        }
+
+        return $this->render('listing/index.html.twig', $viewData);
     }
 
 //    ----------------------------------
