@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Enum\Feature;
+use App\Entity\Feature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +14,15 @@ class FeatureRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Feature::class);
+    }
+
+    function getAllFeaturesByProperty(int $propertyId): array
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->where('f.propertyId = :propertyId')
+            ->setParameter('propertyId', $propertyId)
+            ->orderBy('f.position', 'ASC');
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

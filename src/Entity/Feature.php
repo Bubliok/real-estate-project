@@ -24,6 +24,9 @@ class Feature
     #[ORM\Column(length: 30)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $icon = null;
+
     public function __construct()
     {
         $this->properties = new ArrayCollection();
@@ -77,6 +80,18 @@ class Feature
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): static
+    {
+        $this->icon = $icon;
 
         return $this;
     }

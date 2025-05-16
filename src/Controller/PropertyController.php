@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Feature;
 use App\Entity\Property;
 use App\Entity\PropertyImages;
 use App\Form\AddListingType;
 use App\Form\PropertyTypeForm;
 use App\Repository\CityRepository;
 use App\Repository\PropertyRepository;
+use App\Repository\FeatureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -223,10 +225,17 @@ class PropertyController extends AbstractController
     }
 
     #[Route('/property/{id}', name: 'app_property_detail')]
-    public function detail(Property $property): Response
+    public function detail(Property $property, EntityManagerInterface $entityManager): Response
     {
+        $property->setViews($property->getViews() + 1);
+        $entityManager->persist($property);
+        $entityManager->flush();
+        
+        $features = $property->getFeatures();
+        
         return $this->render('property/detail.html.twig', [
-            'property' => $property
+            'property' => $property,
+            'features' => $features
         ]);
     }
 }
