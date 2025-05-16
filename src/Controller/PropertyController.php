@@ -142,7 +142,7 @@ class PropertyController extends AbstractController
 
 //    ----------------------------------
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     #[Route('/listing/add/{type}', name: 'app_add_listing')]
     public function listing(string $type, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger,
                             #[Autowire('public/assets/images/properties/')] string $imageDirectory

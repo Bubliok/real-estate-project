@@ -51,3 +51,5 @@ compose.yaml
 orcl-model/v2/
 
 composer.json
+
+templates/old_detail.html.twig

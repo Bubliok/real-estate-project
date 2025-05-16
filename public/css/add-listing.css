@@ -40,7 +40,6 @@
     letter-spacing: 0.3px;
 }
 
-/* Text Input Styling */
 .add-listing-field[type="text"],
 .add-listing-field[type="email"],
 .add-listing-field[type="number"],
@@ -64,7 +63,6 @@ input[type="password"].add-listing-field {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Textarea Styling */
 .add-listing-field[type="textarea"],
 textarea.add-listing-field {
     width: 100%;
@@ -81,7 +79,6 @@ textarea.add-listing-field {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Select Styling */
 .add-listing-field[type="select"],
 select.add-listing-field,
 select.form-select {
@@ -102,7 +99,6 @@ select.form-select {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Checkbox Styling */
 .add-listing-field[type="checkbox"],
 input[type="checkbox"].add-listing-field {
     width: 1.4rem;
@@ -118,7 +114,6 @@ input[type="checkbox"].add-listing-field {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Radio Button Styling */
 .add-listing-field[type="radio"],
 input[type="radio"].add-listing-field {
     width: 1.4rem;
@@ -134,7 +129,6 @@ input[type="radio"].add-listing-field {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Hover States */
 .add-listing-field:hover,
 textarea.add-listing-field:hover,
 select.add-listing-field:hover {
@@ -142,7 +136,6 @@ select.add-listing-field:hover {
     background-color: #ffffff;
 }
 
-/* Focus States */
 .add-listing-field:focus,
 textarea.add-listing-field:focus,
 select.add-listing-field:focus {
@@ -152,7 +145,6 @@ select.add-listing-field:focus {
     outline: none;
 }
 
-/* Error States */
 .add-listing-field.error,
 textarea.add-listing-field.error,
 select.add-listing-field.error,
@@ -166,7 +158,6 @@ input[type="password"].add-listing-field.error {
     background-color: #fef2f2;
 }
 
-/* Button Styling */
 .add-listing-button {
     background-color: #3b82f6;
     color: #ffffff;
@@ -196,7 +187,6 @@ input[type="password"].add-listing-field.error {
     box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
 }
 
-/* Help Text */
 .help-text {
     font-size: 0.95rem;
     color: #64748b;
@@ -204,14 +194,12 @@ input[type="password"].add-listing-field.error {
     font-weight: 500;
 }
 
-/* Required Field Indicator */
 .required-field::after {
     content: '*';
     color: #ef4444;
     margin-left: 0.3rem;
 }
 
-/* Appended Form Section Styling */
 .appended-form-section {
     margin-top: 2rem;
     padding: 2rem;
@@ -295,7 +283,6 @@ input[type="password"].add-listing-field.error {
     transform: translateY(0);
 }
 
-/* Add button styling for appended sections */
 .add-more-button {
     background-color: #3b82f6;
     color: #ffffff;
@@ -322,7 +309,6 @@ input[type="password"].add-listing-field.error {
     transform: translateY(0);
 }
 
-/* Section title for appended sections */
 .appended-section-title {
     font-size: 1.4rem;
     color: #1a1a1a;
@@ -332,7 +318,6 @@ input[type="password"].add-listing-field.error {
     border-bottom: 2px solid #e2e8f0;
 }
 
-/* Responsive styles for appended sections */
 @media (max-width: 768px) {
     .appended-form-section {
         padding: 1.5rem;
@@ -352,7 +337,6 @@ input[type="password"].add-listing-field.error {
     }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .add-listing-container {
         margin: 1.5rem;
@@ -413,7 +397,6 @@ input[type="password"].add-listing-field.error {
     transition: all 0.3s ease;
 }
 
-/* Commercial Type Container */
 .commercial-type-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -421,7 +404,6 @@ input[type="password"].add-listing-field.error {
     margin-bottom: 1.5rem;
 }
 
-/* Commercial Type Specific Fields */
 #add_listing_commercial_commercialType,
 #add_listing_commercial_rooms,
 #add_listing_commercial_bathrooms,
@@ -441,7 +423,6 @@ input[type="password"].add-listing-field.error {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Commercial Type Labels */
 label[for="add_listing_commercial_commercialType"],
 label[for="add_listing_commercial_rooms"],
 label[for="add_listing_commercial_bathrooms"],
@@ -459,7 +440,6 @@ label[for="add_listing_commercial_yearBuilt"] {
     letter-spacing: 0.3px;
 }
 
-/* Commercial Type Select Specific Styling */
 #add_listing_commercial_commercialType,
 #add_listing_commercial_isFurnished,
 #add_listing_commercial_hasParking {
@@ -472,7 +452,6 @@ label[for="add_listing_commercial_yearBuilt"] {
     cursor: pointer;
 }
 
-/* Responsive styles for commercial type fields */
 @media (max-width: 768px) {
     .commercial-type-container {
         grid-template-columns: repeat(2, 1fr);
@@ -508,7 +487,6 @@ label[for="add_listing_commercial_yearBuilt"] {
     }
 }
 
-/* Residential Type Container */
 .residential-type-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -516,7 +494,6 @@ label[for="add_listing_commercial_yearBuilt"] {
     margin-bottom: 1.5rem;
 }
 
-/* Residential Type Form Groups */
 .form-group:has(#add_listing_residential_residentialType),
 .form-group:has(#add_listing_residential_rooms),
 .form-group:has(#add_listing_residential_bedrooms),
@@ -534,7 +511,6 @@ label[for="add_listing_commercial_yearBuilt"] {
     transition: all 0.3s ease;
 }
 
-/* Residential Type Specific Fields */
 #add_listing_residential_residentialType,
 #add_listing_residential_rooms,
 #add_listing_residential_bedrooms,
@@ -558,7 +534,6 @@ label[for="add_listing_commercial_yearBuilt"] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Residential Type Labels */
 label[for="add_listing_residential_residentialType"],
 label[for="add_listing_residential_rooms"],
 label[for="add_listing_residential_bedrooms"],
@@ -580,7 +555,6 @@ label[for="add_listing_residential_buildType"] {
     letter-spacing: 0.3px;
 }
 
-/* Residential Type Select Specific Styling */
 #add_listing_residential_residentialType,
 #add_listing_residential_heatingTypes,
 #add_listing_residential_furnished,
@@ -595,7 +569,6 @@ label[for="add_listing_residential_buildType"] {
     cursor: pointer;
 }
 
-/* Residential Type Number Input Specific Styling */
 #add_listing_residential_rooms,
 #add_listing_residential_bedrooms,
 #add_listing_residential_bathrooms,
@@ -621,12 +594,10 @@ label[for="add_listing_residential_buildType"] {
     margin: 0;
 }
 
-/* Residential Type Date Input Specific Styling */
 #add_listing_residential_yearBuilt {
     cursor: pointer;
 }
 
-/* Responsive styles for residential type fields */
 @media (max-width: 768px) {
     .residential-type-container {
         grid-template-columns: repeat(2, 1fr);
@@ -670,7 +641,6 @@ label[for="add_listing_residential_buildType"] {
     }
 }
 
-/* Land Type Container */
 .land-type-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -678,7 +648,6 @@ label[for="add_listing_residential_buildType"] {
     margin-bottom: 1.5rem;
 }
 
-/* Land Type Form Groups */
 .form-group:has(#add_listing_land_zoningType),
 .form-group:has(#add_listing_land_hasElectricity),
 .form-group:has(#add_listing_land_hasWater) {
@@ -687,7 +656,6 @@ label[for="add_listing_residential_buildType"] {
     transition: all 0.3s ease;
 }
 
-/* Land Type Specific Fields */
 #add_listing_land_zoningType,
 #add_listing_land_hasElectricity,
 #add_listing_land_hasWater {
@@ -702,7 +670,6 @@ label[for="add_listing_residential_buildType"] {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Land Type Labels */
 label[for="add_listing_land_zoningType"],
 label[for="add_listing_land_hasElectricity"],
 label[for="add_listing_land_hasWater"] {
@@ -715,7 +682,6 @@ label[for="add_listing_land_hasWater"] {
     letter-spacing: 0.3px;
 }
 
-/* Land Type Select Specific Styling */
 #add_listing_land_zoningType,
 #add_listing_land_hasElectricity,
 #add_listing_land_hasWater {
@@ -728,7 +694,6 @@ label[for="add_listing_land_hasWater"] {
     cursor: pointer;
 }
 
-/* Responsive styles for land type fields */
 @media (max-width: 768px) {
     .land-type-container {
         grid-template-columns: repeat(2, 1fr);
