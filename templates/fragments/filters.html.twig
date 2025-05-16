@@ -258,6 +258,9 @@
         event.preventDefault();
         event.stopPropagation();
         closeFilterModal();
+        
+        document.body.style.overflow = 'auto';
+        
         return false;
     }
 </script>

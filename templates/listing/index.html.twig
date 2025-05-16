@@ -13,31 +13,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
-    <style>
-        .page-content {
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            align-content: center;
-            padding: 0;
-        }
-
-        @media (max-width: 1220px) {
-            .page-content {
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-        }
-    </style>
 {% endblock %}
 
 {% block body %}
     <div class="page-content">
-        <div class="city-search-container" style="margin: 20px 0; display: flex; justify-content: center;">
-            <form method="get" action="{{ path('app_homepage') }}" class="city-search-form" style="width: 100%; max-width: 600px;">
-                <div style="display: flex; position: relative;">
-                    <input type="text" name="search" placeholder="Currently viewing {{ cityName }}. Search for a different city..." 
-                           style="flex: 1; padding: 10px 15px; border: 1px solid #ccc; border-radius: 4px 0 0 4px; font-size: 1rem;">
+        <div class="city-search-container">
+            <form method="get" action="{{ path('app_homepage') }}" class="city-search-form" id="citySearchForm">
+                <div>
+                    <input type="text" name="search" id="citySearchInput" placeholder="Currently viewing {{ cityName }}. Search for a different city...">
                     <input type="hidden" name="listingType" value="{{ listingType }}">
                     
                     {% if propertyType != 'all' %}
@@ -77,18 +60,17 @@
                         {% endif %}
                     {% endif %}
                     
-                    <button type="submit" style="background-color: #4a90e2; color: white; border: none; padding: 10px 20px; border-radius: 0 4px 4px 0; cursor: pointer;">
+                    <button type="submit" id="citySearchButton">
                         <i class="fa-solid fa-search"></i>
                     </button>
                 </div>
+                <p class="error-message">Please enter a city name to search</p>
             </form>
         </div>
         
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="flash-message flash-{{ label }}" style="margin: 0 auto 20px; padding: 10px 15px; border-radius: 4px; text-align: center; max-width: 600px; 
-                    {% if label == 'error' %}background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2;{% endif %}
-                    {% if label == 'success' %}background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;{% endif %}">
+                <div class="flash-message flash-{{ label }}">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -293,7 +275,32 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const citySearchForm = document.getElementById('citySearchForm');
+            const citySearchInput = document.getElementById('citySearchInput');
+            
+            if (citySearchForm) {
+                citySearchForm.addEventListener('submit', function(event) {
+                    const searchValue = citySearchInput.value.trim();
+                    
+                    if (searchValue === '') {
+                        event.preventDefault();
+                        citySearchForm.classList.add('error');
+                        citySearchInput.focus();
+                        return false;
+                    } else {
+                        citySearchForm.classList.remove('error');
+                    }
+                });
+                
+                citySearchInput.addEventListener('input', function() {
+                    if (citySearchInput.value.trim() !== '') {
+                        citySearchForm.classList.remove('error');
+                    }
+                });
+            }
+            
             fixModalClickability();
+            resetBodyScroll();
 
             if (document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]')) {
                 document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = '{{ listingType }}';
@@ -569,7 +576,12 @@
             document.getElementById('modalBackdrop').style.display = 'none';
             document.getElementById('filterModal').classList.remove('open');
             document.body.style.overflow = 'auto';
-            return false;
+            
+            setTimeout(function() {
+                document.body.style.overflow = 'auto';
+            }, 100);
+            
+            return false; 
         }
 
         function showTab(tabName) {
@@ -614,5 +626,19 @@
                 closeFilterModal();
             }
         });
+
+        function resetBodyScroll() {
+            document.body.style.overflow = 'auto';
+            
+            const modalBackdrop = document.getElementById('modalBackdrop');
+            if (modalBackdrop && getComputedStyle(modalBackdrop).display !== 'none') {
+                modalBackdrop.style.display = 'none';
+            }
+            
+            const filterModal = document.getElementById('filterModal');
+            if (filterModal && filterModal.classList.contains('open')) {
+                filterModal.classList.remove('open');
+            }
+        }
     </script>
 {% endblock %}

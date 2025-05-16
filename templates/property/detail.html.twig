@@ -2,11 +2,18 @@
 
 {% block title %}{{ property.name }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/details.css') }}">
+{% endblock %}
+
 {% block body %}
-    <div class="slideshow-container" style="max-width: 1000px; height: 500px; overflow: hidden; position: relative; margin: auto;">
+    <div class="slideshow-container"
+         style="max-width: 1000px; height: 500px; overflow: hidden; position: relative; margin: auto;">
         {% if property.propertyImages|length > 0 %}
             {% for image in property.propertyImages %}
-                <div class="mySlides fade" style="width: 100%; height: 100%; {% if loop.first %} display: block; {% else %} display: none; {% endif %}">
+                <div class="mySlides fade"
+                     style="width: 100%; height: 100%; {% if loop.first %} display: block; {% else %} display: none; {% endif %}">
                     <div class="numbertext">{{ loop.index }} / {{ property.propertyImages|length }}</div>
                     <img src="{{ asset(image.imagePath) }}"
                          alt="Property Image {{ loop.index }}"
