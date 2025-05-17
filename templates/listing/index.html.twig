@@ -248,7 +248,7 @@
 
                 <div class="real-estates">
                     {% for property in properties %}
-                        <a href="{{ path('app_property_detail', { id: property.id }) }}" class="real-estate">
+                        <a href="{{ path('app_property_detail', { slug: property.slug }) }}" class="real-estate">
                             {% if property.propertyImages|length > 0 %}
                                 <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="Property Image">
                             {% else %}
@@ -581,7 +581,7 @@
                 document.body.style.overflow = 'auto';
             }, 100);
             
-            return false; 
+            return false;
         }
 
         function showTab(tabName) {

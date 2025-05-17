@@ -164,9 +164,16 @@ class PropertyController extends AbstractController
                 $property->setModifiedAt(new \DateTimeImmutable());
                 $property->setViews(0);
                 $property->setName($form->get('name')->getData());
-                $slug = $slugger->slug($property->getName())->lower();
-                $property->setSlug($slug . '-' . uniqid());
+                $property->setCityId($form->get('cityId')->getData());
+                $property->setRegionId($form->get('regionId')->getData());
 
+                $cityName = $property->getCityId()->getName();
+                $regionName = $property->getRegionId()->getName();
+                $propertyName = $property->getName();
+
+//                $slug = $slugger->slug($property->getCityId()->getRegionId()->getName())->lower();
+                $slug = $slugger->slug($propertyName . '-' . $cityName . '-' . $regionName)->lower();
+                $property->setSlug($slug . '-' . uniqid());
                 
                 $entityManager->persist($property);
 

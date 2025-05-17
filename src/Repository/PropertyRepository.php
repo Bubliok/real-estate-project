@@ -184,6 +184,15 @@ class PropertyRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findBySlug(string $slug): ?Property
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Property[] Returns an array of Property objects
 //     */

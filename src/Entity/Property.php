@@ -81,6 +81,9 @@ class Property
     #[ORM\ManyToMany(targetEntity: Feature::class, inversedBy: 'properties')]
     private Collection $features;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->userFavorites = new ArrayCollection();
@@ -373,6 +376,18 @@ class Property
     public function removeFeature(Feature $feature): static
     {
         $this->features->removeElement($feature);
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
