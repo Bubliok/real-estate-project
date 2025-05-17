@@ -1,0 +1,44 @@
+<!-- Add this inside your navbar where user actions/profile links are -->
+{% if app.user %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="favoritesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-heart"></i> Favorites
+        </a>
+        <ul class="dropdown-menu favorites-dropdown" aria-labelledby="favoritesDropdown">
+            <li class="dropdown-header">My Favorites</li>
+            
+            {% set favorites = app.user.userFavorites %}
+            
+            {% if favorites is empty %}
+                <li><span class="dropdown-item text-muted">No favorites yet</span></li>
+            {% else %}
+                {% for favorite in favorites|slice(0, 5) %}
+                    {% set property = favorite.propertyId %}
+                    <li>
+                        <a class="dropdown-item favorite-item" href="{{ path('app_property_detail', {'slug': property.slug}) }}">
+                            <div class="favorite-item-image">
+                                {% if property.propertyImages|length > 0 %}
+                                    <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="{{ property.name }}">
+                                {% else %}
+                                    <div class="no-image">No image</div>
+                                {% endif %}
+                            </div>
+                            <div class="favorite-item-details">
+                                <div class="favorite-item-name">{{ property.name }}</div>
+                                <div class="favorite-item-price">€{{ property.price }}</div>
+                            </div>
+                        </a>
+                    </li>
+                {% endfor %}
+                
+                {% if favorites|length > 5 %}
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-center" href="{{ path('app_favorites') }}">View all ({{ favorites|length }})</a></li>
+                {% endif %}
+            {% endif %}
+            
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ path('app_favorites') }}">Manage Favorites</a></li>
+        </ul>
+    </li>
+{% endif %} 
