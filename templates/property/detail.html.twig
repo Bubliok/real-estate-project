@@ -44,11 +44,29 @@
             <div class="real-estate-detail-content">
                 <div class="title-row">
                     <h1>{{ property.name }}</h1>
-                    <p class="upload-time">Date uploaded: {{ property.createdAt|date('d.m.Y H:i:s') }}</p>
+                    <div class="action-buttons">
+                        {% if app.user %}
+                            <div id="favorite-container">
+                                <button type="button" id="favorite-toggle" class="favorite-button {% if isFavorite %}active{% endif %}" 
+                                        data-property-slug="{{ property.slug }}" 
+                                        data-is-favorite="{{ isFavorite ? 'true' : 'false' }}">
+                                    <i class="fa {% if isFavorite %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                                    <span id="favorite-text">
+                                        {% if isFavorite %}
+                                            Remove from Favorites
+                                        {% else %}
+                                            Add to Favorites
+                                        {% endif %}
+                                    </span>
+                                </button>
+                            </div>
+                        {% endif %}
+                        <p class="upload-time">Date uploaded: {{ property.createdAt|date('d.m.Y H:i:s') }}</p>
+                    </div>
                 </div>
                 <h2>{{ property.cityId.name }}, {{ property.regionId.name }}, {{ property.address }}</h2>
 
-                <p class="price">€{{ property.price }} ({{ (property.price / property.area)|round(2) }} EUR/m&sup2;)</p>
+                <p class="price">€{{ property.price|number_format(0, ',', '.') }} ({{ (property.price / property.area)|round(2) }} EUR/m&sup2;)</p>
 
                 <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
 
@@ -89,7 +107,60 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             showSlides(slideIndex);
+            
+            // Initialize favorite button functionality
+            const favoriteToggle = document.getElementById('favorite-toggle');
+            if (favoriteToggle) {
+                favoriteToggle.addEventListener('click', toggleFavorite);
+            }
         });
+        
+        function toggleFavorite(event) {
+            event.preventDefault();
+            
+            const button = document.getElementById('favorite-toggle');
+            const slug = button.dataset.propertySlug;
+            
+            fetch(`{{ path('app_toggle_favorite', {'slug': 'PLACEHOLDER'}) }}`.replace('PLACEHOLDER', slug), {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update button state
+                    if (data.isFavorite) {
+                        button.classList.add('active');
+                        button.querySelector('i').classList.remove('fa-heart-o');
+                        button.querySelector('i').classList.add('fa-heart');
+                        document.getElementById('favorite-text').textContent = 'Remove from Favorites';
+                    } else {
+                        button.classList.remove('active');
+                        button.querySelector('i').classList.remove('fa-heart');
+                        button.querySelector('i').classList.add('fa-heart-o');
+                        document.getElementById('favorite-text').textContent = 'Add to Favorites';
+                    }
+                    
+                    // Show a temporary message
+                    const container = document.getElementById('favorite-container');
+                    const message = document.createElement('div');
+                    message.textContent = data.message;
+                    message.style.color = data.isFavorite ? '#10b981' : '#6b7280';
+                    message.style.fontSize = '0.8rem';
+                    message.style.marginTop = '5px';
+                    container.appendChild(message);
+                    
+                    setTimeout(() => {
+                        container.removeChild(message);
+                    }, 3000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 
         function plusSlides(n) {
             showSlides(slideIndex += n);

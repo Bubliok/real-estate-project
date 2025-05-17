@@ -20,6 +20,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use App\Enum\ListingTypeEnum;
+use App\Repository\UserFavoritesRepository;
 
 use App\Form\MainFormType;
 
@@ -43,7 +44,7 @@ class PropertyController extends AbstractController
     }
 
     #[Route('/listings/{listingType}/{cityName}', name: 'app_show_listings')]
-    public function show(CityRepository $cityRepository, PropertyRepository $propertyRepository, Request $request): Response
+    public function show(CityRepository $cityRepository, PropertyRepository $propertyRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
         $cityName = $request->attributes->get('cityName');
         $listingTypeString = $request->attributes->get('listingType');
@@ -140,8 +141,6 @@ class PropertyController extends AbstractController
         return $this->render('listing/index.html.twig', $viewData);
     }
 
-//    ----------------------------------
-
     #[IsGranted('ROLE_USER')]
     #[Route('/listing/add/{type}', name: 'app_add_listing')]
     public function listing(string $type, Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger,
@@ -164,6 +163,10 @@ class PropertyController extends AbstractController
                 $property->setCreatedAt(new \DateTimeImmutable());
                 $property->setModifiedAt(new \DateTimeImmutable());
                 $property->setViews(0);
+                $property->setName($form->get('name')->getData());
+                $slug = $slugger->slug($property->getName())->lower();
+                $property->setSlug($slug . '-' . uniqid());
+
                 
                 $entityManager->persist($property);
 
@@ -224,18 +227,34 @@ class PropertyController extends AbstractController
         return $this->render('listing/add-listing.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/property/{id}', name: 'app_property_detail')]
-    public function detail(Property $property, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/property/{slug}', name: 'app_property_detail')]
+    public function detail(
+        string $slug, 
+        PropertyRepository $propertyRepository, 
+        EntityManagerInterface $entityManager,
+        UserFavoritesRepository $userFavoritesRepository = null
+    ): Response {
+        $property = $propertyRepository->findBySlug($slug);
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Property not found');
+        }
+        
         $property->setViews($property->getViews() + 1);
         $entityManager->persist($property);
         $entityManager->flush();
         
         $features = $property->getFeatures();
         
+        $isFavorite = false;
+        if ($this->getUser() && $userFavoritesRepository) {
+            $isFavorite = $userFavoritesRepository->isPropertyFavorite($property, $this->getUser());
+        }
+        
         return $this->render('property/detail.html.twig', [
             'property' => $property,
-            'features' => $features
+            'features' => $features,
+            'isFavorite' => $isFavorite
         ]);
     }
 }

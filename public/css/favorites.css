@@ -1,0 +1,105 @@
+.favorites-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+.favorites-title {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+.favorite-card {
+    border-radius: 8px
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.favorite-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.favorite-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.favorite-details {
+    padding: 1rem;
+}
+.favorite-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+.favorite-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #3b82f6;
+    margin-bottom: 0.5rem;
+}
+.favorite-address {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+.favorite-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+.btn-view {
+    padding: 0.5rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+.btn-view:hover {
+    background-color: #2563eb;
+}
+.btn-remove {
+    padding: 0.5rem 1rem;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.btn-remove:hover {
+    background-color: #dc2626;
+}
+.empty-favorites {
+    text-align: center;
+    padding: 3rem;
+    background-color: #f9fafb;
+    border-radius: 8px;
+}
+.empty-favorites h3 {
+    font-size: 1.5rem;
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+.empty-favorites p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+.btn-browse {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+}

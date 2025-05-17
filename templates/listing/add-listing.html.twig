@@ -9,7 +9,8 @@
     <div class="add-listing-container">
         <h1 class="add-listing-title">Add Listing</h1>
         {{ form_start(form, {'attr': {'class': 'add-listing-form'}}) }}
-            {% for field in form %}
+        {% for field in form %}
+            {% if field.vars.name != 'features' %}
                 <div class="form-group">
                     {% if field.vars.block_prefixes[1] == 'text' %}
                         {{ form_row(field, {
@@ -69,8 +70,21 @@
                         }) }}
                     {% endif %}
                 </div>
-            {% endfor %}
-            <button type="submit" class="add-listing-button">Submit</button>
-        {{ form_end(form) }}
+            {% endif %}
+        {% endfor %}
+        <div class="form-group filter-section">
+            <h3 class="add-listing-label">Property Features</h3>
+            <div class="feature-options">
+                <div class="features-checkboxes">
+                    {% for feature in form.features %}
+                        {{ form_widget(feature) }}
+                        {{ form_label(feature) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="add-listing-button">Submit</button>
+        {{ form_end(form, {'render_rest': false}) }}
     </div>
 {% endblock %}

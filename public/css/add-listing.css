@@ -717,4 +717,87 @@ label[for="add_listing_land_hasWater"] {
     label[for="add_listing_land_hasWater"] {
         font-size: 0.85rem;
     }
+}
+
+.features-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.features-checkboxes input[type="checkbox"] {
+    display: none; /* Hide the actual checkbox */
+}
+
+.features-checkboxes label {
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background-color: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.features-checkboxes input[type="checkbox"]:checked + label {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #2563eb;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.features-checkboxes label:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.features-checkboxes input[type="checkbox"]:checked + label:hover {
+    background-color: #2563eb;
+}
+
+.filter-section {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 10px; 
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section .add-listing-label {
+    margin-bottom: 15px;
+    color: #1e3a8a;
+    font-size: 16px;
+}
+
+.feature-options {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.feature-options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.feature-options::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+
+.feature-options::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 8px;
+    border: 2px solid #f1f5f9;
 } 

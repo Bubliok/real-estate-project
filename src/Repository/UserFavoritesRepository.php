@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
-use App\Enum\UserFavorites;
+use App\Entity\Property;
+use App\Entity\User;
+use App\Entity\UserFavorites;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +16,30 @@ class UserFavoritesRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UserFavorites::class);
+    }
+
+    public function isPropertyFavorite(Property $property, User $user): bool
+    {
+        return $this->createQueryBuilder('uf')
+            ->select('COUNT(uf.id)')
+            ->where('uf.propertyId = :property')
+            ->andWhere('uf.userId = :user')
+            ->setParameter('property', $property)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult() > 0;
+    }
+
+    public function findFavoritesWithProperties(User $user): array
+    {
+        return $this->createQueryBuilder('uf')
+            ->select('uf', 'p')
+            ->join('uf.propertyId', 'p')
+            ->where('uf.userId = :user')
+            ->setParameter('user', $user)
+            ->orderBy('uf.id', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

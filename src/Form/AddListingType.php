@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\City;
+use App\Entity\Feature;
 use App\Entity\Property;
 use App\Entity\Region;
 use App\Entity\Residential;
@@ -67,6 +68,14 @@ class AddListingType extends AbstractType
                 ],
                 'label' => 'Listing Type',
                 'mapped' => false
+            ])
+            ->add('features', EntityType::class, [
+                'class' => Feature::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'required' => false,
+                'attr' => ['class' => 'features-checkboxes'],
             ])
             ->add('images', DropzoneType::class, [
                 'label' => 'Property Images',

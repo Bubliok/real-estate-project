@@ -16,13 +16,18 @@ class FeatureRepository extends ServiceEntityRepository
         parent::__construct($registry, Feature::class);
     }
 
-    function getAllFeaturesByProperty(int $propertyId): array
+    function findAllFeaturesByProperty(int $propertyId): array
     {
         $qb = $this->createQueryBuilder('f')
             ->where('f.propertyId = :propertyId')
             ->setParameter('propertyId', $propertyId)
             ->orderBy('f.position', 'ASC');
         return $qb->getQuery()->getResult();
+    }
+    
+    function findAll(): array
+    {
+        return parent::findAll();
     }
 
 //    /**
