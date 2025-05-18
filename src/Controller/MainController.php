@@ -82,6 +82,8 @@ class MainController extends AbstractController
 
         return $this->render('main/homepage.html.twig', [
             'mainForm' => $form->createView(),
+            'google_maps_api_key' => $this->getParameter('app.google_maps_api_key'),
+            'google_maps_map_id' => $this->getParameter('app.google_maps_map_id'),
         ]);
     }
 

@@ -10,6 +10,9 @@
     <div class="flex justify-center items-center bg-cover bg-center vh-100"
          style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
         <div class="bg-white p-8 rounded-lg shadow-lg">
+            <!-- Map Container -->
+            <div id="map" class="mb-4"></div>
+            
             {{ form_start(mainForm, {'attr': {'class': 'space-y-4', 'id': 'search-form'}}) }}
             <div class="search-container">
             <div class="flex items-center space-x-4">
@@ -302,4 +305,172 @@
             clearLandSelections();
         }
     </script>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    // Google Maps JavaScript API loader
+    (g => {
+        var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
+        b = b[c] || (b[c] = {});
+        var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
+            u = () => h || (h = new Promise(async (f, n) => {
+                await (a = m.createElement("script"));
+                e.set("libraries", [...r] + "");
+                for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                e.set("callback", c + ".maps." + q);
+                a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                d[q] = f;
+                a.onerror = () => h = n(Error(p + " could not load."));
+                a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+                m.head.append(a);
+            }));
+        d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+    })({
+        key: "{{ google_maps_api_key }}",
+        v: "beta",
+        map_ids: "{{ google_maps_map_id }}",
+        libraries: ["maps", "marker", "places", "visualization", "drawing", "geometry"]
+    });
+
+    let map;
+    let infoWindow;
+    let selectedFeature = null;
+    let hoveredFeature = null;
+    let dataLayer;
+    let selectedProvinceName = null;
+
+    async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { InfoWindow } = await google.maps.importLibrary("maps");
+
+        map = new Map(document.getElementById("map"), {
+            center: { lat: 42.7339, lng: 25.4858 },
+            zoom: 7,
+            mapId: "{{ google_maps_map_id }}",
+            gestureHandling: 'greedy',
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false
+        });
+
+        await new Promise(resolve => {
+            map.addListener("tilesloaded", () => {
+                resolve();
+            });
+        });
+
+        dataLayer = new google.maps.Data({ map });
+
+        fetch('/provinces.geojson')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(geojson => {
+                console.log("GeoJSON loaded successfully:", geojson);
+                dataLayer.addGeoJson(geojson);
+            })
+            .catch(error => {
+                console.error("Error loading GeoJSON:", error);
+            });
+
+        dataLayer.setStyle(feature => {
+            if (feature === selectedFeature) {
+                return {
+                    fillColor: "#34A853",
+                    fillOpacity: 0.8,
+                    strokeColor: "#34A853",
+                    strokeWeight: 3,
+                    strokeOpacity: 1,
+                    zIndex: 2
+                };
+            }
+            if (feature === hoveredFeature) {
+                return {
+                    fillColor: "#4285F4",
+                    fillOpacity: 0.8,
+                    strokeColor: "#4285F4",
+                    strokeWeight: 3,
+                    strokeOpacity: 1,
+                    zIndex: 2
+                };
+            }
+            return {
+                fillColor: "#4285F4",
+                fillOpacity: 0.4,
+                strokeColor: "#4285F4",
+                strokeWeight: 2,
+                strokeOpacity: 1,
+                zIndex: 1
+            };
+        });
+
+        dataLayer.addListener('mouseover', event => {
+            hoveredFeature = event.feature;
+            dataLayer.setStyle(dataLayer.getStyle());
+        });
+
+        dataLayer.addListener('mouseout', event => {
+            hoveredFeature = null;
+            dataLayer.setStyle(dataLayer.getStyle());
+        });
+
+        dataLayer.addListener('click', event => {
+            const feature = event.feature;
+            const provinceName = feature.getProperty('nuts3');
+            selectedProvinceName = provinceName;
+            const position = event.latLng || getFeatureCenter(feature);
+
+            const bounds = getFeatureBounds(feature);
+            if (bounds) {
+                map.fitBounds(bounds, { padding: 50 });
+            }
+
+            if (infoWindow) infoWindow.close();
+            infoWindow = new InfoWindow({
+                content: `<div style="min-width:150px"><strong>${provinceName}</strong></div>`,
+                position: position
+            });
+            infoWindow.open(map);
+
+            selectedFeature = feature;
+            dataLayer.setStyle(dataLayer.getStyle());
+
+            const searchInput = document.querySelector('input[name="{{ mainForm.search.vars.full_name }}"]');
+            if (searchInput) {
+                searchInput.value = provinceName;
+            }
+        });
+    }
+    
+    function getFeatureBounds(feature) {
+        let bounds = new google.maps.LatLngBounds();
+        let geometry = feature.getGeometry();
+        geometry.forEachLatLng(latlng => bounds.extend(latlng));
+        return bounds;
+    }
+
+    function getFeatureCenter(feature) {
+        let bounds = getFeatureBounds(feature);
+        return bounds.getCenter();
+    }
+
+    initMap();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const searchInput = form.querySelector('input[name$="[search]"]');
+        const lookupButton = form.querySelector('button[type="submit"]');
+        lookupButton.addEventListener('mousedown', function() {
+            if (selectedProvinceName) {
+                searchInput.value = selectedProvinceName;
+            }
+        });
+    });
+</script>
 {% endblock %}
