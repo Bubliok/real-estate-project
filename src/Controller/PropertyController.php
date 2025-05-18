@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -263,5 +264,25 @@ class PropertyController extends AbstractController
             'features' => $features,
             'isFavorite' => $isFavorite
         ]);
+    }
+
+    #[Route('/api/properties/count', name: 'api_properties_count', methods: ['GET'])]
+    public function getPropertiesCount(Request $request, PropertyRepository $propertyRepository, CityRepository $cityRepository): JsonResponse
+    {
+        $provinceName = $request->query->get('province');
+        
+        if (!$provinceName) {
+            return $this->json(['error' => 'Province name is required'], 400);
+        }
+        
+        $city = $cityRepository->findByName($provinceName);
+        
+        if (!$city) {
+            return $this->json(['count' => 0]);
+        }
+
+        $count = $propertyRepository->count(['cityId' => $city->getId()]);
+        
+        return $this->json(['count' => $count]);
     }
 }

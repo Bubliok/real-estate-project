@@ -9,9 +9,9 @@
 {% block body %}
     <div class="flex justify-center items-center bg-cover bg-center vh-100"
          style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
-        <div class="bg-white p-8 rounded-lg shadow-lg">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
             <!-- Map Container -->
-            <div id="map" class="mb-4"></div>
+            <div id="map" class="mb-4 hidden"></div>
             
             {{ form_start(mainForm, {'attr': {'class': 'space-y-4', 'id': 'search-form'}}) }}
             <div class="search-container">
@@ -20,7 +20,8 @@
                 {{ form_widget(mainForm.search, {
                     'attr': {
                             'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300',
-                            'placeholder': 'Search for a city...'
+                            'placeholder': 'Search for a city...',
+                            'id': 'search-input'
                     }
                 }) }}
 
@@ -340,8 +341,14 @@
     let hoveredFeature = null;
     let dataLayer;
     let selectedProvinceName = null;
+    let mapInitialized = false;
 
     async function initMap() {
+        if (mapInitialized) return;
+        
+        const mapContainer = document.getElementById("map");
+        mapContainer.classList.remove("hidden");
+        
         const { Map } = await google.maps.importLibrary("maps");
         const { InfoWindow } = await google.maps.importLibrary("maps");
 
@@ -432,11 +439,38 @@
             }
 
             if (infoWindow) infoWindow.close();
+            
             infoWindow = new InfoWindow({
-                content: `<div style="min-width:150px"><strong>${provinceName}</strong></div>`,
+                content: `<div style="min-width:150px; padding: 8px;">
+                            <strong>${provinceName}</strong>
+                          </div>`,
                 position: position
             });
             infoWindow.open(map);
+            
+            fetch(`/api/properties/count?province=${encodeURIComponent(provinceName)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const count = data.count || 0;
+                    const propertyText = count === 1 ? 'property' : 'properties';
+                    
+                    if (infoWindow) {
+                        infoWindow.setContent(`<div style="min-width:150px; padding: 8px;">
+                                                <strong>${provinceName}</strong>
+                                                <div style="font-size: 0.9em; margin-top: 5px;">
+                                                    ${count} ${propertyText} available
+                                                </div>
+                                              </div>`);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching property count:", error);
+                });
 
             selectedFeature = feature;
             dataLayer.setStyle(dataLayer.getStyle());
@@ -446,6 +480,8 @@
                 searchInput.value = provinceName;
             }
         });
+        
+        mapInitialized = true;
     }
     
     function getFeatureBounds(feature) {
@@ -460,12 +496,19 @@
         return bounds.getCenter();
     }
 
-    initMap();
-
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
         const searchInput = form.querySelector('input[name$="[search]"]');
         const lookupButton = form.querySelector('button[type="submit"]');
+        
+        searchInput.addEventListener('click', function() {
+            initMap();
+        });
+        
+        searchInput.addEventListener('focus', function() {
+            initMap();
+        });
+        
         lookupButton.addEventListener('mousedown', function() {
             if (selectedProvinceName) {
                 searchInput.value = selectedProvinceName;

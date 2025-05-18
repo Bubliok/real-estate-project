@@ -23,6 +23,22 @@ class CityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+    
+    /**
+     * Find all cities in a given province
+     *
+     * @param string $provinceName The name of the province
+     * @return City[] Returns an array of City objects
+     */
+    public function findByProvince(string $provinceName): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('LOWER(c.province) = LOWER(:provinceName)')
+            ->setParameter('provinceName', $provinceName)
+            ->getQuery()
+            ->getResult();
+    }
+    
     //    /**
     //     * @return City[] Returns an array of City objects
     //     */

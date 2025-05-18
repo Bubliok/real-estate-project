@@ -193,6 +193,26 @@ class PropertyRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * Count properties in a list of cities
+     *
+     * @param array $cityIds Array of city IDs
+     * @return int The number of properties
+     */
+    public function countByCityIds(array $cityIds): int
+    {
+        if (empty($cityIds)) {
+            return 0;
+        }
+        
+        return $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.cityId IN (:cityIds)')
+            ->setParameter('cityIds', $cityIds)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Property[] Returns an array of Property objects
 //     */
