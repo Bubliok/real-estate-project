@@ -3,18 +3,69 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+<section class="login-section">
+  <div class="login-container">
+      <div class="login-box">
+          <div class="login-content">
+              <h1 class="login-title">Create an Account</h1>
+              {{ form_errors(registrationForm) }}
+              {{ form_start(registrationForm, {'attr': {'class': 'login-form'}}) }}
+                  <div>
+                      {{ form_row(registrationForm.username, {
+                          'attr': {'class': 'login-input', 'placeholder': 'Username'},
+                          'label_attr': {'class': 'login-label'}
+                      }) }}
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.email, {
+                          'attr': {'class': 'login-input', 'placeholder': 'Email'},
+                          'label_attr': {'class': 'login-label'}
+                      }) }}
+                  </div>
+                  <div style="display: flex; gap: 1rem;">
+                      <div style="flex: 1;">
+                          {{ form_row(registrationForm.firstName, {
+                              'attr': {'class': 'login-input', 'placeholder': 'First Name'},
+                              'label_attr': {'class': 'login-label'}
+                          }) }}
+                      </div>
+                      <div style="flex: 1;">
+                          {{ form_row(registrationForm.lastName, {
+                              'attr': {'class': 'login-input', 'placeholder': 'Last Name'},
+                              'label_attr': {'class': 'login-label'}
+                          }) }}
+                      </div>
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.phoneNumber, {
+                          'attr': {'class': 'login-input', 'placeholder': 'Phone Number'},
+                          'label_attr': {'class': 'login-label'}
+                      }) }}
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.plainPassword, {
+                          'label': 'Password',
+                          'attr': {'class': 'login-input', 'placeholder': 'Password'},
+                          'label_attr': {'class': 'login-label'}
+                      }) }}
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      {{ form_row(registrationForm.agreeTerms, {
+                          'label_attr': {'class': 'login-label'}
+                      }) }}
+                  </div>
+                  <button type="submit" class="login-button">Register</button>
+                  <p class="login-signup-text">
+                      Already have an account? <a href="{{ path('app_login') }}" class="login-signup-link">Sign in</a>
+                  </p>
+              {{ form_end(registrationForm) }}
+          </div>
+      </div>
+  </div>
+</section>
+{% endblock %}
 
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+{% block stylesheets %}
+    {{ parent() }}
+    {# No custom styles, use app.css #}
 {% endblock %}

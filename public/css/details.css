@@ -284,3 +284,100 @@
     border-color: #fca5a5;
 }
 
+/* Contact Information Styles */
+.contact-info {
+    background-color: #f8fafc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.contact-info h3 {
+    color: #1e293b;
+    font-size: 1.25rem;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.user-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+.user-email, .user-phone {
+    color: #64748b;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-email::before {
+    content: "📧";
+}
+
+.user-phone::before {
+    content: "📞";
+}
+
+/* Agency Information Styles */
+.agency-info {
+    background-color: #f1f5f9;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.agency-info h4 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    margin: 0 0 12px 0;
+    font-weight: 600;
+}
+
+.agency-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.agency-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+.agency-address {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.agency-website a {
+    display: inline-block;
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    background-color: #eff6ff;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.agency-website a:hover {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+

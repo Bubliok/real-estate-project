@@ -6,6 +6,8 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -19,6 +21,34 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username')
             ->add('email')
+            ->add('firstName', TextType::class, [
+                'label' => 'First Name',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter your first name',
+                    ]),
+                ],
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Last Name',
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter your last name',
+                    ]),
+                ],
+            ])
+            ->add('phoneNumber', TelType::class, [
+                'label' => 'Phone Number',
+                'required' => false,
+                'constraints' => [
+                    new Length([
+                        'max' => 10,
+                        'maxMessage' => 'Your phone number cannot be longer than {{ limit }} characters',
+                    ])
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

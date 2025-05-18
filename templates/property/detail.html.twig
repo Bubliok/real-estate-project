@@ -98,6 +98,39 @@
                 <div class="details">
                     <p>Description: <br><br> {{ property.description }}</p>
                 </div>
+
+                {% if property.user %}
+                    <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
+                    <div class="contact-info">
+                        <h3>Contact Information</h3>
+                        <div class="contact-details">
+                            <div class="user-info">
+                                <div class="user-name">{{ property.user.firstName }} {{ property.user.lastName }}</div>
+                                <div class="user-email">{{ property.user.email }}</div>
+                                {% if property.user.phoneNumber %}
+                                    <div class="user-phone">{{ property.user.phoneNumber }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            {% if property.user.agencyId %}
+                                <div class="agency-info">
+                                    <h4>Agency Information</h4>
+                                    <div class="agency-details">
+                                        <div class="agency-name">{{ property.user.agencyId.name }}</div>
+                                        <div class="agency-address">{{ property.user.agencyId.address }}</div>
+                                        {% if property.user.agencyId.website %}
+                                            <div class="agency-website">
+                                                <a href="{{ property.user.agencyId.website }}" target="_blank" rel="noopener noreferrer">
+                                                    Visit Website
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

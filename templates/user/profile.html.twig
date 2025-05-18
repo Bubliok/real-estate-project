@@ -61,6 +61,13 @@
                                     Number</label>
                                 {{ form_widget(profileForm.phoneNumber, {'attr': {'class': 'bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5'}}) }}
                             </div>
+
+                            <div class="mb-2 sm:mb-6">
+                                <label for="agencyId"
+                                       class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Agency</label>
+                                {{ form_widget(profileForm.agencyId, {'attr': {'class': 'bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5'}}) }}
+                            </div>
+
                             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                             <div class="flex justify-end">
