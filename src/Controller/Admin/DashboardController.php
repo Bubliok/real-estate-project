@@ -2,15 +2,16 @@
 
 namespace App\Controller\Admin;
 
-use App\Enum\BrokerCompany;
-use App\Enum\City;
-use App\Enum\Neighborhood;
-use App\Enum\RealEstate;
-use App\Enum\RealEstateAgent;
-use App\Enum\RealEstateImages;
-use App\Enum\RealEstateOwner;
-use App\Enum\RealEstateType;
-use App\Enum\User;
+use App\Entity\Agency;
+use App\Entity\City;
+use App\Entity\Commercial;
+use App\Entity\Feature;
+use App\Entity\Land;
+use App\Entity\Property;
+use App\Entity\PropertyImages;
+use App\Entity\Region;
+use App\Entity\Residential;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -51,7 +52,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->renderContentMaximized()
-            ->setTitle('Real Estate Project');
+            ->setTitle('IMT Admin');
     }
 
     public function configureMenuItems(): iterable
@@ -59,11 +60,15 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('Homepage', 'fa fa-home', $this->generateUrl('app_homepage'));
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-dashboard');
         yield MenuItem::linkToCrud('City', 'fas fa-city', City::class);
-        yield MenuItem::linkToCrud('Neighborhood', 'fas fa-neighborhood', Neighborhood::class);
-        yield MenuItem::linkToCrud('Real estates', 'fas fa-real-estates', RealEstate::class);
-        yield MenuItem::linkToCrud('Real estate images', 'fas fa-images', RealEstateImages::class);
-        yield MenuItem::linkToCrud('Types', 'fas fa-types', RealEstateType::class);
+        yield MenuItem::linkToCrud('Region', 'fas fa-neighborhood', Region::class);
+        yield MenuItem::linkToCrud('Properties', 'fas fa-real-estates', Property::class);
+        yield MenuItem::linkToCrud('Property images', 'fas fa-images', PropertyImages::class);
+//        yield MenuItem::linkToCrud('Commercial', 'fas fa-commercial', Commercial::class);
+//        yield MenuItem::linkToCrud('Land', 'fas fa-land', Land::class);
+//        yield MenuItem::linkToCrud('Residential', 'fas fa-residential', Residential::class);
+        yield MenuItem::linkToCrud('Features', 'fas fa-feature', Feature::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Agency', 'fas fa-agency', Agency::class);
     }
 
     public function configureActions(): Actions

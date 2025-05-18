@@ -2,17 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Enum\RealEstateType;
+use App\Entity\Agency;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class RealEstateTypeCrudController extends AbstractCrudController
+class AgencyCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return RealEstateType::class;
+        return Agency::class;
     }
 
     /*

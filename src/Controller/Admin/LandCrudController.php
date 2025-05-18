@@ -2,26 +2,27 @@
 
 namespace App\Controller\Admin;
 
-use App\Enum\RealEstate;
+use App\Entity\Land;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class RealEstateCrudController extends AbstractCrudController
+class LandCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return RealEstate::class;
+        return Land::class;
     }
 
-
-//    public function configureFields(string $pageName): iterable
-//    {
-//        return [
-//            TextField::new('estateName'),
-//            TextEditorField::new('estateA'),
-//        ];
-//    }
-
+    /*
+    public function configureFields(string $pageName): iterable
+    {
+        return [
+            IdField::new('id'),
+            TextField::new('title'),
+            TextEditorField::new('description'),
+        ];
+    }
+    */
 }
