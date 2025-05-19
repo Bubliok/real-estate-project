@@ -16,65 +16,18 @@
 {% endblock %}
 
 {% block body %}
-    <div class="page-content">
-        <div class="city-search-container">
-            <form method="get" action="{{ path('app_homepage') }}" class="city-search-form" id="citySearchForm">
-                <div>
-                    <input type="text" name="search" id="citySearchInput" placeholder="Currently viewing {{ cityName }}. Search for a different city...">
-                    <input type="hidden" name="listingType" value="{{ listingType }}">
-                    
-                    {% if propertyType != 'all' %}
-                        <input type="hidden" name="propertyType" value="{{ propertyType }}">
-                    {% endif %}
-                    
-                    {% if app.request.query.get('sort') %}
-                        <input type="hidden" name="sort" value="{{ app.request.query.get('sort') }}">
-                    {% endif %}
-                    
-                    {% if propertyType == 'residential' %}
-                        {% if selectedResidentialTypes is defined and selectedResidentialTypes|length > 0 %}
-                            <input type="hidden" name="residentialTypes" value="{{ selectedResidentialTypes|join(',') }}">
-                        {% endif %}
-                        {% if selectedBedrooms is defined and selectedBedrooms %}
-                            <input type="hidden" name="bedrooms" value="{{ selectedBedrooms }}">
-                        {% endif %}
-                        {% if selectedBathrooms is defined and selectedBathrooms %}
-                            <input type="hidden" name="bathrooms" value="{{ selectedBathrooms }}">
-                        {% endif %}
-                        {% if selectedFeatures is defined and selectedFeatures|length > 0 %}
-                            <input type="hidden" name="features" value="{{ selectedFeatures|join(',') }}">
-                        {% endif %}
-                    {% elseif propertyType == 'commercial' %}
-                        {% if selectedCommercialTypes is defined and selectedCommercialTypes|length > 0 %}
-                            <input type="hidden" name="commercialTypes" value="{{ selectedCommercialTypes|join(',') }}">
-                        {% endif %}
-                        {% if selectedCommercialFeatures is defined and selectedCommercialFeatures|length > 0 %}
-                            <input type="hidden" name="commercialFeatures" value="{{ selectedCommercialFeatures|join(',') }}">
-                        {% endif %}
-                    {% elseif propertyType == 'land' %}
-                        {% if selectedLandTypes is defined and selectedLandTypes|length > 0 %}
-                            <input type="hidden" name="landTypes" value="{{ selectedLandTypes|join(',') }}">
-                        {% endif %}
-                        {% if selectedLandFeatures is defined and selectedLandFeatures|length > 0 %}
-                            <input type="hidden" name="landFeatures" value="{{ selectedLandFeatures|join(',') }}">
-                        {% endif %}
-                    {% endif %}
-                    
-                    <button type="submit" id="citySearchButton">
-                        <i class="fa-solid fa-search"></i>
-                    </button>
-                </div>
-                <p class="error-message">Please enter a city name to search</p>
-            </form>
-        </div>
-        
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash-message flash-{{ label }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+    {# Flash Messages #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-message {{ label }}">
+                {{ message }}
+                <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+            </div>
         {% endfor %}
+    {% endfor %}
+
+    <div class="page-content">
+
 
         {{ form_start(mainForm, {'attr': {'id': 'search-form', 'style': 'display: none;'}}) }}
         <div style="display: none;">
@@ -165,14 +118,72 @@
                             propertyType: 'land',
                             landTypes: 'industrial'
                         }) }}" class="property-shortcut">
+
                             <div class="property-shortcut-icon">
                                 <i class="fa-solid fa-industry fa-xl"></i>
                             </div>
                             <span class="property-shortcut-label">Industrial</span>
                         </a>
                     </div>
-
                 </div>
+
+
+                <div class="city-search-container">
+                    <form method="get" action="{{ path('app_homepage') }}" class="city-search-form" id="citySearchForm">
+                        <div>
+                            <input type="text" name="search" id="citySearchInput"
+                                   placeholder="Currently viewing {{ cityName }}. Search for a different city...">
+                            <input type="hidden" name="listingType" value="{{ listingType }}">
+
+                            {% if propertyType != 'all' %}
+                                <input type="hidden" name="propertyType" value="{{ propertyType }}">
+                            {% endif %}
+
+                            {% if app.request.query.get('sort') %}
+                                <input type="hidden" name="sort" value="{{ app.request.query.get('sort') }}">
+                            {% endif %}
+
+                            {% if propertyType == 'residential' %}
+                                {% if selectedResidentialTypes is defined and selectedResidentialTypes|length > 0 %}
+                                    <input type="hidden" name="residentialTypes"
+                                           value="{{ selectedResidentialTypes|join(',') }}">
+                                {% endif %}
+                                {% if selectedBedrooms is defined and selectedBedrooms %}
+                                    <input type="hidden" name="bedrooms" value="{{ selectedBedrooms }}">
+                                {% endif %}
+                                {% if selectedBathrooms is defined and selectedBathrooms %}
+                                    <input type="hidden" name="bathrooms" value="{{ selectedBathrooms }}">
+                                {% endif %}
+                                {% if selectedFeatures is defined and selectedFeatures|length > 0 %}
+                                    <input type="hidden" name="features" value="{{ selectedFeatures|join(',') }}">
+                                {% endif %}
+                            {% elseif propertyType == 'commercial' %}
+                                {% if selectedCommercialTypes is defined and selectedCommercialTypes|length > 0 %}
+                                    <input type="hidden" name="commercialTypes"
+                                           value="{{ selectedCommercialTypes|join(',') }}">
+                                {% endif %}
+                                {% if selectedCommercialFeatures is defined and selectedCommercialFeatures|length > 0 %}
+                                    <input type="hidden" name="commercialFeatures"
+                                           value="{{ selectedCommercialFeatures|join(',') }}">
+                                {% endif %}
+                            {% elseif propertyType == 'land' %}
+                                {% if selectedLandTypes is defined and selectedLandTypes|length > 0 %}
+                                    <input type="hidden" name="landTypes" value="{{ selectedLandTypes|join(',') }}">
+                                {% endif %}
+                                {% if selectedLandFeatures is defined and selectedLandFeatures|length > 0 %}
+                                    <input type="hidden" name="landFeatures"
+                                           value="{{ selectedLandFeatures|join(',') }}">
+                                {% endif %}
+                            {% endif %}
+
+                            <button type="submit" id="citySearchButton">
+                                <i class="fa-solid fa-search"></i>
+                            </button>
+                        </div>
+                        <p class="error-message">Please enter a city name to search</p>
+                    </form>
+                </div>
+
                 <div class="filter-sort-container">
                     <h1>{{ properties | length }} matching properties found in {{ cityName }}</h1>
 {#                    <a href="{{ path('app_show_listings', { cityName: cityName }) }}">#}
@@ -237,18 +248,28 @@
                             </select>
                         </form>
 
-                        <button type="button"
-                                class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
-                                onclick="openFilterModal()">
-                            <i class="fa-solid fa-filter mr-2"></i>Filters
-                        </button>
+{#                        <button type="button"#}
+{#                                class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"#}
+{#                                onclick="openFilterModal()">#}
+{#                            <i class="fa-solid fa-filter mr-2"></i>Filters#}
+{#                        </button>#}
                 </div>
 
-                {% include 'fragments/filters.html.twig' %}
+                {#                {% include 'fragments/filters.html.twig' %} #}
 
                 <div class="real-estates">
                     {% for property in properties %}
                         <a href="{{ path('app_property_detail', { slug: property.slug }) }}" class="real-estate">
+                            {% if app.user %}
+                                <button type="button" 
+                                        class="favorite-button {% if property.isFavorited(app.user) %}active{% endif %}" 
+                                        data-property-slug="{{ property.slug }}" 
+                                        data-is-favorite="{{ property.isFavorited(app.user) ? 'true' : 'false' }}"
+                                        onclick="toggleFavorite(event, this)"
+                                        aria-label="{% if property.isFavorited(app.user) %}Remove from Favorites{% else %}Add to Favorites{% endif %}">
+                                    <i class="fa {% if property.isFavorited(app.user) %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                                </button>
+                            {% endif %}
                             {% if property.propertyImages|length > 0 %}
                                 <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="Property Image">
                             {% else %}
@@ -260,7 +281,7 @@
                     </span>
                             <div class="real-estate-content">
                                 <h2>{{ property.name }}</h2>
-                                <h3>{{ property.cityId.name }}, {{ property.regionId.name }}</h3>
+                                <h3>{{ property.cityId.name }}, {{ property.region.name }}</h3>
                                 <p>Area: {{ property.area }} m&sup2;</p>
                                 <p>Address: {{ property.address }}</p>
                                 <p>Type: {{ property.listingType.value }}</p>
@@ -275,6 +296,20 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize flash message close buttons
+            document.querySelectorAll('.flash-message .close-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.parentElement.style.display = 'none';
+                });
+            });
+            
+            // Auto-hide flash messages after 5 seconds
+            setTimeout(() => {
+                document.querySelectorAll('.flash-message').forEach(msg => {
+                    msg.style.display = 'none';
+                });
+            }, 5000);
+            
             const citySearchForm = document.getElementById('citySearchForm');
             const citySearchInput = document.getElementById('citySearchInput');
             
@@ -639,6 +674,40 @@
             if (filterModal && filterModal.classList.contains('open')) {
                 filterModal.classList.remove('open');
             }
+        }
+
+        function toggleFavorite(event, button) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const slug = button.dataset.propertySlug;
+            
+            fetch(`{{ path('app_toggle_favorite', {'slug': 'PLACEHOLDER'}) }}`.replace('PLACEHOLDER', slug), {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update button state
+                    if (data.isFavorite) {
+                        button.classList.add('active');
+                        button.querySelector('i').classList.remove('fa-heart-o');
+                        button.querySelector('i').classList.add('fa-heart');
+                        button.setAttribute('aria-label', 'Remove from Favorites');
+                    } else {
+                        button.classList.remove('active');
+                        button.querySelector('i').classList.remove('fa-heart');
+                        button.querySelector('i').classList.add('fa-heart-o');
+                        button.setAttribute('aria-label', 'Add to Favorites');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     </script>
 {% endblock %}

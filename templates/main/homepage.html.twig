@@ -7,9 +7,21 @@
 {% endblock %}
 
 {% block body %}
+
+
+
     <div class="flex justify-center items-center bg-cover bg-center vh-100"
-         style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
+         style="background-image: url('/assets/images/background.jpg'); height: 100vh;">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-message flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             <!-- Map Container -->
             <div id="map" class="mb-4 hidden"></div>
             
