@@ -74,6 +74,15 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('confirmPassword', PasswordType::class, [
+                'mapped' => false,
+                'attr' => ['autocomplete' => 'new-password'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please confirm your password',
+                    ]),
+                ],
+            ])
         ;
     }
 
@@ -81,6 +90,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['Default', 'registration'],
         ]);
     }
 }
