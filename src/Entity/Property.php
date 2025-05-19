@@ -38,8 +38,9 @@ class Property
     #[ORM\OneToMany(targetEntity: PropertyImages::class, mappedBy: 'propertyId')]
     private Collection $propertyImages;
 
-    #[ORM\ManyToOne(inversedBy: 'properties')]
-    private ?Region $regionId = null;
+    #[ORM\ManyToOne(targetEntity: Region::class)]
+    #[ORM\JoinColumn(name: "region_id", referencedColumnName: "id", nullable: true)]
+    private ?Region $region = null;
 
     #[ORM\ManyToOne(inversedBy: 'properties')]
     #[ORM\JoinColumn(nullable: false)]
@@ -238,15 +239,15 @@ class Property
         return $this;
     }
 
-    public function getRegionId(): ?Region
+    public function getRegion(): ?Region
     {
-        return $this->regionId;
+        return $this->region;
     }
 
-    public function setRegionId(?Region $regionId): static
+    public function setRegion(?Region $region): self
     {
-        $this->regionId = $regionId;
-
+        $this->region = $region;
+        
         return $this;
     }
 
@@ -390,5 +391,19 @@ class Property
         $this->slug = $slug;
 
         return $this;
+    }
+    
+    /**
+     * Check if the property is favorited by a specific user
+     */
+    public function isFavorited(User $user): bool
+    {
+        foreach ($this->userFavorites as $favorite) {
+            if ($favorite->getUserId() === $user) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

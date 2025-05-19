@@ -46,7 +46,7 @@ class PropertyCrudController extends AbstractCrudController
         yield AssociationField::new('regionId')
             ->setLabel('Region')
             ->formatValue(function ($value, $entity) {
-                return $entity->getRegionId() ? $entity->getRegionId()->getName() : '';
+                return $entity->getRegion() ? $entity->getRegion()->getName() : '';
             });
         yield AssociationField::new('user')
             ->setLabel('User')

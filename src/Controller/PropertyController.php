@@ -155,6 +155,31 @@ class PropertyController extends AbstractController
 
         $form->handleRequest($request);
 
+        if ($form->isSubmitted()) {
+            $this->addFlash('info', 'Form was submitted');
+            
+            if (!$form->isValid()) {
+                $errors = [];
+                foreach ($form->getErrors(true) as $error) {
+                    $errors[] = $error->getMessage();
+                }
+                
+                foreach ($form->all() as $child) {
+                    if ($child->isSubmitted() && !$child->isValid()) {
+                        foreach ($child->getErrors() as $error) {
+                            $errors[] = $child->getName() . ': ' . $error->getMessage();
+                        }
+                    }
+                }
+                
+                if (!empty($errors)) {
+                    $this->addFlash('error', 'Validation errors: ' . implode(', ', $errors));
+                } else {
+                    $this->addFlash('error', 'Form is not valid but no specific errors found. Check form configuration.');
+                }
+            }
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $property->setUser($this->getUser());
@@ -166,13 +191,12 @@ class PropertyController extends AbstractController
                 $property->setViews(0);
                 $property->setName($form->get('name')->getData());
                 $property->setCityId($form->get('cityId')->getData());
-                $property->setRegionId($form->get('regionId')->getData());
-
+                $property->setRegion($form->get('region')->getData());
                 $cityName = $property->getCityId()->getName();
-                $regionName = $property->getRegionId()->getName();
+                
+                $regionName = $property->getRegion() ? $property->getRegion()->getName() : '';
                 $propertyName = $property->getName();
 
-//                $slug = $slugger->slug($property->getCityId()->getRegionId()->getName())->lower();
                 $slug = $slugger->slug($propertyName . '-' . $cityName . '-' . $regionName)->lower();
                 $property->setSlug($slug . '-' . uniqid());
                 
@@ -226,13 +250,17 @@ class PropertyController extends AbstractController
                 $this->addFlash('success', 'Property listing created successfully!');
                 return $this->redirectToRoute('app_homepage');
             } catch (\Exception $e) {
-                $this->addFlash('error', $e->getMessage());
+                $this->addFlash('error', 'Error: ' . $e->getMessage());
+                $this->addFlash('error', 'File: ' . $e->getFile() . ' (Line ' . $e->getLine() . ')');
                 
                 $entityManager->clear();
             }
         }
 
-        return $this->render('listing/add-listing.html.twig', ['form' => $form->createView()]);
+        return $this->render('listing/add-listing.html.twig', [
+            'form' => $form->createView(),
+            'formType' => $type
+        ]);
     }
 
     #[Route('/property/{slug}', name: 'app_property_detail')]

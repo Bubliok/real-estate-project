@@ -24,9 +24,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\UX\Dropzone\Form\DropzoneType;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AddListingType extends AbstractType
 {
+    private $entityManager;
+    private $regionTransformer;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+        $this->regionTransformer = new RegionNameTransformer($entityManager);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $type = $options['type'] ?? null;
@@ -44,14 +54,17 @@ class AddListingType extends AbstractType
                 'label' => 'City',
                 'placeholder' => 'Select a city'
             ])
-            ->add('regionId', EntityType::class, [
-                'class' => Region::class,
-                'choice_label' => 'name',
+            ->add('region', TextType::class, [
                 'label' => 'Region',
-                'placeholder' => 'Select a region'
+                'attr' => [
+                    'placeholder' => 'Enter region name'
+                ],
+                'required' => false,
+                'help' => 'Enter a region name. If it doesn\'t exist, it will be created automatically.'
             ])
             ->add('address', TextType::class, [
-                'label' => 'Address'
+                'label' => 'Address',
+                'required' => false
             ])
             ->add('price', TextType::class, [
                 'label' => 'Price',
@@ -97,6 +110,18 @@ class AddListingType extends AbstractType
                     ])
                 ],
             ]);
+
+        $builder->get('region')->addModelTransformer($this->regionTransformer);
+        
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if (!empty($data['cityId'])) {
+                $cityId = $this->entityManager->getRepository(City::class)->find($data['cityId']);
+                if ($cityId) {
+                    $this->regionTransformer->setCityId($cityId);
+                }
+            }
+        });
 
         if ($type === 'residential') {
             $builder->add('residential', ResidentialType::class, ['mapped' => false]);

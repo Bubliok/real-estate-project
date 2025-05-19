@@ -25,7 +25,7 @@ class Region
     /**
      * @var Collection<int, Property>
      */
-    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'regionId')]
+    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'region')]
     private Collection $properties;
 
     public function __construct()
@@ -81,7 +81,7 @@ class Region
     {
         if (!$this->properties->contains($property)) {
             $this->properties->add($property);
-            $property->setRegionId($this);
+            $property->setRegion($this);
         }
 
         return $this;
@@ -90,31 +90,8 @@ class Region
     public function removeProperty(Property $property): static
     {
         if ($this->properties->removeElement($property)) {
-            // set the owning side to null (unless already changed)
-            if ($property->getRegionId() === $this) {
-                $property->setRegionId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function addCityId(Property $cityId): static
-    {
-        if (!$this->city_id->contains($cityId)) {
-            $this->city_id->add($cityId);
-            $cityId->setRegionId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCityId(Property $cityId): static
-    {
-        if ($this->city_id->removeElement($cityId)) {
-            // set the owning side to null (unless already changed)
-            if ($cityId->getRegionId() === $this) {
-                $cityId->setRegionId(null);
+            if ($property->getRegion() === $this) {
+                $property->setRegion(null);
             }
         }
 
