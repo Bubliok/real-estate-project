@@ -213,6 +213,33 @@ class PropertyRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * Calls the stored procedure to count properties by city and listing type.
+     */
+    public function countByCityAndTypeSP(int $cityId, string $listingType): int
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare('SELECT countpropertiesbycityandtype(:cityId, :listingType)');
+        $stmt->bindValue('cityId', $cityId);
+        $stmt->bindValue('listingType', $listingType);
+        $result = $stmt->executeQuery()->fetchNumeric();
+        return (int) ($result ? $result[0] : 0);
+    }
+
+    /**
+     * Calls the stored procedure to get filtered properties (example: by city, type, min bedrooms, min bathrooms).
+     */
+    public function getFilteredPropertiesSP(int $cityId, string $listingType, ?int $minBedrooms = null, ?int $minBathrooms = null): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare('SELECT * FROM getfilteredproperties(:cityId, :listingType, :minBedrooms, :minBathrooms)');
+        $stmt->bindValue('cityId', $cityId);
+        $stmt->bindValue('listingType', $listingType);
+        $stmt->bindValue('minBedrooms', $minBedrooms);
+        $stmt->bindValue('minBathrooms', $minBathrooms);
+        return $stmt->executeQuery()->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return Property[] Returns an array of Property objects
 //     */

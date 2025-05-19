@@ -309,7 +309,7 @@ class PropertyController extends AbstractController
             return $this->json(['count' => 0]);
         }
 
-        $count = $propertyRepository->count(['cityId' => $city->getId()]);
+        $count = $propertyRepository->countByCityAndTypeSP($city->getId(), 'sale');
         
         return $this->json(['count' => $count]);
     }
