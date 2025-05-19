@@ -2,68 +2,87 @@
 <div id="filterModal" class="filter-modal" tabindex="-1" role="dialog" aria-labelledby="filterModalTitle">
     <div class="filter-modal-content">
         <div class="filter-modal-header">
-            <h3 class="filter-modal-title" id="filterModalTitle">Property Filters</h3>
-            <button type="button" class="filter-modal-close" onclick="closeModalHandler(event)" aria-label="Close">&times;</button>
+            <h3 class="filter-modal-title" id="filterModalTitle">
+                <i class="fa fa-sliders" style="margin-right: 0.5rem;"></i>
+                Property Filters
+            </h3>
+            <button type="button" class="filter-modal-close" onclick="closeModalHandler(event)" aria-label="Close">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
         <div class="filter-modal-body">
-            <div id="filterErrorMessage" class="hidden error-message" style="color: #e53e3e; margin-bottom: 16px; padding: 10px; background-color: #fdf2f2; border-radius: 6px; border-left: 4px solid #e53e3e; display: none;">
-                <i class="fa fa-exclamation-circle" style="margin-right: 8px;"></i>
+            <div id="filterErrorMessage" class="hidden error-message" style="display: none;">
+                <i class="fa fa-exclamation-circle"></i>
                 Please enter a city before applying filters
             </div>
             
-            <div style="text-align: right; margin-bottom: 12px;">
-                <button type="button" id="resetToAllBtn" class="text-blue-500 hover:text-blue-700 text-sm font-medium" onclick="resetToAllProperties()">
-                    <i class="fa fa-refresh" style="margin-right: 4px;"></i> Reset to All Properties
+            <div style="text-align: right; margin-bottom: 1.5rem;">
+                <button type="button" id="resetToAllBtn" onclick="resetToAllProperties()">
+                    <i class="fa fa-refresh"></i>
+                    Reset to All Properties
                 </button>
             </div>
             
             <div class="property-filter-group">
-                <h4 class="property-filter-title">Listing Type</h4>
+                <h4 class="property-filter-title">
+                    <i class="fa fa-tag" style="margin-right: 0.5rem;"></i>
+                    Listing Type
+                </h4>
                 <div class="listing-type-toggle">
                     <label class="listing-type-option active" for="listing_sale">
                         <input type="radio" id="listing_sale" name="listing_type_selection" value="sale"
                                class="listing-type-radio" checked>
+                        <i class="fa fa-home" style="margin-right: 0.5rem;"></i>
                         For Sale
                     </label>
                     <label class="listing-type-option" for="listing_rent">
                         <input type="radio" id="listing_rent" name="listing_type_selection" value="rent"
                                class="listing-type-radio">
+                        <i class="fa fa-key" style="margin-right: 0.5rem;"></i>
                         For Rent
                     </label>
                 </div>
             </div>
 
             <input type="hidden" id="activePropertyType" name="activePropertyType" value="all">
-
             <input type="radio" id="tab_all" name="property_tab" value="all" class="filter-tab-radio" style="display: none;">
 
             <div class="filter-tabs">
                 <label class="filter-tab active" for="tab_residential">
                     <input type="radio" id="tab_residential" name="property_tab" value="residential"
                            class="filter-tab-radio" checked>
+                    <i class="fa fa-building" style="margin-right: 0.5rem;"></i>
                     Residential
                 </label>
                 <label class="filter-tab" for="tab_commercial">
                     <input type="radio" id="tab_commercial" name="property_tab" value="commercial"
                            class="filter-tab-radio">
+                    <i class="fa fa-store" style="margin-right: 0.5rem;"></i>
                     Commercial
                 </label>
                 <label class="filter-tab" for="tab_land">
                     <input type="radio" id="tab_land" name="property_tab" value="land"
                            class="filter-tab-radio">
+                    <i class="fa fa-tree" style="margin-right: 0.5rem;"></i>
                     Land
                 </label>
             </div>
 
             <div id="allPanel" class="filter-panel">
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Show all available properties</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-globe" style="margin-right: 0.5rem;"></i>
+                        Show all available properties
+                    </h4>
                 </div>
             </div>
 
             <div id="residentialPanel" class="filter-panel active">
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Property Type</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-building" style="margin-right: 0.5rem;"></i>
+                        Property Type
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
                             <input type="checkbox"
@@ -89,7 +108,10 @@
                 </div>
 
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Bedrooms</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-bed" style="margin-right: 0.5rem;"></i>
+                        Bedrooms
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
                             <input type="radio" id="bedrooms_any" name="bedrooms" value="" checked>
@@ -115,7 +137,10 @@
                 </div>
 
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Bathrooms</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-bath" style="margin-right: 0.5rem;"></i>
+                        Bathrooms
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
                             <input type="radio" id="bathrooms_any" name="bathrooms" value="" checked>
@@ -137,16 +162,24 @@
                 </div>
 
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Features</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-star" style="margin-right: 0.5rem;"></i>
+                        Features
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
                             <input type="checkbox" id="features_parking" name="features[]" value="parking">
-                            <label for="features_parking">Parking</label>
+                            <label for="features_parking">
+                                <i class="fa fa-parking" style="margin-right: 0.5rem;"></i>
+                                Parking
+                            </label>
                         </div>
                         <div class="property-filter-option">
-                            <input type="checkbox" id="features_furnished" name="features[]"
-                                   value="furnished">
-                            <label for="features_furnished">Furnished</label>
+                            <input type="checkbox" id="features_furnished" name="features[]" value="furnished">
+                            <label for="features_furnished">
+                                <i class="fa fa-couch" style="margin-right: 0.5rem;"></i>
+                                Furnished
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -154,7 +187,10 @@
 
             <div id="commercialPanel" class="filter-panel">
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Property Type</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-store" style="margin-right: 0.5rem;"></i>
+                        Property Type
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
                             <input type="checkbox"
@@ -180,26 +216,35 @@
                 </div>
 
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Features</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-star" style="margin-right: 0.5rem;"></i>
+                        Features
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
-                            <input type="checkbox" id="commercial_parking" name="commercial_features[]"
-                                   value="parking">
-                            <label for="commercial_parking">Parking</label>
+                            <input type="checkbox" id="commercial_parking" name="commercial_features[]" value="parking">
+                            <label for="commercial_parking">
+                                <i class="fa fa-parking" style="margin-right: 0.5rem;"></i>
+                                Parking
+                            </label>
                         </div>
                         <div class="property-filter-option">
-                            <input type="checkbox" id="commercial_furnished" name="commercial_features[]"
-                                   value="furnished">
-                            <label for="commercial_furnished">Furnished</label>
+                            <input type="checkbox" id="commercial_furnished" name="commercial_features[]" value="furnished">
+                            <label for="commercial_furnished">
+                                <i class="fa fa-couch" style="margin-right: 0.5rem;"></i>
+                                Furnished
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Land Panel -->
             <div id="landPanel" class="filter-panel">
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Zoning Type</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-tree" style="margin-right: 0.5rem;"></i>
+                        Zoning Type
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
                             <input type="checkbox"
@@ -225,28 +270,36 @@
                 </div>
 
                 <div class="property-filter-group">
-                    <h4 class="property-filter-title">Features</h4>
+                    <h4 class="property-filter-title">
+                        <i class="fa fa-star" style="margin-right: 0.5rem;"></i>
+                        Features
+                    </h4>
                     <div class="property-filter-options">
                         <div class="property-filter-option">
-                            <input type="checkbox" id="land_electricity" name="land_features[]"
-                                   value="electricity">
-                            <label for="land_electricity">Electricity</label>
+                            <input type="checkbox" id="land_electricity" name="land_features[]" value="electricity">
+                            <label for="land_electricity">
+                                <i class="fa fa-bolt" style="margin-right: 0.5rem;"></i>
+                                Electricity
+                            </label>
                         </div>
                         <div class="property-filter-option">
                             <input type="checkbox" id="land_water" name="land_features[]" value="water">
-                            <label for="land_water">Water</label>
+                            <label for="land_water">
+                                <i class="fa fa-tint" style="margin-right: 0.5rem;"></i>
+                                Water
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="filter-modal-footer">
-            <button type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
-                    onclick="closeModalHandler(event)">
+            <button type="button" onclick="closeModalHandler(event)">
+                <i class="fa fa-times" style="margin-right: 0.5rem;"></i>
                 Cancel
             </button>
-            <button type="button" id="applyFiltersBtn"
-                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            <button type="button" id="applyFiltersBtn">
+                <i class="fa fa-check" style="margin-right: 0.5rem;"></i>
                 Apply Filters
             </button>
         </div>
