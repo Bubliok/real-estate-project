@@ -23,9 +23,6 @@ class RegionNameTransformer implements DataTransformerInterface
         $this->logger = $logger;
     }
 
-    /**
-     * Set the cityId to use when creating a new Region
-     */
     public function setCityId(?City $cityId): void
     {
         $this->cityIdFromForm = $cityId;
@@ -52,7 +49,7 @@ class RegionNameTransformer implements DataTransformerInterface
         $this->log("Reverse transforming value: " . ($value ?? 'null'));
         
         if (!$value) {
-            return null;  // Allow empty regions
+            return null;
         }
         
         $region = $this->entityManager
@@ -63,8 +60,7 @@ class RegionNameTransformer implements DataTransformerInterface
             $this->log("Creating new Region with name: " . $value);
             $region = new Region();
             $region->setName($value);
-            
-            // Set the city ID if available
+
             if ($this->cityIdFromForm) {
                 $region->setCityId($this->cityIdFromForm);
                 $this->log("Set city ID for new region: " . $this->cityIdFromForm->getName());

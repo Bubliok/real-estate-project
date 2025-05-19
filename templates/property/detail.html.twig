@@ -18,47 +18,56 @@
         {% endfor %}
     {% endfor %}
 
-    <div class="slideshow-container">
-        {% if property.propertyImages|length > 0 %}
-            {% for image in property.propertyImages %}
-                <div class="mySlides fade"
-                     style="{% if loop.first %} display: block; {% else %} display: none; {% endif %}">
-                    <div class="numbertext">{{ loop.index }} / {{ property.propertyImages|length }}</div>
-                    <img src="{{ asset(image.imagePath) }}"
-                         alt="Property Image {{ loop.index }}">
+    <div class="real-estate-content-container">
+        <div class="slideshow-container">
+            {% if property.propertyImages|length > 0 %}
+                {% for image in property.propertyImages %}
+                    <div class="mySlides fade"
+                         style="{% if loop.first %} display: block; {% else %} display: none; {% endif %}">
+                        <div class="numbertext">{{ loop.index }} / {{ property.propertyImages|length }}</div>
+                        <img src="{{ asset(image.imagePath) }}"
+                             alt="Property Image {{ loop.index }}">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="mySlides fade" style="display: block;">
+                    <img src="https://via.placeholder.com/1000x500" alt="No Image Available">
                 </div>
-            {% endfor %}
-        {% else %}
-            <div class="mySlides fade" style="display: block;">
-                <img src="https://via.placeholder.com/1000x500" alt="No Image Available">
+            {% endif %}
+
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+
+        {% if property.propertyImages|length > 0 %}
+            <div class="dots-container">
+                {% for image in property.propertyImages %}
+                    <span class="dot {% if loop.first %}active{% endif %}" onclick="currentSlide({{ loop.index }})"></span>
+                {% endfor %}
             </div>
         {% endif %}
 
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-    </div>
-
-    {% if property.propertyImages|length > 0 %}
-        <div style="text-align:center">
-            {% for image in property.propertyImages %}
-                <span class="dot {% if loop.first %}active{% endif %}" onclick="currentSlide({{ loop.index }})"></span>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <div class="real-estate-content-container">
         <div class="real-estate-detail">
             <div class="real-estate-detail-content">
                 <div class="title-row">
                     <h1>{{ property.name }}</h1>
+                    <br>
+                    <div class="location-info">
+                        <h2>{{ property.cityId.name }}{% if property.region %}, {{ property.region.name }}{% endif %}</h2>
+                        {% if property.address %}
+                            <p class="address"><i class="fa fa-map-marker"></i> {{ property.address }}</p>
+                        {% endif %}
+                    </div>
                     <div class="action-buttons">
                         {% if app.user %}
                             <div id="favorite-container">
-                                <button type="button" id="favorite-toggle" class="favorite-button {% if isFavorite %}active{% endif %}" 
-                                        data-property-slug="{{ property.slug }}" 
-                                        data-is-favorite="{{ isFavorite ? 'true' : 'false' }}"
-                                        onclick="toggleFavorite(event)">
-                                    <i class="fa {% if isFavorite %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                                <button type="button"
+                                        class="favorite-button {% if property.isFavorited(app.user) %}active{% endif %}"
+                                        data-property-slug="{{ property.slug }}"
+                                        data-is-favorite="{{ property.isFavorited(app.user) ? 'true' : 'false' }}"
+                                        onclick="toggleFavorite(event, this)"
+                                        aria-label="{% if property.isFavorited(app.user) %}Remove from Favorites{% else %}Add to Favorites{% endif %}">
+                                    <i class="fa {% if property.isFavorited(app.user) %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
                                     <span id="favorite-text">
                                         {% if isFavorite %}
                                             Remove from Favorites
@@ -69,25 +78,135 @@
                                 </button>
                             </div>
                         {% endif %}
-                        <p class="upload-time">Date uploaded: {{ property.createdAt|date('d.m.Y H:i:s') }}</p>
+                        <p class="upload-time">Listed on: {{ property.createdAt|date('d.m.Y H:i:s') }}</p>
                     </div>
                 </div>
-                <h2>{{ property.cityId.name }}, {{ property.region.name }}, {{ property.address }}</h2>
 
-                <p class="price">€{{ property.price|number_format(0, ',', '.') }} ({{ (property.price / property.area)|round(2) }} EUR/m&sup2;)</p>
 
-                <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
 
-                <div class="details">
-                    <span>Area: {{ property.area }} m&sup2;</span>
-                    <span class="separator"> | </span>
-                    <span>Type: {{ property.listingType.value }}</span>
-                    <span class="separator"> | </span>
-                    <span>Views: {{ property.views }}</span>
+                <div class="price-info">
+                    <p class="price">€{{ property.price|number_format(0, ',', '.') }}</p>
+                    <p class="price-per-sqm">€{{ (property.price / property.area)|round(2) }} per m²</p>
                 </div>
 
+                <div class="property-stats">
+                    <div class="stat-item">
+                        <i class="fa fa-arrows-alt"></i>
+                        <span>{{ property.area }} m²</span>
+                        <label>Total Area</label>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fa fa-tag"></i>
+                        <span>{{ property.listingType.value }}</span>
+                        <label>Listing Type</label>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fa fa-eye"></i>
+                        <span>{{ property.views }}</span>
+                        <label>Views</label>
+                    </div>
+                </div>
+
+                {% if property.residential %}
+                    <div class="property-details residential-details">
+                        <h3>Residential Details</h3>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <i class="fa fa-home"></i>
+                                <span>{{ property.residential.residentialType.value }}</span>
+                                <label>Type</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-bed"></i>
+                                <span>{{ property.residential.bedrooms }}</span>
+                                <label>Bedrooms</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-bath"></i>
+                                <span>{{ property.residential.bathrooms }}</span>
+                                <label>Bathrooms</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-building"></i>
+                                <span>{{ property.residential.buildType.value }}</span>
+                                <label>Build Type</label>
+                            </div>
+                            {% if property.residential.floor %}
+                                <div class="detail-item">
+                                    <i class="fa fa-level-up"></i>
+                                    <span>{{ property.residential.floor }}/{{ property.residential.totalFloors }}</span>
+                                    <label>Floor</label>
+                                </div>
+                            {% endif %}
+                            {% if property.residential.yearBuilt %}
+                                <div class="detail-item">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>{{ property.residential.yearBuilt|date('Y') }}</span>
+                                    <label>Year Built</label>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elseif property.commercial %}
+                    <div class="property-details commercial-details">
+                        <h3>Commercial Details</h3>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <i class="fa fa-building"></i>
+                                <span>{{ property.commercial.commercialType.value }}</span>
+                                <label>Type</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-door-open"></i>
+                                <span>{{ property.commercial.rooms }}</span>
+                                <label>Rooms</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-bath"></i>
+                                <span>{{ property.commercial.bathrooms }}</span>
+                                <label>Bathrooms</label>
+                            </div>
+                            {% if property.commercial.floor %}
+                                <div class="detail-item">
+                                    <i class="fa fa-level-up"></i>
+                                    <span>{{ property.commercial.floor }}</span>
+                                    <label>Floor</label>
+                                </div>
+                            {% endif %}
+                            {% if property.commercial.yearBuilt %}
+                                <div class="detail-item">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>{{ property.commercial.yearBuilt|date('Y') }}</span>
+                                    <label>Year Built</label>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elseif property.land %}
+                    <div class="property-details land-details">
+                        <h3>Land Details</h3>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <i class="fa fa-map"></i>
+                                <span>{{ property.land.zoningType.value }}</span>
+                                <label>Zoning Type</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-bolt"></i>
+                                <span>{{ property.land.hasElectricity ? 'Yes' : 'No' }}</span>
+                                <label>Electricity</label>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa fa-tint"></i>
+                                <span>{{ property.land.hasWater ? 'Yes' : 'No' }}</span>
+                                <label>Water Supply</label>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="features">
-                    <p>Features:</p>
+                    <h3>Features</h3>
                     {% if features|length > 0 %}
                         <ul class="features-list">
                             {% for feature in features %}
@@ -98,17 +217,18 @@
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p>No features listed for this property.</p>
+                        <p class="no-features">No features listed for this property.</p>
                     {% endif %}
                 </div>
 
-                <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
-                <div class="details">
-                    <p>Description: <br><br> {{ property.description }}</p>
-                </div>
+                {% if property.description %}
+                    <div class="description-section">
+                        <h3>Description</h3>
+                        <p>{{ property.description|nl2br }}</p>
+                    </div>
+                {% endif %}
 
                 {% if property.user %}
-                    <hr style="border: 0; border-top: 1px solid #ccc; margin: 15px 0;">
                     <div class="contact-info">
                         <h3>Contact Information</h3>
                         <div class="contact-details">

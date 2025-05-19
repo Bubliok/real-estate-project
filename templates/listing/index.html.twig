@@ -42,90 +42,92 @@
         {{ form_end(mainForm) }}
 
         <div class="page-header">
+            <div class="sort-container">
+                <div class="property-type-shortcuts">
+                    <a href="{{ path('app_show_listings', {
+                        listingType: listingType,
+                        cityName: cityName,
+                        propertyType: 'residential',
+                        residentialTypes: 'house'
+                    }) }}" class="property-shortcut">
+                        <div class="property-shortcut-icon">
+                            <i class="fa-solid fa-house fa-xl"></i>
+                        </div>
+                        <span class="property-shortcut-label">Houses</span>
+                    </a>
+
+                    <a href="{{ path('app_show_listings', {
+                        listingType: listingType,
+                        cityName: cityName,
+                        propertyType: 'residential',
+                        residentialTypes: 'apartment'
+                    }) }}" class="property-shortcut">
+                        <div class="property-shortcut-icon">
+                            <i class="fa-solid fa-building fa-xl"></i>
+                        </div>
+                        <span class="property-shortcut-label">Apartments</span>
+                    </a>
+
+                    <a href="{{ path('app_show_listings', {
+                        listingType: listingType,
+                        cityName: cityName,
+                        propertyType: 'commercial',
+                        commercialTypes: 'office'
+                    }) }}" class="property-shortcut">
+                        <div class="property-shortcut-icon">
+                            <i class="fa-solid fa-briefcase fa-xl"></i>
+                        </div>
+                        <span class="property-shortcut-label">Offices</span>
+                    </a>
+
+                    <a href="{{ path('app_show_listings', {
+                        listingType: listingType,
+                        cityName: cityName,
+                        propertyType: 'commercial',
+                        commercialTypes: 'retail'
+                    }) }}" class="property-shortcut">
+                        <div class="property-shortcut-icon">
+                            <i class="fa-solid fa-shop fa-xl"></i>
+                        </div>
+                        <span class="property-shortcut-label">Retail</span>
+                    </a>
+
+                    <a href="{{ path('app_show_listings', {
+                        listingType: listingType,
+                        cityName: cityName,
+                        propertyType: 'land',
+                        landTypes: 'agricultural'
+                    }) }}" class="property-shortcut">
+                        <div class="property-shortcut-icon">
+                            <i class="fa-solid fa-wheat-awn fa-xl"></i>
+                        </div>
+                        <span class="property-shortcut-label">Agricultural</span>
+                    </a>
+
+                    <a href="{{ path('app_show_listings', {
+                        listingType: listingType,
+                        cityName: cityName,
+                        propertyType: 'land',
+                        landTypes: 'industrial'
+                    }) }}" class="property-shortcut">
+
+                        <div class="property-shortcut-icon">
+                            <i class="fa-solid fa-industry fa-xl"></i>
+                        </div>
+                        <span class="property-shortcut-label">Industrial</span>
+                    </a>
+                </div>
+            </div>
             {% if noPropertiesFound %}
                 <div class="error-not-found">
                     <h1>No property found for search criteria.</h1>
                 </div>
             {% else %}
                 {% if propertyType is defined and propertyType == 'all' %}
+
                 {% endif %}
 
-                <div class="sort-container">
-                    <div class="property-type-shortcuts">
-                        <a href="{{ path('app_show_listings', {
-                            listingType: listingType,
-                            cityName: cityName,
-                            propertyType: 'residential',
-                            residentialTypes: 'house'
-                        }) }}" class="property-shortcut">
-                            <div class="property-shortcut-icon">
-                                <i class="fa-solid fa-house fa-xl"></i>
-                            </div>
-                            <span class="property-shortcut-label">Houses</span>
-                        </a>
 
-                        <a href="{{ path('app_show_listings', {
-                            listingType: listingType,
-                            cityName: cityName,
-                            propertyType: 'residential',
-                            residentialTypes: 'apartment'
-                        }) }}" class="property-shortcut">
-                            <div class="property-shortcut-icon">
-                                <i class="fa-solid fa-building fa-xl"></i>
-                            </div>
-                            <span class="property-shortcut-label">Apartments</span>
-                        </a>
-
-                        <a href="{{ path('app_show_listings', {
-                            listingType: listingType,
-                            cityName: cityName,
-                            propertyType: 'commercial',
-                            commercialTypes: 'office'
-                        }) }}" class="property-shortcut">
-                            <div class="property-shortcut-icon">
-                                <i class="fa-solid fa-briefcase fa-xl"></i>
-                            </div>
-                            <span class="property-shortcut-label">Offices</span>
-                        </a>
-
-                        <a href="{{ path('app_show_listings', {
-                            listingType: listingType,
-                            cityName: cityName,
-                            propertyType: 'commercial',
-                            commercialTypes: 'retail'
-                        }) }}" class="property-shortcut">
-                            <div class="property-shortcut-icon">
-                                <i class="fa-solid fa-shop fa-xl"></i>
-                            </div>
-                            <span class="property-shortcut-label">Retail</span>
-                        </a>
-
-                        <a href="{{ path('app_show_listings', {
-                            listingType: listingType,
-                            cityName: cityName,
-                            propertyType: 'land',
-                            landTypes: 'agricultural'
-                        }) }}" class="property-shortcut">
-                            <div class="property-shortcut-icon">
-                                <i class="fa-solid fa-wheat-awn fa-xl"></i>
-                            </div>
-                            <span class="property-shortcut-label">Agricultural</span>
-                        </a>
-
-                        <a href="{{ path('app_show_listings', {
-                            listingType: listingType,
-                            cityName: cityName,
-                            propertyType: 'land',
-                            landTypes: 'industrial'
-                        }) }}" class="property-shortcut">
-
-                            <div class="property-shortcut-icon">
-                                <i class="fa-solid fa-industry fa-xl"></i>
-                            </div>
-                            <span class="property-shortcut-label">Industrial</span>
-                        </a>
-                    </div>
-                </div>
 
 
                 <div class="city-search-container">
