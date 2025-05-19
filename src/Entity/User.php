@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -36,39 +36,74 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 40, nullable: true)]
+    private ?string $firstName = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    #[ORM\Column(length: 30, nullable: true)]
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $profileImage = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $fullName = null;
+    private ?string $email = null;
 
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(length: 60, nullable: true)]
-    private ?string $email = null;
+    #[ORM\Column(length: 255)]
+    private ?string $profileImage = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Agency $agencyId = null;
 
     /**
-     * @var Collection<int, Favourites>
+     * @var Collection<int, Property>
      */
-    #[ORM\OneToMany(targetEntity: Favourites::class, mappedBy: 'userId')]
-    private Collection $favourites;
+    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'user')]
+    private Collection $properties;
 
     /**
-     * @var Collection<int, RealEstate>
+     * @var Collection<int, UserFavorites>
      */
-    #[ORM\OneToMany(targetEntity: RealEstate::class, mappedBy: 'userId')]
-    private Collection $realEstates;
+    #[ORM\OneToMany(targetEntity: UserFavorites::class, mappedBy: 'userId')]
+    private Collection $userFavorites;
 
     public function __construct()
     {
-        $this->favourites = new ArrayCollection();
-        $this->realEstates = new ArrayCollection();
+        $this->properties = new ArrayCollection();
+        $this->userFavorites = new ArrayCollection();
     }
+
+    /**
+     * @return Collection<int, UserFavorites>
+     */
+    public function getUserFavorites(): Collection
+    {
+        return $this->userFavorites;
+    }
+    
+    public function addUserFavorite(UserFavorites $userFavorite): static
+    {
+        if (!$this->userFavorites->contains($userFavorite)) {
+            $this->userFavorites->add($userFavorite);
+            $userFavorite->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserFavorite(UserFavorites $userFavorite): static
+    {
+        if ($this->userFavorites->removeElement($userFavorite)) {
+            // Set the owning side to null (unless already changed)
+            if ($userFavorite->getUserId() === $this) {
+                $userFavorite->setUserId(null);
+            }
+        }
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,13 +128,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -138,44 +173,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials(): void
+
+
+    public function getFirstName(): ?string
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        return $this->firstName;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function setFirstName(?string $firstName): static
     {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getProfileImage(): ?string
+    public function getLastName(): ?string
     {
-        return $this->profileImage;
+        return $this->lastName;
     }
 
-    public function setProfileImage(string $profileImage): static
+    public function setLastName(?string $lastName): static
     {
-        $this->profileImage = $profileImage;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getFullName(): ?string
+    public function getEmail(): ?string
     {
-        return $this->fullName;
+        return $this->email;
     }
 
-    public function setFullName(?string $fullName): static
+    public function setEmail(string $email): static
     {
-        $this->fullName = $fullName;
+        $this->email = $email;
 
         return $this;
     }
@@ -192,75 +223,75 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getProfileImage(): ?string
     {
-        return $this->email;
+        return $this->profileImage;
     }
 
-    public function setEmail(?string $email): static
+    public function setProfileImage(string $profileImage): static
     {
-        $this->email = $email;
+        $this->profileImage = $profileImage;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Favourites>
-     */
-    public function getFavourites(): Collection
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->favourites;
+        return $this->createdAt;
     }
 
-    public function addFavourite(Favourites $favourite): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        if (!$this->favourites->contains($favourite)) {
-            $this->favourites->add($favourite);
-            $favourite->setUserId($this);
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getAgencyId(): ?Agency
+    {
+        return $this->agencyId;
+    }
+
+    public function setAgencyId(?Agency $agencyId): static
+    {
+        $this->agencyId = $agencyId;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection<int, Property>
+     */
+    public function getProperties(): Collection
+    {
+        return $this->properties;
+    }
+
+    public function addProperty(Property $property): static
+    {
+        if (!$this->properties->contains($property)) {
+            $this->properties->add($property);
+            $property->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeFavourite(Favourites $favourite): static
+    public function removeProperty(Property $property): static
     {
-        if ($this->favourites->removeElement($favourite)) {
+        if ($this->properties->removeElement($property)) {
             // set the owning side to null (unless already changed)
-            if ($favourite->getUserId() === $this) {
-                $favourite->setUserId(null);
+            if ($property->getUser() === $this) {
+                $property->setUser(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, RealEstate>
-     */
-    public function getRealEstates(): Collection
-    {
-        return $this->realEstates;
-    }
-
-    public function addRealEstate(RealEstate $realEstate): static
-    {
-        if (!$this->realEstates->contains($realEstate)) {
-            $this->realEstates->add($realEstate);
-            $realEstate->setUserId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRealEstate(RealEstate $realEstate): static
-    {
-        if ($this->realEstates->removeElement($realEstate)) {
-            // set the owning side to null (unless already changed)
-            if ($realEstate->getUserId() === $this) {
-                $realEstate->setUserId(null);
-            }
-        }
-
-        return $this;
-    }
 }

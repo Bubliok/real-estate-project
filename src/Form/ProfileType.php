@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Entity\Agency;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -41,12 +43,22 @@ class ProfileType extends AbstractType
                 'constraints' => [
                     new Length([
                         'max' => 10,
-                        'maxMessage' => 'Your email cannot be longer than {{ limit }} characters',
+                        'maxMessage' => 'Your phone number cannot be longer than {{ limit }} characters',
                     ])
                 ]
             ])
-            ->add('fullName', TextType::class, [
-                'label' => 'Full Name',
+            ->add('firstName', TextType::class, [
+                'label' => 'First Name',
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Last Name',
+            ])
+            ->add('agencyId', EntityType::class, [
+                'class' => Agency::class,
+                'choice_label' => 'name',
+                'label' => 'Agency',
+                'placeholder' => 'Select an agency',
+                'required' => false,
             ]);
     }
 

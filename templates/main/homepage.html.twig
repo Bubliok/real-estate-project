@@ -1,39 +1,532 @@
 {% extends 'base.html.twig' %}
 {% block title %} {{ "IMT Estate" }} {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+{% endblock %}
+
 {% block body %}
 
-    <div
-            class="flex justify-center items-center bg-cover bg-center"
-            style="background-image: url('/assets/images/background_image.jpg'); height: 100vh;">
-        <div class="bg-white p-8 rounded-lg shadow-lg">
-            {{ form_start(mainForm, {'attr': {'class': 'space-y-4'}}) }}
+
+
+    <div class="flex justify-center items-center bg-cover bg-center vh-100"
+         style="background-image: url('/assets/images/background.jpg'); height: 100vh;">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-message flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <!-- Map Container -->
+            <div id="map" class="mb-4 hidden"></div>
+            
+            {{ form_start(mainForm, {'attr': {'class': 'space-y-4', 'id': 'search-form'}}) }}
+            <div class="search-container">
             <div class="flex items-center space-x-4">
-                <!-- Search Bar -->
-                {{ form_widget(mainForm.search, {'attr': {'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300'}}) }}
 
-                <!-- Checkbox 1 -->
-                <div class="flex items-center space-x-2">
-                    {{ form_widget(mainForm.isFurnished, {'attr': {'class': 'h-5 w-5 text-blue-600 border-gray-300 focus:ring focus:ring-blue-300'}}) }}
-                    <label for="{{ mainForm.isFurnished.vars.id }}" class="text-gray-700 text-sm">
-                        Furnished
-                    </label>
-                </div>
+                {{ form_widget(mainForm.search, {
+                    'attr': {
+                            'class': 'w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300',
+                            'placeholder': 'Search for a city...',
+                            'id': 'search-input'
+                    }
+                }) }}
 
-                <!-- Checkbox 2 -->
-                <div class="flex items-center space-x-2">
-                    {{ form_widget(mainForm.isForRent, {'attr': {'class': 'h-5 w-5 text-blue-600 border-gray-300 focus:ring focus:ring-blue-300'}}) }}
-                    <label for="{{ mainForm.isForRent.vars.id }}" class="text-gray-700 text-sm">
-                        For Rent
-                    </label>
-                </div>
-
-                <!-- Lookup Button -->
+                    <button type="button" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
+                            onclick="openFilterModal()">
+                        Filters
+                    </button>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                    Lookup
-                </button>
+                        Search
+                    </button>
+                </div>
+
+                <div style="display: none;">
+                    {{ form_widget(mainForm.listingType, {'value': 'sale'}) }}
+
+                    <div id="hiddenFields">
+                        {{ form_row(mainForm.residentialTypes) }}
+                        {{ form_row(mainForm.commercialTypes) }}
+                        {{ form_row(mainForm.landTypes) }}
+                    </div>
+                </div>
+
+
+                {{ include('fragments/filters.html.twig') }}
+
             </div>
+
             {{ form_end(mainForm) }}
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = 'sale';
+
+            document.querySelectorAll('.filter-tab-radio').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    const tabName = this.value;
+                    showTab(tabName);
+                    document.getElementById('activePropertyType').value = tabName;
+                    clearOtherTabSelections(tabName);
+                });
+            });
+            
+            document.getElementById('activePropertyType').value = 'all';
+            document.getElementById('tab_all').checked = true;
+            selectAllTab();
+            
+            document.querySelectorAll('.listing-type-radio').forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    document.querySelectorAll('.listing-type-option').forEach(option => {
+                        option.classList.remove('active');
+                    });
+                    
+                    this.parentElement.classList.add('active');
+                    document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = this.value;
+                });
+            });
+
+            setupSelectAllCheckboxes('residential');
+            setupSelectAllCheckboxes('commercial');
+            setupSelectAllCheckboxes('land');
+
+            document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+                const citySearchField = document.querySelector('input[name="{{ mainForm.search.vars.full_name }}"]');
+                if (!citySearchField || !citySearchField.value.trim()) {
+                    const errorMsg = document.getElementById('filterErrorMessage');
+                    if (errorMsg) {
+                        errorMsg.style.display = 'block';
+                        document.querySelector('.filter-modal-body').scrollTop = 0;
+                    }
+                    return false;
+                }
+                
+                const errorMsg = document.getElementById('filterErrorMessage');
+                if (errorMsg) {
+                    errorMsg.style.display = 'none';
+                }
+                
+                const activePropertyType = document.getElementById('activePropertyType').value;
+                const selectedListingType = document.querySelector('input[name="listing_type_selection"]:checked');
+                if (selectedListingType) {
+                    document.querySelector('select[name="{{ mainForm.listingType.vars.full_name }}"]').value = selectedListingType.value;
+                }
+
+                if (activePropertyType === 'residential') {
+                    const selectedTypes = [];
+                    document.querySelectorAll('input[name="residential_type_selection[]"]:checked').forEach(function (checkbox) {
+                        selectedTypes.push(checkbox.value);
+                    });
+
+                    if (selectedTypes.length > 0) {
+                        const selectElement = document.querySelector('select[name="{{ mainForm.residentialTypes.vars.full_name }}"]');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = selectedTypes.includes(selectElement.options[i].value);
+                        }
+                    }
+                } else if (activePropertyType === 'commercial') {
+                    const selectedTypes = [];
+                    document.querySelectorAll('input[name="commercial_type_selection[]"]:checked').forEach(function (checkbox) {
+                        selectedTypes.push(checkbox.value);
+                    });
+
+                    if (selectedTypes.length > 0) {
+                        const selectElement = document.querySelector('select[name="{{ mainForm.commercialTypes.vars.full_name }}"]');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = selectedTypes.includes(selectElement.options[i].value);
+                        }
+                    }
+                } else if (activePropertyType === 'land') {
+                    const selectedTypes = [];
+                    document.querySelectorAll('input[name="land_type_selection[]"]:checked').forEach(function (checkbox) {
+                        selectedTypes.push(checkbox.value);
+                    });
+
+                    if (selectedTypes.length > 0) {
+                        const selectElement = document.querySelector('select[name="{{ mainForm.landTypes.vars.full_name }}"]');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            selectElement.options[i].selected = selectedTypes.includes(selectElement.options[i].value);
+                        }
+                    }
+                }
+
+                document.getElementById('search-form').submit();
+                closeFilterModal();
+            });
+        });
+
+        function setupSelectAllCheckboxes(type) {
+            const selectAllCheckbox = document.getElementById(`${type}_all`);
+            const typeCheckboxes = document.querySelectorAll(`.${type}-type-checkbox.type-option`);
+            selectAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+
+                typeCheckboxes.forEach(function (checkbox) {
+                    checkbox.checked = isChecked;
+                });
+            });
+
+            typeCheckboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+
+                    const allChecked = Array.from(typeCheckboxes).every(cb => cb.checked);
+                    if (allChecked) {
+                        selectAllCheckbox.checked = true;
+                    }
+                });
+            });
+        }
+        
+        function clearOtherTabSelections(activeTab) {
+            if (activeTab === 'all') {
+                clearResidentialSelections();
+                clearCommercialSelections();
+                clearLandSelections();
+                selectAllTab();
+                return;
+            }
+
+            if (activeTab !== 'residential') {
+                clearResidentialSelections();
+            }
+
+            if (activeTab !== 'commercial') {
+                clearCommercialSelections();
+            }
+
+            if (activeTab !== 'land') {
+                clearLandSelections();
+            }
+        }
+
+        function selectAllTab() {
+            document.getElementById('tab_all').checked = true;
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.querySelectorAll('.filter-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById('allPanel').classList.add('active');
+        }
+
+        function clearResidentialSelections() {
+            document.querySelectorAll('input[name="residential_type_selection[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+            document.getElementById('residential_all').checked = false;
+
+                document.getElementById('bedrooms_any').checked = true;
+                document.getElementById('bathrooms_any').checked = true;
+                
+            document.querySelectorAll('[name="features[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+            }
+            
+        function clearCommercialSelections() {
+            document.querySelectorAll('input[name="commercial_type_selection[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+            document.getElementById('commercial_all').checked = false;
+
+            document.querySelectorAll('[name="commercial_features[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+            }
+            
+        function clearLandSelections() {
+            document.querySelectorAll('input[name="land_type_selection[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+                
+            document.getElementById('land_all').checked = false;
+            document.querySelectorAll('[name="land_features[]"]').forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+        }
+        
+        function openFilterModal() {
+            document.getElementById('modalBackdrop').style.display = 'block';
+            document.getElementById('filterModal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            
+            const errorMsg = document.getElementById('filterErrorMessage');
+            if (errorMsg) {
+                errorMsg.style.display = 'none';
+            }
+        }
+        
+        function closeFilterModal() {
+            document.getElementById('modalBackdrop').style.display = 'none';
+            document.getElementById('filterModal').classList.remove('open');
+            document.body.style.overflow = 'auto';
+            return false;
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.filter-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName + 'Panel').classList.add('active');
+            
+            if (tabName !== 'all') {
+            document.querySelector(`[for="tab_${tabName}"]`).classList.add('active');
+            }
+        }
+
+        document.getElementById('modalBackdrop').addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            closeFilterModal();
+            return false;
+        });
+        
+        document.getElementById('filterModal').addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+        
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeFilterModal();
+            }
+        });
+
+        function resetToAllProperties() {
+            document.getElementById('activePropertyType').value = 'all';
+            selectAllTab();
+            clearResidentialSelections();
+            clearCommercialSelections();
+            clearLandSelections();
+        }
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    // Google Maps JavaScript API loader
+    (g => {
+        var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window;
+        b = b[c] || (b[c] = {});
+        var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams,
+            u = () => h || (h = new Promise(async (f, n) => {
+                await (a = m.createElement("script"));
+                e.set("libraries", [...r] + "");
+                for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                e.set("callback", c + ".maps." + q);
+                a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                d[q] = f;
+                a.onerror = () => h = n(Error(p + " could not load."));
+                a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+                m.head.append(a);
+            }));
+        d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+        u().then(() => initMap());
+    })({
+        key: "{{ google_maps_api_key }}",
+        v: "beta",
+        map_ids: "{{ google_maps_map_id }}",
+        libraries: ["maps", "marker", "places", "visualization", "drawing", "geometry"]
+    });
+
+    let map;
+    let infoWindow;
+    let selectedFeature = null;
+    let hoveredFeature = null;
+    let dataLayer;
+    let selectedProvinceName = null;
+    let mapInitialized = false;
+
+    async function initMap() {
+        if (mapInitialized) return;
+        
+        const mapContainer = document.getElementById("map");
+        mapContainer.classList.remove("hidden");
+        
+        const { Map } = await google.maps.importLibrary("maps");
+        const { InfoWindow } = await google.maps.importLibrary("maps");
+
+        map = new Map(document.getElementById("map"), {
+            center: { lat: 42.7339, lng: 25.4858 },
+            zoom: 7,
+            mapId: "{{ google_maps_map_id }}",
+            gestureHandling: 'greedy',
+            zoomControl: true,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false
+        });
+
+        await new Promise(resolve => {
+            map.addListener("tilesloaded", () => {
+                resolve();
+            });
+        });
+
+        dataLayer = new google.maps.Data({ map });
+
+        fetch('/provinces.geojson')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(geojson => {
+                console.log("GeoJSON loaded successfully:", geojson);
+                dataLayer.addGeoJson(geojson);
+            })
+            .catch(error => {
+                console.error("Error loading GeoJSON:", error);
+            });
+
+        dataLayer.setStyle(feature => {
+            if (feature === selectedFeature) {
+                return {
+                    fillColor: "#34A853",
+                    fillOpacity: 0.8,
+                    strokeColor: "#34A853",
+                    strokeWeight: 3,
+                    strokeOpacity: 1,
+                    zIndex: 2
+                };
+            }
+            if (feature === hoveredFeature) {
+                return {
+                    fillColor: "#4285F4",
+                    fillOpacity: 0.8,
+                    strokeColor: "#4285F4",
+                    strokeWeight: 3,
+                    strokeOpacity: 1,
+                    zIndex: 2
+                };
+            }
+            return {
+                fillColor: "#4285F4",
+                fillOpacity: 0.4,
+                strokeColor: "#4285F4",
+                strokeWeight: 2,
+                strokeOpacity: 1,
+                zIndex: 1
+            };
+        });
+
+        dataLayer.addListener('mouseover', event => {
+            hoveredFeature = event.feature;
+            dataLayer.setStyle(dataLayer.getStyle());
+        });
+
+        dataLayer.addListener('mouseout', event => {
+            hoveredFeature = null;
+            dataLayer.setStyle(dataLayer.getStyle());
+        });
+
+        dataLayer.addListener('click', event => {
+            const feature = event.feature;
+            const provinceName = feature.getProperty('nuts3');
+            selectedProvinceName = provinceName;
+            const position = event.latLng || getFeatureCenter(feature);
+
+            const bounds = getFeatureBounds(feature);
+            if (bounds) {
+                map.fitBounds(bounds, { padding: 50 });
+            }
+
+            if (infoWindow) infoWindow.close();
+            
+            infoWindow = new InfoWindow({
+                content: `<div style="min-width:150px; padding: 8px;">
+                            <strong>${provinceName}</strong>
+                          </div>`,
+                position: position
+            });
+            infoWindow.open(map);
+            
+            fetch(`/api/properties/count?province=${encodeURIComponent(provinceName)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const count = data.count || 0;
+                    const propertyText = count === 1 ? 'property' : 'properties';
+                    
+                    if (infoWindow) {
+                        infoWindow.setContent(`<div style="min-width:150px; padding: 8px;">
+                                                <strong>${provinceName}</strong>
+                                                <div style="font-size: 0.9em; margin-top: 5px;">
+                                                    ${count} ${propertyText} available
+                                                </div>
+                                              </div>`);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching property count:", error);
+                });
+
+            selectedFeature = feature;
+            dataLayer.setStyle(dataLayer.getStyle());
+
+            const searchInput = document.querySelector('input[name="{{ mainForm.search.vars.full_name }}"]');
+            if (searchInput) {
+                searchInput.value = provinceName;
+            }
+        });
+        
+        mapInitialized = true;
+    }
+    
+    function getFeatureBounds(feature) {
+        let bounds = new google.maps.LatLngBounds();
+        let geometry = feature.getGeometry();
+        geometry.forEachLatLng(latlng => bounds.extend(latlng));
+        return bounds;
+    }
+
+    function getFeatureCenter(feature) {
+        let bounds = getFeatureBounds(feature);
+        return bounds.getCenter();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const searchInput = form.querySelector('input[name$="[search]"]');
+        const lookupButton = form.querySelector('button[type="submit"]');
+        
+        searchInput.addEventListener('click', function() {
+            initMap();
+        });
+        
+        searchInput.addEventListener('focus', function() {
+            initMap();
+        });
+
+        lookupButton.addEventListener('mousedown', function() {
+            if (selectedProvinceName) {
+                searchInput.value = selectedProvinceName;
+            }
+        });
+    });
+</script>
 {% endblock %}

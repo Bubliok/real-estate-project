@@ -35,7 +35,7 @@ class CityNameTransformer implements  DataTransformerInterface
 
         if (null === $city) {
             $city = new City();
-            $city->setCityName($value);
+            $city->setName($value);
             $this->entityManager->persist($city);
             $this->entityManager->flush();
 //            throw new TransformationFailedException(sprintf(

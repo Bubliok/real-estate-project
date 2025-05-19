@@ -1,42 +1,102 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Register{% endblock %}
 
-    {% block body %}
-        <section class="login-section">
-            <div class="login-container">
-                <div class="login-box">
-                    <div class="login-content">
-                        <h1 class="login-title">Create a new account</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .form-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .form-error-message {
+            color: #dc3545;
+        }
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+    </style>
+{% endblock %}
 
-                        {{ form_start(registrationForm) }}
-                        <div>
-                            {{ form_label(registrationForm.username, null, { 'label_attr': { 'class': 'login-label' } }) }}
-                            {{ form_widget(registrationForm.username, { 'attr': { 'class': 'login-input', 'placeholder': 'johndoe21' } }) }}
-                            <div class="form-error">{{ form_errors(registrationForm.username) }}</div>
-                        </div>
-                        <div>
-                            {{ form_label(registrationForm.plainPassword.first, 'Password', { 'label_attr': { 'class': 'login-label' } }) }}
-                            <div class="form-error">{{ form_errors(registrationForm.plainPassword.first) }}</div>
-                            {{ form_widget(registrationForm.plainPassword.first, { 'attr': { 'class': 'login-input', 'placeholder': '••••••••' } }) }}
-                        </div>
-                        <div>
-                            {{ form_label(registrationForm.plainPassword.second, 'Confirm password', { 'label_attr': { 'class': 'login-label' } }) }}
-                            <div class="form-error">{{ form_errors(registrationForm.plainPassword.second) }}</div>
-                            {{ form_widget(registrationForm.plainPassword.second, { 'attr': { 'class': 'login-input', 'placeholder': '••••••••' } }) }}
-                        </div>
-                        <div>
-                            {{ form_row(registrationForm.agreeTerms) }}
-                            <div class="form-error">{{ form_errors(registrationForm.agreeTerms) }}</div>
-                        </div>
-
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                        <button type="submit" class="login-button">Register</button>
-                        <p class="login-signup-text">
-                            Already have an account? <a href="{{ path('app_login') }}" class="login-signup-link">Log in</a>
-                        </p>
-                        {{ form_end(registrationForm) }}
-                    </div>
-                </div>
-            </div>
-        </section>
-    {% endblock %}
+{% block body %}
+<section class="login-section">
+  <div class="login-container">
+      <div class="login-box">
+          <div class="login-content">
+              <h1 class="login-title">Create an Account</h1>
+              {% if registrationForm.vars.errors|length > 0 %}
+                  <div class="form-error-message">
+                      {{ form_errors(registrationForm) }}
+                  </div>
+              {% endif %}
+              {{ form_start(registrationForm, {'attr': {'class': 'login-form'}}) }}
+                  <div>
+                      {{ form_row(registrationForm.username, {
+                          'attr': {'class': 'login-input' ~ (registrationForm.username.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'Username'},
+                          'label_attr': {'class': 'login-label'},
+                          'error_attr': {'class': 'form-error'}
+                      }) }}
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.email, {
+                          'attr': {'class': 'login-input' ~ (registrationForm.email.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'Email'},
+                          'label_attr': {'class': 'login-label'},
+                          'error_attr': {'class': 'form-error'}
+                      }) }}
+                  </div>
+                  <div style="display: flex; gap: 1rem;">
+                      <div style="flex: 1;">
+                          {{ form_row(registrationForm.firstName, {
+                              'attr': {'class': 'login-input' ~ (registrationForm.firstName.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'First Name'},
+                              'label_attr': {'class': 'login-label'},
+                              'error_attr': {'class': 'form-error'}
+                          }) }}
+                      </div>
+                      <div style="flex: 1;">
+                          {{ form_row(registrationForm.lastName, {
+                              'attr': {'class': 'login-input' ~ (registrationForm.lastName.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'Last Name'},
+                              'label_attr': {'class': 'login-label'},
+                              'error_attr': {'class': 'form-error'}
+                          }) }}
+                      </div>
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.phoneNumber, {
+                          'attr': {'class': 'login-input' ~ (registrationForm.phoneNumber.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'Phone Number'},
+                          'label_attr': {'class': 'login-label'},
+                          'error_attr': {'class': 'form-error'}
+                      }) }}
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.plainPassword, {
+                          'label': 'Password',
+                          'attr': {'class': 'login-input' ~ (registrationForm.plainPassword.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'Password'},
+                          'label_attr': {'class': 'login-label'},
+                          'error_attr': {'class': 'form-error'}
+                      }) }}
+                  </div>
+                  <div>
+                      {{ form_row(registrationForm.confirmPassword, {
+                          'label': 'Confirm Password',
+                          'attr': {'class': 'login-input' ~ (registrationForm.confirmPassword.vars.errors|length > 0 ? ' is-invalid' : ''), 'placeholder': 'Confirm Password'},
+                          'label_attr': {'class': 'login-label'},
+                          'error_attr': {'class': 'form-error'}
+                      }) }}
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      {{ form_row(registrationForm.agreeTerms, {
+                          'label_attr': {'class': 'login-label'},
+                          'error_attr': {'class': 'form-error'}
+                      }) }}
+                  </div>
+                  <button type="submit" class="login-button">Register</button>
+                  <p class="login-signup-text">
+                      Already have an account? <a href="{{ path('app_login') }}" class="login-signup-link">Sign in</a>
+                  </p>
+              {{ form_end(registrationForm) }}
+          </div>
+      </div>
+  </div>
+</section>
+{% endblock %}

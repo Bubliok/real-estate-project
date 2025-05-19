@@ -1,0 +1,29 @@
+
+.profile-container {
+    position: relative;
+}
+
+.profile-content {
+    position: relative;
+}
+
+.navbar-dropdown {
+    position: absolute;
+    z-index: 1000;
+}
+
+.bg-white {
+    position: relative;
+}
+
+form {
+    position: relative;
+}
+
+button, 
+input, 
+select, 
+label {
+    position: relative;
+    z-index: 2;
+}

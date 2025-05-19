@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Favorites{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/favorites.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="favorites-container">
+        <h1 class="favorites-title">My Favorites</h1>
+        
+        {% if favorites is empty %}
+            <div class="empty-favorites">
+                <h3>You don't have any favorites yet</h3>
+                <p>Browse our listings and add properties to your favorites.</p>
+                <a href="{{ path('app_homepage') }}" class="btn-browse">Browse Listings</a>
+            </div>
+        {% else %}
+            <div class="favorites-grid">
+                {% for favorite in favorites %}
+                    {% set property = favorite.propertyId %}
+                    <div class="favorite-card">
+                        {% if property.propertyImages|length > 0 %}
+                            <img src="{{ asset(property.propertyImages[0].imagePath) }}" alt="{{ property.name }}" class="favorite-image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/300x200" alt="No image" class="favorite-image">
+                        {% endif %}
+                        
+                        <div class="favorite-details">
+                            <h2 class="favorite-name">{{ property.name }}</h2>
+                            <div class="favorite-price">€{{ property.price }}</div>
+                            <div class="favorite-address">{{ property.address }}, {{ property.cityId.name }}</div>
+                            
+                            <div class="favorite-info">
+                                <span>{{ property.area }} m²</span>
+                                {% if property.residential %}
+                                    <span> | {{ property.residential.bedrooms }} bed</span>
+                                    <span> | {{ property.residential.bathrooms }} bath</span>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="favorite-actions">
+                                <a href="{{ path('app_property_detail', {'slug': property.slug}) }}" class="btn-view">View Details</a>
+                                <form action="{{ path('app_toggle_favorite', {'slug': property.slug}) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn-remove">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %} 

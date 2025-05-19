@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @return City[]
+ * @extends ServiceEntityRepository<City>
  */
 class CityRepository extends ServiceEntityRepository
 {
@@ -15,27 +15,30 @@ class CityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, City::class);
     }
-    public function findSofia() :array
-    {
-        return $this->createQueryBuilder('c')
-            ->where('c.cityName = :cityName')
-            ->setParameter('cityName', 'Sofia')
-            ->getQuery()
-            ->getResult();
-    }
-    public function findMyCity() :City
-    {
-        return $this->findAll()[0];
-    }
 
-    public function  findByName(string $name): ?City
-    {
+    public function findByName(string $name): ?City {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.cityName = :name')
+            ->andWhere('LOWER(c.name) = LOWER(:name)')
             ->setParameter('name', $name)
             ->getQuery()
             ->getOneOrNullResult();
     }
+    
+    /**
+     * Find all cities in a given province
+     *
+     * @param string $provinceName The name of the province
+     * @return City[] Returns an array of City objects
+     */
+    public function findByProvince(string $provinceName): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('LOWER(c.province) = LOWER(:provinceName)')
+            ->setParameter('provinceName', $provinceName)
+            ->getQuery()
+            ->getResult();
+    }
+    
     //    /**
     //     * @return City[] Returns an array of City objects
     //     */

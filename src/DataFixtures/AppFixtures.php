@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\City;
+use App\Enum\City;
 use App\Factory\CityFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;

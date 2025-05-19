@@ -15,16 +15,25 @@ class City
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 30)]
-    private ?string $cityName = null;
+    #[ORM\Column(length: 35)]
+    private ?string $name = null;
 
+    /**
+     * @var Collection<int, Region>
+     */
+    #[ORM\OneToMany(targetEntity: Region::class, mappedBy: 'cityId')]
+    private Collection $regions;
 
-    #[ORM\OneToMany(targetEntity: RealEstate::class, mappedBy: 'city')]
-    private Collection $realEstates;
+    /**
+     * @var Collection<int, Property>
+     */
+    #[ORM\OneToMany(targetEntity: Property::class, mappedBy: 'cityId')]
+    private Collection $properties;
 
     public function __construct()
     {
-        $this->realEstates = new ArrayCollection();
+        $this->regions = new ArrayCollection();
+        $this->properties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -32,48 +41,79 @@ class City
         return $this->id;
     }
 
-    public function setId(?int $id): void
+    public function setId(int $id): static
     {
         $this->id = $id;
+
+        return $this;
     }
 
-
-    public function getCityName(): ?string
+    public function getName(): ?string
     {
-        return $this->cityName;
+        return $this->name;
     }
 
-    public function setCityName(string $cityName): static
+    public function setName(string $name): static
     {
-        $this->cityName = $cityName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, RealEstate>
+     * @return Collection<int, Region>
      */
-    public function getRealEstates(): Collection
+    public function getRegions(): Collection
     {
-        return $this->realEstates;
+        return $this->regions;
     }
 
-    public function addRealEstate(RealEstate $realEstate): static
+    public function addRegion(Region $region): static
     {
-        if (!$this->realEstates->contains($realEstate)) {
-            $this->realEstates->add($realEstate);
-            $realEstate->setCity($this);
+        if (!$this->regions->contains($region)) {
+            $this->regions->add($region);
+            $region->setCityId($this);
         }
 
         return $this;
     }
 
-    public function removeRealEstate(RealEstate $realEstate): static
+    public function removeRegion(Region $region): static
     {
-        if ($this->realEstates->removeElement($realEstate)) {
+        if ($this->regions->removeElement($region)) {
             // set the owning side to null (unless already changed)
-            if ($realEstate->getCity() === $this) {
-                $realEstate->setCity(null);
+            if ($region->getCityId() === $this) {
+                $region->setCityId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Property>
+     */
+    public function getProperties(): Collection
+    {
+        return $this->properties;
+    }
+
+    public function addProperty(Property $property): static
+    {
+        if (!$this->properties->contains($property)) {
+            $this->properties->add($property);
+            $property->setCityId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProperty(Property $property): static
+    {
+        if ($this->properties->removeElement($property)) {
+            // set the owning side to null (unless already changed)
+            if ($property->getCityId() === $this) {
+                $property->setCityId(null);
             }
         }
 
